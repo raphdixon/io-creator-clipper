@@ -1,0 +1,1670 @@
+[
+  {
+    "id": 1,
+    "start": 9.27,
+    "end": 15.1,
+    "timecode": "00:09",
+    "keynoteTimecode": "01:54",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Hello, Shoreline, and hello to everyone watching from around the world.",
+    "tags": [
+      "crowd",
+      "opening",
+      "shoreline",
+      "sundar"
+    ]
+  },
+  {
+    "id": 2,
+    "start": 15.1,
+    "end": 18.18,
+    "timecode": "00:15",
+    "keynoteTimecode": "02:00",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Excited to be back for this year's I/O.",
+    "tags": [
+      "crowd",
+      "opening",
+      "shoreline",
+      "sundar"
+    ]
+  },
+  {
+    "id": 3,
+    "start": 18.18,
+    "end": 21.02,
+    "timecode": "00:18",
+    "keynoteTimecode": "02:03",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I think it's been an incredible year.",
+    "tags": [
+      "crowd",
+      "opening",
+      "shoreline",
+      "sundar"
+    ]
+  },
+  {
+    "id": 4,
+    "start": 21.02,
+    "end": 26.22,
+    "timecode": "00:21",
+    "keynoteTimecode": "02:06",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "All of the relentless shipping, the rapid advances in technology.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 5,
+    "start": 26.22,
+    "end": 29.22,
+    "timecode": "00:26",
+    "keynoteTimecode": "02:11",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It's been a period of progress.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 6,
+    "start": 29.22,
+    "end": 31.0,
+    "timecode": "00:29",
+    "keynoteTimecode": "02:14",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I've definitely felt it myself.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 7,
+    "start": 31.0,
+    "end": 33.3,
+    "timecode": "00:31",
+    "keynoteTimecode": "02:16",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It's been an intense year.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 8,
+    "start": 33.3,
+    "end": 36.12,
+    "timecode": "00:33",
+    "keynoteTimecode": "02:18",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Here's a look at what I've been up to.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 9,
+    "start": 41.14,
+    "end": 44.46,
+    "timecode": "00:41",
+    "keynoteTimecode": "02:26",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "OK I wish this was my year.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 10,
+    "start": 44.46,
+    "end": 50.3,
+    "timecode": "00:44",
+    "keynoteTimecode": "02:29",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Actually, one of me plugging in the TPU is pretty accurate.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 11,
+    "start": 50.3,
+    "end": 52.88,
+    "timecode": "00:50",
+    "keynoteTimecode": "02:35",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "So there's still more work to do before it's in space.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 12,
+    "start": 52.88,
+    "end": 55.06,
+    "timecode": "00:52",
+    "keynoteTimecode": "02:37",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "We are working on that.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 13,
+    "start": 55.06,
+    "end": 59.02,
+    "timecode": "00:55",
+    "keynoteTimecode": "02:40",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "On a serious note, it's been an extraordinary moment.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 14,
+    "start": 59.02,
+    "end": 63.86,
+    "timecode": "00:59",
+    "keynoteTimecode": "02:44",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It's been 10 years since we pivoted the company to be AI first.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 15,
+    "start": 63.86,
+    "end": 71.64,
+    "timecode": "01:03",
+    "keynoteTimecode": "02:48",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "We knew how profound I would be to advancing our mission and improving people's lives at scale.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 16,
+    "start": 71.64,
+    "end": 77.56,
+    "timecode": "01:11",
+    "keynoteTimecode": "02:56",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "This is why we are taking a differentiated, full stack approach to AI innovation.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 17,
+    "start": 77.56,
+    "end": 84.0,
+    "timecode": "01:17",
+    "keynoteTimecode": "03:02",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "From our custom silicon and secure foundation, to our world class research and models,",
+    "tags": [
+      "ai mode",
+      "crowd",
+      "opening",
+      "search",
+      "shoreline",
+      "sundar"
+    ]
+  },
+  {
+    "id": 18,
+    "start": 84.0,
+    "end": 88.24,
+    "timecode": "01:24",
+    "keynoteTimecode": "03:09",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "to our products and platforms that reach billions of people.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 19,
+    "start": 88.24,
+    "end": 95.08,
+    "timecode": "01:28",
+    "keynoteTimecode": "03:13",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "This approach enables us to iterate and innovate faster, and it's lighting up every part of the company.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 20,
+    "start": 95.08,
+    "end": 98.72,
+    "timecode": "01:35",
+    "keynoteTimecode": "03:20",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "What's really incredible is how people are using our AI.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 21,
+    "start": 98.72,
+    "end": 102.6,
+    "timecode": "01:38",
+    "keynoteTimecode": "03:23",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Students prepping for final exams with the Gemini app.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 22,
+    "start": 102.6,
+    "end": 109.52,
+    "timecode": "01:42",
+    "keynoteTimecode": "03:27",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Musicians and artists using generative AI models like Lyria and Veo as part of their creative flow.",
+    "tags": [
+      "ai mode",
+      "creative",
+      "creator",
+      "creators",
+      "developers",
+      "generative ai",
+      "lyria",
+      "models",
+      "search",
+      "sundar",
+      "veo",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 23,
+    "start": 109.52,
+    "end": 113.04,
+    "timecode": "01:49",
+    "keynoteTimecode": "03:34",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Developers coding and bringing their ideas to life.",
+    "tags": [
+      "creative",
+      "creators",
+      "developers",
+      "sundar"
+    ]
+  },
+  {
+    "id": 24,
+    "start": 113.04,
+    "end": 115.96,
+    "timecode": "01:53",
+    "keynoteTimecode": "03:38",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I've been using Gemini in a myriad of ways.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 25,
+    "start": 115.96,
+    "end": 120.16,
+    "timecode": "01:55",
+    "keynoteTimecode": "03:40",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Recently, I've been turning to Gemini to make sense of my parents doctor visits.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 26,
+    "start": 120.16,
+    "end": 123.4,
+    "timecode": "02:00",
+    "keynoteTimecode": "03:45",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I'm sure many of you have done a version of that.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 27,
+    "start": 123.4,
+    "end": 131.87,
+    "timecode": "02:03",
+    "keynoteTimecode": "03:48",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "These stories of how people are using AI are the best measure of progress to understand the scale at which people are adopting AI.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 28,
+    "start": 131.87,
+    "end": 134.51,
+    "timecode": "02:11",
+    "keynoteTimecode": "03:56",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "There's another great proxy tokens.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 29,
+    "start": 134.51,
+    "end": 140.11,
+    "timecode": "02:14",
+    "keynoteTimecode": "03:59",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "The fundamental units of data are models process, many representing a problem being solved.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 30,
+    "start": 140.11,
+    "end": 147.47,
+    "timecode": "02:20",
+    "keynoteTimecode": "04:05",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Two years, we were processing 9.7 trillion tokens a month across the surfaces, a huge number.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 31,
+    "start": 147.47,
+    "end": 152.55,
+    "timecode": "02:27",
+    "keynoteTimecode": "04:12",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Last year at I/O that grew to about 480 trillion tokens.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 32,
+    "start": 152.55,
+    "end": 158.41,
+    "timecode": "02:32",
+    "keynoteTimecode": "04:17",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "And fast forward to today, that number has jumped seven times to 3.2 quadrillion tokens per month.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 33,
+    "start": 161.11,
+    "end": 168.01,
+    "timecode": "02:41",
+    "keynoteTimecode": "04:26",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I never imagined I'd say quadrillion in an I/O keynote.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 34,
+    "start": 168.01,
+    "end": 169.67,
+    "timecode": "02:48",
+    "keynoteTimecode": "04:33",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "But here we are.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 35,
+    "start": 169.67,
+    "end": 172.71,
+    "timecode": "02:49",
+    "keynoteTimecode": "04:34",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Now, some out there might call this token maxing.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 36,
+    "start": 172.71,
+    "end": 176.47,
+    "timecode": "02:52",
+    "keynoteTimecode": "04:37",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "And there's probably some truth to it.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 37,
+    "start": 176.47,
+    "end": 183.91,
+    "timecode": "02:56",
+    "keynoteTimecode": "04:41",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I still think it tells an important story about our products and how others are building as well.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 38,
+    "start": 183.91,
+    "end": 185.85,
+    "timecode": "03:03",
+    "keynoteTimecode": "04:48",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Especially our developers.",
+    "tags": [
+      "creative",
+      "creators",
+      "developers",
+      "sundar"
+    ]
+  },
+  {
+    "id": 39,
+    "start": 185.85,
+    "end": 194.66,
+    "timecode": "03:05",
+    "keynoteTimecode": "04:50",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Purse over 8.5 million of you are now building new apps and experiences with our models monthly, and our model APIs are now",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 40,
+    "start": 194.66,
+    "end": 198.62,
+    "timecode": "03:14",
+    "keynoteTimecode": "04:59",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "processing around $19 billion tokens permanent.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 41,
+    "start": 198.62,
+    "end": 206.94,
+    "timecode": "03:18",
+    "keynoteTimecode": "05:03",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Over the past 12 months, over 375 customers each processed more than one trillion tokens,",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 42,
+    "start": 206.94,
+    "end": 211.54,
+    "timecode": "03:26",
+    "keynoteTimecode": "05:11",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "representing incredible demand for AI across the industry.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 43,
+    "start": 211.54,
+    "end": 215.16,
+    "timecode": "03:31",
+    "keynoteTimecode": "05:16",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "We are, of course, also seeing incredible demand across our products.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 44,
+    "start": 215.16,
+    "end": 219.06,
+    "timecode": "03:35",
+    "keynoteTimecode": "05:20",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "We now have 13 products with over a billion users each.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 45,
+    "start": 219.06,
+    "end": 222.24,
+    "timecode": "03:39",
+    "keynoteTimecode": "05:24",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Five of those have more than three billion users.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 46,
+    "start": 229.06,
+    "end": 236.5,
+    "timecode": "03:49",
+    "keynoteTimecode": "05:34",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Our Gemini models are a big reason more people are using our products, and why they are using our products more.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 47,
+    "start": 236.5,
+    "end": 243.34,
+    "timecode": "03:56",
+    "keynoteTimecode": "05:41",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It all starts with search, which is bringing the benefits of generative AI to more people than any other product in the world.",
+    "tags": [
+      "ai mode",
+      "crowd",
+      "opening",
+      "search",
+      "shoreline",
+      "sundar"
+    ]
+  },
+  {
+    "id": 48,
+    "start": 243.34,
+    "end": 250.35,
+    "timecode": "04:03",
+    "keynoteTimecode": "05:48",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "AI Overviews now has over 2.5 billion monthly users, and AI Mode has been a revelation.",
+    "tags": [
+      "ai mode",
+      "metrics",
+      "quadrillion",
+      "scale",
+      "search",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 49,
+    "start": 250.35,
+    "end": 252.37,
+    "timecode": "04:10",
+    "keynoteTimecode": "05:55",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Our biggest upgrade to search ever.",
+    "tags": [
+      "ai mode",
+      "search",
+      "sundar"
+    ]
+  },
+  {
+    "id": 50,
+    "start": 252.37,
+    "end": 253.19,
+    "timecode": "04:12",
+    "keynoteTimecode": "05:57",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "People love it.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 51,
+    "start": 253.19,
+    "end": 257.77,
+    "timecode": "04:13",
+    "keynoteTimecode": "05:58",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "In just a year, it's already surpassed 1 billion monthly users.",
+    "tags": [
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens"
+    ]
+  },
+  {
+    "id": 52,
+    "start": 257.77,
+    "end": 262.89,
+    "timecode": "04:17",
+    "keynoteTimecode": "06:02",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "When people use our AI powered features in search, they use search more.",
+    "tags": [
+      "ai mode",
+      "search",
+      "sundar"
+    ]
+  },
+  {
+    "id": 53,
+    "start": 262.89,
+    "end": 272.05,
+    "timecode": "04:22",
+    "keynoteTimecode": "06:07",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I love how search has become less about individual queries and feels more like an ongoing conversation, giving you deeper insights and connecting you",
+    "tags": [
+      "ai mode",
+      "search",
+      "sundar"
+    ]
+  },
+  {
+    "id": 54,
+    "start": 272.05,
+    "end": 274.37,
+    "timecode": "04:32",
+    "keynoteTimecode": "06:17",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "with the vastness of the web.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 55,
+    "start": 274.37,
+    "end": 278.17,
+    "timecode": "04:34",
+    "keynoteTimecode": "06:19",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Another place we've been rapidly innovating is in the Gemini app.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 56,
+    "start": 278.17,
+    "end": 282.77,
+    "timecode": "04:38",
+    "keynoteTimecode": "06:23",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Last year at I/O the Gemini app had 400 million monthly active users.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 57,
+    "start": 282.77,
+    "end": 284.99,
+    "timecode": "04:42",
+    "keynoteTimecode": "06:27",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Today we have surpassed 900 million.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 58,
+    "start": 284.99,
+    "end": 286.43,
+    "timecode": "04:44",
+    "keynoteTimecode": "06:29",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "More than doubling in a year.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 59,
+    "start": 292.85,
+    "end": 296.43,
+    "timecode": "04:52",
+    "keynoteTimecode": "06:37",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "In that same time, daily requests have grown over 7 times.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 60,
+    "start": 296.43,
+    "end": 297.98,
+    "timecode": "04:56",
+    "keynoteTimecode": "06:41",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It's incredible growth.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 61,
+    "start": 297.98,
+    "end": 304.95,
+    "timecode": "04:57",
+    "keynoteTimecode": "06:42",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "We've been adding a lot of unique features like personal intelligence, which makes responses more customized and helpful.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 62,
+    "start": 304.95,
+    "end": 310.43,
+    "timecode": "05:04",
+    "keynoteTimecode": "06:49",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "And to date, more than 50 billion images have been generated with our Nano banana models.",
+    "tags": [
+      "generative ai",
+      "metrics",
+      "quadrillion",
+      "scale",
+      "sundar",
+      "tokens",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 63,
+    "start": 310.43,
+    "end": 312.57,
+    "timecode": "05:10",
+    "keynoteTimecode": "06:55",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "It was a breakout star this past year.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 64,
+    "start": 312.57,
+    "end": 316.27,
+    "timecode": "05:12",
+    "keynoteTimecode": "06:57",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "I know you all have been having a lot of fun with it.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 65,
+    "start": 316.27,
+    "end": 324.47,
+    "timecode": "05:16",
+    "keynoteTimecode": "07:01",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Beyond the Gemini app, we are also having much more natural conversations with Gemini directly inside many of our products.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 66,
+    "start": 324.47,
+    "end": 330.0,
+    "timecode": "05:24",
+    "keynoteTimecode": "07:09",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Opening Keynote & AI Scale",
+    "text": "Recently, Maps got its biggest upgrade in a decade, including a new feature called Maps.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 67,
+    "start": 339.84,
+    "end": 341.68,
+    "timecode": "05:39",
+    "keynoteTimecode": "16:27",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Hi everyone, it's really great to be here.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 68,
+    "start": 342.56,
+    "end": 345.84,
+    "timecode": "05:42",
+    "keynoteTimecode": "16:30",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Over the past year, AI capabilities have leaped forwards.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 69,
+    "start": 346.52,
+    "end": 353.24,
+    "timecode": "05:46",
+    "keynoteTimecode": "16:34",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "We now have agents that can plan and act on our behalf, and Artificial General Intelligence is just a few years away.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 70,
+    "start": 354.6,
+    "end": 358.72,
+    "timecode": "05:54",
+    "keynoteTimecode": "16:42",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Today, I'm excited to share the progress we've made towards building AGI.",
+    "tags": [
+      "crowd",
+      "demis",
+      "opening",
+      "shoreline"
+    ]
+  },
+  {
+    "id": 71,
+    "start": 359.68,
+    "end": 363.36,
+    "timecode": "05:59",
+    "keynoteTimecode": "16:47",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Last year, I outlined our vision of extending Gemini's incredible",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 72,
+    "start": 363.36,
+    "end": 370.8,
+    "timecode": "06:03",
+    "keynoteTimecode": "16:51",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "multimodal capabilities to become a world model\u2014 AI that can understand and simulate the world.",
+    "tags": [
+      "crowd",
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "opening",
+      "shoreline",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 73,
+    "start": 371.84,
+    "end": 376.64,
+    "timecode": "06:11",
+    "keynoteTimecode": "16:59",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "This is a crucial aspect of achieving AGI, and will be important for everything",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 74,
+    "start": 376.64,
+    "end": 382.8,
+    "timecode": "06:16",
+    "keynoteTimecode": "17:04",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "from building AI assistants to training robots. Now, we're taking the next big step.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 75,
+    "start": 383.44,
+    "end": 386.04,
+    "timecode": "06:23",
+    "keynoteTimecode": "17:11",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "I'm excited to announce Gemini Omni.",
+    "tags": [
+      "crowd",
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "opening",
+      "shoreline",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 76,
+    "start": 391.64,
+    "end": 395.76,
+    "timecode": "06:31",
+    "keynoteTimecode": "17:19",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Our new model that can create anything from any input.",
+    "tags": [
+      "creative",
+      "creators",
+      "demis",
+      "developers"
+    ]
+  },
+  {
+    "id": 77,
+    "start": 395.76,
+    "end": 404.56,
+    "timecode": "06:35",
+    "keynoteTimecode": "17:23",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "It combines Gemini's intelligence with the best of our generative media models for a new level of world understanding, multimodality, and editing.",
+    "tags": [
+      "crowd",
+      "demis",
+      "generative ai",
+      "opening",
+      "shoreline",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 78,
+    "start": 405.88,
+    "end": 413.76,
+    "timecode": "06:45",
+    "keynoteTimecode": "17:33",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Models like Veo, Nano Banana, and Genie are able to create extremely realistic videos, images, and interactive simulations.",
+    "tags": [
+      "creative",
+      "creator",
+      "creators",
+      "demis",
+      "developers",
+      "generative ai",
+      "lyria",
+      "models",
+      "veo",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 79,
+    "start": 414.44,
+    "end": 419.12,
+    "timecode": "06:54",
+    "keynoteTimecode": "17:42",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Although not perfect, they already demonstrate some impressive notions of intuitive physics.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 80,
+    "start": 419.88,
+    "end": 422.6,
+    "timecode": "06:59",
+    "keynoteTimecode": "17:47",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "And with Omni, we've now made even more progress.",
+    "tags": [
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 81,
+    "start": 423.36,
+    "end": 427.6,
+    "timecode": "07:03",
+    "keynoteTimecode": "17:51",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "It's a step-change in simulating things like kinetic energy and gravity.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 82,
+    "start": 428.4,
+    "end": 431.0,
+    "timecode": "07:08",
+    "keynoteTimecode": "17:56",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Previous systems would have found these concepts difficult.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 83,
+    "start": 432.28,
+    "end": 435.72,
+    "timecode": "07:12",
+    "keynoteTimecode": "18:00",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Gemini's world knowledge and reasoning really shine in Omni.",
+    "tags": [
+      "crowd",
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "opening",
+      "shoreline",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 84,
+    "start": 436.36,
+    "end": 439.96,
+    "timecode": "07:16",
+    "keynoteTimecode": "18:04",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "It can translate complex ideas into highly accurate videos.",
+    "tags": [
+      "demis",
+      "generative ai",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 85,
+    "start": 440.72,
+    "end": 448.0,
+    "timecode": "07:20",
+    "keynoteTimecode": "18:08",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "So for example, you can give it a simple prompt like \"make a claymation explainer of protein folding\" and get this: (Narrator in claymation video): Proteins",
+    "tags": [
+      "demis",
+      "generative ai",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 86,
+    "start": 448.0,
+    "end": 450.28,
+    "timecode": "07:28",
+    "keynoteTimecode": "18:16",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "start as chains of amino acids.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 87,
+    "start": 450.28,
+    "end": 457.4,
+    "timecode": "07:30",
+    "keynoteTimecode": "18:18",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "They fold into patterns like the alpha helix and flat sections called beta sheets, forming a perfect three-dimensional shape.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 88,
+    "start": 457.4,
+    "end": 461.16,
+    "timecode": "07:37",
+    "keynoteTimecode": "18:25",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Demis Hassabis: But the initial generation is just the start.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 89,
+    "start": 461.16,
+    "end": 465.28,
+    "timecode": "07:41",
+    "keynoteTimecode": "18:29",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "The creative process is rarely a single step, it's usually iterative.",
+    "tags": [
+      "creative",
+      "creators",
+      "demis",
+      "developers"
+    ]
+  },
+  {
+    "id": 90,
+    "start": 466.04,
+    "end": 473.56,
+    "timecode": "07:46",
+    "keynoteTimecode": "18:34",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Just like Nano Banana redefined image editing, Omni gives you a more natural way to edit video with conversational language.",
+    "tags": [
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 91,
+    "start": 474.28,
+    "end": 482.56,
+    "timecode": "07:54",
+    "keynoteTimecode": "18:42",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "What's really cool is you can give it your own videos\u2014for example, this selfie\u2014 and change reality in a really fun way.",
+    "tags": [
+      "demis",
+      "generative ai",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 92,
+    "start": 485.68,
+    "end": 493.92,
+    "timecode": "08:05",
+    "keynoteTimecode": "18:53",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "You can easily adjust the details and style, or even add elements, and the whole scene morphs to reflect your new idea.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 93,
+    "start": 499.76,
+    "end": 504.12,
+    "timecode": "08:19",
+    "keynoteTimecode": "19:07",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "A simple circle turns into a black hole, or an evening stroll comes to life.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 94,
+    "start": 504.68,
+    "end": 508.92,
+    "timecode": "08:24",
+    "keynoteTimecode": "19:12",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Anything becomes a canvas for creating entirely new realities.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 95,
+    "start": 508.92,
+    "end": 510.72,
+    "timecode": "08:28",
+    "keynoteTimecode": "19:16",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Let's take a look at what Omni can do.",
+    "tags": [
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 96,
+    "start": 555.24,
+    "end": 561.72,
+    "timecode": "09:15",
+    "keynoteTimecode": "20:03",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "We're starting with video, but over time, Omni will be able to generate any output from any input.",
+    "tags": [
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 97,
+    "start": 562.32,
+    "end": 567.72,
+    "timecode": "09:22",
+    "keynoteTimecode": "20:10",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "This was always our goal with Gemini, and why we built it to be multimodal from the very start.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 98,
+    "start": 568.44,
+    "end": 571.64,
+    "timecode": "09:28",
+    "keynoteTimecode": "20:16",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "It was a hard path, but the foundation is now paying off.",
+    "tags": [
+      "demis"
+    ]
+  },
+  {
+    "id": 99,
+    "start": 572.4,
+    "end": 576.8,
+    "timecode": "09:32",
+    "keynoteTimecode": "20:20",
+    "speaker": "Demis Hassabis",
+    "role": "CEO, Google DeepMind",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "Today, we're launching the first model in the Omni family: Gemini Omni Flash.",
+    "tags": [
+      "demis",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 100,
+    "start": 577.36,
+    "end": 581.4,
+    "timecode": "09:37",
+    "keynoteTimecode": "20:25",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "It's now available across our products, and you'll hear more about this later.",
+    "tags": [
+      "sundar"
+    ]
+  },
+  {
+    "id": 101,
+    "start": 582.2,
+    "end": 587.0,
+    "timecode": "09:42",
+    "keynoteTimecode": "20:30",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "We're excited with the progress we're making, and we'll be able to share more about Omni Pro soon.",
+    "tags": [
+      "crowd",
+      "gemini omni",
+      "generative ai",
+      "models",
+      "multimodal",
+      "omni",
+      "opening",
+      "shoreline",
+      "sundar",
+      "video",
+      "video generation",
+      "video generation models"
+    ]
+  },
+  {
+    "id": 102,
+    "start": 587.84,
+    "end": 589.92,
+    "timecode": "09:47",
+    "keynoteTimecode": "20:35",
+    "speaker": "Sundar Pichai",
+    "role": "CEO, Google & Alphabet",
+    "chapter": "Gemini Omni & Video Generation",
+    "text": "We can't wait to see what you create.",
+    "tags": [
+      "creative",
+      "creators",
+      "developers",
+      "sundar"
+    ]
+  }
+]

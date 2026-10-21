@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google I/O '26 · Creator Multi-Cam Clipper Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-canvas: #090b10;
+      --bg-panel: #10141d;
+      --bg-panel-elevated: #161b27;
+      --bg-panel-hover: #1c2333;
+      --border-subtle: #1f2738;
+      --border-strong: #2d3850;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --g-blue: #4285f4;
+      --g-blue-soft: rgba(66, 133, 244, 0.16);
+      --g-blue-glow: #7cacf8;
+      --g-red: #ea4335;
+      --g-yellow: #fbbc04;
+      --g-yellow-soft: rgba(251, 188, 4, 0.2);
+      --g-green: #34a853;
+      --accent-clip: #f59e0b;
+      --accent-match: #38bdf8;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 13px;
+      line-height: 1.45;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* App Shell Grid */
+    .studio-app {
+      display: grid;
+      grid-template-rows: 48px 1fr 182px;
+      width: 100vw;
+      height: 100vh;
+      gap: 1px;
+      background: var(--border-subtle);
+    }
+
+    /* Top Header */
+    .studio-header {
+      background: var(--bg-panel);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      gap: 10px;
+      z-index: 30;
+      overflow: hidden;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-shrink: 0;
+    }
+
+    .google-g-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(66,133,244,0.18), rgba(52,168,83,0.15), rgba(251,188,4,0.15), rgba(234,67,53,0.18));
+      border: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .brand-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .proto-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(66, 133, 244, 0.16);
+      color: var(--g-blue-glow);
+      border: 1px solid rgba(66, 133, 244, 0.35);
+    }
+
+    .event-meta {
+      font-size: 10.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--g-green);
+      box-shadow: 0 0 8px var(--g-green);
+    }
+
+    /* Search Bar Center */
+    .search-command-bar {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 180px;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      color: var(--g-blue-glow);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 32px;
+      background: #0b0e16;
+      border: 1px solid var(--border-strong);
+      border-radius: 7px;
+      padding: 0 104px 0 32px;
+      color: var(--text-primary);
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--g-blue);
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
+    }
+
+    .search-match-pill {
+      position: absolute;
+      right: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .match-count-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(251, 188, 4, 0.18);
+      color: #fcd34d;
+      border: 1px solid rgba(251, 188, 4, 0.4);
+    }
+
+    .clear-search-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+
+    .clear-search-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .quick-chips {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .chip-btn {
+      height: 26px;
+      padding: 0 8px;
+      border-radius: 5px;
+      background: var(--bg-panel-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .chip-btn:hover {
+      background: var(--bg-panel-hover);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .chip-btn.active {
+      background: rgba(251, 188, 4, 0.15);
+      border-color: var(--g-yellow);
+      color: #fde68a;
+      font-weight: 600;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .mode-toggle-btn {
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 6px;
+      background: var(--bg-panel-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .mode-toggle-btn.active, .mode-toggle-btn:hover {
+      color: var(--text-primary);
+      border-color: var(--g-blue);
+      background: var(--g-blue-soft);
+    }
+
+    /* Main 3-Column Workspace */
+    .studio-workspace {
+      display: grid;
+      grid-template-columns: 300px 1fr 430px;
+      gap: 1px;
+      background: var(--border-subtle);
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* Left Column: Searchable Transcript */
+    .transcript-panel {
+      background: var(--bg-panel);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .panel-header {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: rgba(16, 20, 29, 0.9);
+    }
+
+    .panel-title {
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .transcript-filters {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      background: #0c0f17;
+    }
+
+    .speaker-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .speaker-tab {
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .speaker-tab.active {
+      background: var(--bg-panel-elevated);
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+
+    .filter-matches-toggle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .transcript-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .transcript-list::-webkit-scrollbar {
+      width: 6px;
+    }
+    .transcript-list::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 3px;
+    }
+
+    .cue-card {
+      padding: 9px 10px;
+      border-radius: 8px;
+      background: rgba(22, 27, 39, 0.55);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.14s ease;
+      position: relative;
+      user-select: text;
+    }
+
+    .cue-card:hover {
+      background: var(--bg-panel-elevated);
+      border-color: var(--border-strong);
+    }
+
+    .cue-card.is-match {
+      background: rgba(251, 188, 4, 0.08);
+      border-color: rgba(251, 188, 4, 0.35);
+    }
+
+    .cue-card.is-active {
+      border-color: var(--g-blue);
+      background: rgba(66, 133, 244, 0.12);
+      box-shadow: inset 3px 0 0 var(--g-blue);
+    }
+
+    .cue-card.in-clip-range {
+      box-shadow: inset 3px 0 0 var(--g-yellow);
+    }
+
+    .cue-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      gap: 6px;
+    }
+
+    .cue-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--g-blue-glow);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cue-speaker {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .cue-speaker.sundar {
+      color: #93c5fd;
+    }
+    .cue-speaker.demis {
+      color: #6ee7b7;
+    }
+
+    .cue-clip-btn {
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(251, 188, 4, 0.16);
+      border: 1px solid rgba(251, 188, 4, 0.45);
+      color: #fde68a;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: all 0.12s;
+    }
+
+    .cue-clip-btn:hover {
+      opacity: 1;
+      background: var(--g-yellow);
+      color: #090b10;
+    }
+
+    .cue-text {
+      font-size: 12.5px;
+      color: #e2e8f0;
+      line-height: 1.45;
+    }
+
+    .cue-text mark {
+      background: rgba(251, 188, 4, 0.32);
+      color: #fef08a;
+      padding: 0 3px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    /* Center Column: Main Keynote Monitor */
+    .monitor-stage {
+      background: #06080c;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      position: relative;
+    }
+
+    .monitor-topbar {
+      height: 40px;
+      padding: 0 14px;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .monitor-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .pgm-tally {
+      background: var(--g-red);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+
+    .monitor-viewport {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #111622 0%, #05070a 100%);
+      padding: 12px;
+    }
+
+    .video-frame-container {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+    }
+
+    .video-frame-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Quad Split Multiview Overlay inside Center Monitor */
+    .quad-multiview-grid {
+      position: absolute;
+      inset: 0;
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 2px;
+      background: #000;
+      z-index: 10;
+    }
+
+    .quad-multiview-grid.active {
+      display: grid;
+    }
+
+    .quad-cell {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+    }
+
+    .quad-cell.selected {
+      border-color: var(--g-red);
+    }
+
+    .quad-cell video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .quad-cell-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(9, 11, 16, 0.82);
+      backdrop-filter: blur(6px);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Broadcast Overlays on Main Video */
+    .monitor-hud-top {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hud-pill {
+      background: rgba(9, 11, 16, 0.78);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .monitor-caption-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 86%;
+      max-width: 680px;
+      background: rgba(9, 11, 16, 0.84);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      padding: 7px 14px;
+      text-align: center;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #f8fafc;
+      pointer-events: none;
+      z-index: 5;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }
+
+    .monitor-caption-speaker {
+      font-size: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--g-yellow);
+      margin-bottom: 2px;
+    }
+
+    /* Transport Control Bar */
+    .transport-bar {
+      height: 48px;
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border-subtle);
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .transport-left, .transport-center, .transport-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .t-btn {
+      height: 30px;
+      padding: 0 10px;
+      border-radius: 6px;
+      background: var(--bg-panel-elevated);
+      border: 1px solid var(--border-strong);
+      color: var(--text-primary);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.12s ease;
+    }
+
+    .t-btn:hover {
+      background: var(--bg-panel-hover);
+      border-color: var(--g-blue-glow);
+    }
+
+    .t-btn.play-primary {
+      background: var(--g-blue);
+      border-color: var(--g-blue);
+      color: #fff;
+      padding: 0 14px;
+    }
+
+    .t-btn.play-primary:hover {
+      background: #3b78e7;
+    }
+
+    .t-btn.in-out-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      border-color: rgba(251, 188, 4, 0.45);
+      color: #fde68a;
+    }
+
+    .timecode-readout {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      background: #090b10;
+      border: 1px solid var(--border-subtle);
+      padding: 4px 9px;
+      border-radius: 6px;
+      color: #e2e8f0;
+    }
+
+    .clip-range-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(251, 188, 4, 0.14);
+      border: 1px solid rgba(251, 188, 4, 0.4);
+      color: #fcd34d;
+      padding: 4px 9px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Right Column: Multi-Cam Angles + Aspect Ratio + Export */
+    .export-studio-panel {
+      background: var(--bg-panel);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow-y: auto;
+      padding: 8px 10px;
+      gap: 7px;
+    }
+
+    .studio-section {
+      background: #0c0f17;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 7px 9px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .step-num {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--g-blue-soft);
+      color: var(--g-blue-glow);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(66,133,244,0.35);
+    }
+
+    /* 4 Camera Angles Grid */
+    .camera-angles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .cam-card {
+      position: relative;
+      background: var(--bg-panel-elevated);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 7px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+
+    .cam-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .cam-card.active {
+      border-color: var(--g-red);
+      box-shadow: 0 0 0 2px rgba(234, 67, 53, 0.25);
+    }
+
+    .cam-video-wrap {
+      position: relative;
+      width: 100%;
+      height: 68px;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .cam-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cam-badge-top {
+      position: absolute;
+      top: 4px;
+      left: 5px;
+      right: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .cam-id-tag {
+      background: rgba(9, 11, 16, 0.85);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .cam-tally-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--g-green);
+    }
+
+    .cam-card.active .cam-tally-dot {
+      background: var(--g-red);
+      box-shadow: 0 0 6px var(--g-red);
+    }
+
+    .cam-info-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 6px 3px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 12, 0.92) 80%);
+      pointer-events: none;
+    }
+
+    .cam-name {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    }
+
+    .cam-sub {
+      font-size: 9px;
+      color: #cbd5e1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Aspect Ratio Selector */
+    .aspect-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+
+    .aspect-btn {
+      background: var(--bg-panel-elevated);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 7px;
+      padding: 5px 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--text-secondary);
+      transition: all 0.14s ease;
+    }
+
+    .aspect-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text-primary);
+    }
+
+    .aspect-btn.active {
+      background: var(--g-blue-soft);
+      border-color: var(--g-blue);
+      color: #fff;
+    }
+
+    .aspect-icon-box {
+      border: 1.5px solid currentColor;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .aspect-ratio-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .aspect-ratio-desc {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    .aspect-btn.active .aspect-ratio-desc {
+      color: var(--g-blue-glow);
+    }
+
+    /* Live Export Framing Preview */
+    .framing-preview-stage {
+      height: 118px;
+      background: radial-gradient(circle at center, #151b29 0%, #07090e 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6px;
+    }
+
+    .crop-viewport {
+      position: relative;
+      height: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border: 2px solid var(--g-blue-glow);
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+      transition: aspect-ratio 0.22s ease, width 0.22s ease, height 0.22s ease;
+    }
+
+    .crop-viewport video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .crop-overlay-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(9, 11, 16, 0.8);
+      border: 1px solid rgba(255,255,255,0.18);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      color: #fde68a;
+      pointer-events: none;
+    }
+
+    .crop-caption-burned {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      right: 5px;
+      background: rgba(0, 0, 0, 0.78);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid rgba(251, 188, 4, 0.4);
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Export CTA Box */
+    .export-cta-box {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .export-spec-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--text-secondary);
+      background: var(--bg-panel-elevated);
+      padding: 4px 8px;
+      border-radius: 5px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .download-primary-btn {
+      height: 34px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #4285f4 0%, #2563eb 100%);
+      border: 1px solid #60a5fa;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      box-shadow: 0 4px 14px rgba(66, 133, 244, 0.35);
+      transition: all 0.15s ease;
+    }
+
+    .download-primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(66, 133, 244, 0.5);
+    }
+
+    .export-progress-wrap {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: #090b10;
+      padding: 7px 9px;
+      border-radius: 6px;
+      border: 1px solid var(--border-strong);
+    }
+
+    .export-progress-wrap.active {
+      display: flex;
+    }
+
+    .export-progress-bar {
+      height: 5px;
+      background: var(--border-subtle);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .export-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--g-blue), var(--g-green));
+      transition: width 0.15s linear;
+    }
+
+    /* Bottom Dock: Interactive Search-Highlighted Timeline */
+    .timeline-dock {
+      background: var(--bg-panel);
+      display: flex;
+      flex-direction: column;
+      padding: 7px 14px;
+      gap: 6px;
+      position: relative;
+      z-index: 25;
+    }
+
+    .timeline-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .timeline-legend {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 10.5px;
+      color: var(--text-secondary);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+    }
+
+    /* Interactive Track Area */
+    .timeline-track-container {
+      position: relative;
+      height: 78px;
+      background: #080a0f;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      cursor: crosshair;
+      overflow: visible;
+    }
+
+    /* Chapters Row */
+    .timeline-chapters-row {
+      height: 18px;
+      display: flex;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+      border-radius: 7px 7px 0 0;
+    }
+
+    .chapter-seg {
+      height: 100%;
+      border-right: 1px solid rgba(255,255,255,0.12);
+      padding: 0 6px;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background: rgba(22, 27, 39, 0.7);
+      cursor: pointer;
+    }
+
+    .chapter-seg:hover {
+      background: rgba(66, 133, 244, 0.18);
+      color: #fff;
+    }
+
+    /* Filmstrip Row */
+    .timeline-filmstrip-row {
+      position: relative;
+      height: 42px;
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      overflow: hidden;
+      background: #05070b;
+    }
+
+    .filmstrip-cell {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.48;
+      border-right: 1px solid rgba(255,255,255,0.05);
+      pointer-events: none;
+    }
+
+    /* Search Highlight Pillars on Timeline */
+    .timeline-highlights-layer {
+      position: absolute;
+      top: 20px;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .timeline-match-marker {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      min-width: 6px;
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.85) 0%, rgba(56, 189, 248, 0.35) 100%);
+      border: 1px solid #38bdf8;
+      border-radius: 3px;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .timeline-match-marker:hover {
+      transform: scaleY(1.08);
+      background: #38bdf8;
+      z-index: 10;
+    }
+
+    /* Time Ruler Bottom */
+    .timeline-ruler-row {
+      height: 18px;
+      background: #0b0e15;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-radius: 0 0 7px 7px;
+      position: relative;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: var(--text-muted);
+    }
+
+    .ruler-tick {
+      position: absolute;
+      top: 2px;
+      transform: translateX(-50%);
+    }
+
+    /* Draggable In / Out Selection Bracket */
+    .clip-selection-Overlay {
+      position: absolute;
+      top: 18px;
+      bottom: 16px;
+      background: rgba(251, 188, 4, 0.22);
+      border-top: 2px solid var(--g-yellow);
+      border-bottom: 2px solid var(--g-yellow);
+      z-index: 12;
+      cursor: grab;
+      box-shadow: 0 0 20px rgba(251, 188, 4, 0.25);
+    }
+
+    .clip-selection-Overlay:active {
+      cursor: grabbing;
+    }
+
+    .clip-handle {
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      width: 14px;
+      background: var(--g-yellow);
+      color: #090b10;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: ew-resize;
+      border-radius: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      z-index: 15;
+    }
+
+    .clip-handle.in-handle {
+      left: -7px;
+    }
+
+    .clip-handle.out-handle {
+      right: -7px;
+    }
+
+    .clip-selection-badge {
+      position: absolute;
+      top: -19px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--g-yellow);
+      color: #090b10;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 3px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* Playhead Needle */
+    .playhead-line {
+      position: absolute;
+      top: -4px;
+      bottom: 0;
+      width: 2px;
+      background: var(--g-red);
+      z-index: 18;
+      pointer-events: none;
+      box-shadow: 0 0 8px var(--g-red);
+    }
+
+    .playhead-cap {
+      position: absolute;
+      top: -4px;
+      left: -5px;
+      width: 12px;
+      height: 10px;
+      background: var(--g-red);
+      clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%);
+    }
+
+    /* Floating Hover Thumbnail Loupe */
+    .timeline-hover-loupe {
+      position: absolute;
+      bottom: 102px;
+      transform: translateX(-50%);
+      width: 196px;
+      background: #0d111a;
+      border: 1px solid var(--g-blue);
+      border-radius: 8px;
+      padding: 5px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 40;
+    }
+
+    .timeline-hover-loupe.visible {
+      display: flex;
+    }
+
+    .loupe-img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 5px;
+      background: #000;
+    }
+
+    .loupe-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--g-yellow);
+    }
+
+    .loupe-caption {
+      font-size: 10.5px;
+      color: #e2e8f0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Selected Clip Storyboard Strip */
+    .selected-storyboard-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      height: 50px;
+      background: #0c0f17;
+      border: 1px solid var(--border-subtle);
+      border-radius: 7px;
+      padding: 4px 10px;
+    }
+
+    .storyboard-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 195px;
+    }
+
+    .storyboard-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #fde68a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .storyboard-sub {
+      font-size: 10px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
+    }
+
+    .storyboard-thumbs {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      height: 100%;
+    }
+
+    .sb-thumb-card {
+      position: relative;
+      height: 38px;
+      aspect-ratio: 16 / 9;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(251, 188, 4, 0.45);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .sb-thumb-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .sb-thumb-time {
+      position: absolute;
+      bottom: 2px;
+      right: 3px;
+      background: rgba(0,0,0,0.8);
+      color: #fde68a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      padding: 0 3px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="studio-app">
+    <!-- TOP HEADER -->
+    <header class="studio-header">
+      <div class="brand-cluster">
+        <div class="google-g-badge" title="Google I/O Creator Studio">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M21.35 11.1H12V13.9H17.55C17.05 16.4 14.95 17.9 12 17.9C8.65 17.9 5.95 15.2 5.95 11.85C5.95 8.5 8.65 5.8 12 5.8C13.5 5.8 14.85 6.35 15.9 7.3L18.05 5.15C16.45 3.65 14.35 2.75 12 2.75C6.95 2.75 2.9 6.8 2.9 11.85C2.9 16.9 6.95 20.95 12 20.95C16.75 20.95 21.5 17.55 21.5 11.85C21.5 11.55 21.45 11.3 21.35 11.1Z" fill="#4285F4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">
+            Google I/O Creator Clipper
+            <span class="proto-pill">Concept Demo</span>
+          </div>
+          <div class="event-meta">
+            <span class="live-dot"></span>
+            <span>Google I/O '26 Keynote · Shoreline Amphitheatre · 4-Cam ISO Feed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEARCH COMMAND BAR -->
+      <div class="search-command-bar">
+        <div class="search-input-wrap">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            id="searchInput"
+            type="text"
+            class="search-input"
+            value="video generation"
+            placeholder="Search keynote spoken words or topics (e.g. 'video generation', 'Veo', 'Sundar', 'tokens')..."
+            autocomplete="off"
+          />
+          <div class="search-match-pill">
+            <span id="matchCountBadge" class="match-count-badge">16 matches</span>
+            <button id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+          </div>
+        </div>
+
+        <div class="quick-chips" id="quickChips">
+          <button class="chip-btn active" data-query="video generation">✨ Video Gen</button>
+          <button class="chip-btn" data-query="Veo">🎬 Veo & Lyria</button>
+          <button class="chip-btn" data-query="Sundar">🎙️ Sundar</button>
+          <button class="chip-btn" data-query="Omni">🌐 Omni</button>
+          <button class="chip-btn" data-query="quadrillion">📊 3.2Q</button>
+        </div>
+      </div>
+
+      <!-- RIGHT HEADER CONTROLS -->
+      <div class="header-actions">
+        <button id="quadViewToggle" class="mode-toggle-btn" title="Toggle 4-Camera Split Multiview on Main Monitor">
+          <span>⊞</span> 4-Cam Multiview
+        </button>
+        <button id="loopClipToggle" class="mode-toggle-btn active" title="Loop between In and Out points">
+          <span>↻</span> Loop In/Out
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN 3-COLUMN WORKSPACE -->
+    <main class="studio-workspace">
+      <!-- LEFT: SEARCHABLE TRANSCRIPT -->
+      <section class="transcript-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <span>🔎</span> Searchable Keynote Transcript
+          </div>
+          <div style="display:flex; gap:4px;">
+            <button id="prevMatchBtn" class="t-btn" style="height:24px; padding:0 7px; font-size:10.5px;">◀ Prev</button>
+            <button id="nextMatchBtn" class="t-btn" style="height:24px; padding:0 7px; font-size:10.5px;">Next ▶</button>
+          </div>
+        </div>
+
+        <div class="transcript-filters">
+          <div class="speaker-tabs" id="speakerTabs">
+            <button class="speaker-tab active" data-speaker="all">All</button>
+            <button class="speaker-tab" data-speaker="Sundar Pichai">Sundar</button>
+            <button class="speaker-tab" data-speaker="Demis Hassabis">Demis</button>
+          </div>
+          <label class="filter-matches-toggle">
+            <input type="checkbox" id="onlyMatchesCheck" />
+            <span>Matches only</span>
+          </label>
+        </div>
+
+        <div class="transcript-list" id="transcriptList">
+          <!-- Populated dynamically from transcript.json -->
+        </div>
+      </section>
+
+      <!-- CENTER: MASTER KEYNOTE MONITOR -->
+      <section class="monitor-stage">
+        <div class="monitor-topbar">
+          <div class="monitor-status">
+            <span class="pgm-tally">PGM MASTER</span>
+            <span id="activeStageLabel">Google I/O '26 Keynote · Broadcast Program + ISO Sync</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <label style="font-size:11px; color:var(--text-secondary); display:flex; align-items:center; gap:5px; cursor:pointer;">
+              <input type="checkbox" id="syncMainToCamCheck" />
+              <span>Preview Selected Camera on Main Screen</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="monitor-viewport">
+          <div class="video-frame-container">
+            <video id="mainVideo" src="/media/keynote-main.mp4" playsinline preload="auto"></video>
+
+            <!-- Optional 2x2 Quad Multiview Overlay -->
+            <div class="quad-multiview-grid" id="quadGrid">
+              <div class="quad-cell" data-cam="cam1">
+                <video id="quadCam1" src="/media/cam1-screen.mp4" muted loop playsinline></video>
+                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 1 · BIG SCREEN / VEO</div>
+              </div>
+              <div class="quad-cell selected" data-cam="cam2">
+                <video id="quadCam2" src="/media/cam2-closeup.mp4" muted loop playsinline></video>
+                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 2 · SUNDAR CLOSE-UP</div>
+              </div>
+              <div class="quad-cell" data-cam="cam3">
+                <video id="quadCam3" src="/media/cam3-wide.mp4" muted loop playsinline></video>
+                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 3 · WIDE STAGE</div>
+              </div>
+              <div class="quad-cell" data-cam="cam4">
+                <video id="quadCam4" src="/media/cam4-crowd.mp4" muted loop playsinline></video>
+                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 4 · CROWD REACTION</div>
+              </div>
+            </div>
+
+            <div class="monitor-hud-top">
+              <div class="hud-pill">
+                <span style="color:var(--g-red);">●</span>
+                <span id="hudTimecode">TC 01:42.00</span>
+                <span style="color:var(--text-muted);">|</span>
+                <span id="hudChapter">Generative AI & Veo</span>
+              </div>
+              <div class="hud-pill" id="hudActiveCamPill">
+                <span>🎥</span>
+                <span id="hudCamText">EXPORT ANGLE: CAM 2 · SUNDAR CLOSE-UP</span>
+              </div>
+            </div>
+
+            <div class="monitor-caption-bar">
+              <div class="monitor-caption-speaker" id="liveSpeakerLabel">SUNDAR PICHAI · CEO, GOOGLE & ALPHABET</div>
+              <div id="liveCaptionText">Musicians and artists using generative AI models like Lyria and Veo as part of their creative flow.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="transport-bar">
+          <div class="transport-left">
+            <button id="playPauseBtn" class="t-btn play-primary">▶ Play</button>
+            <button id="playClipBtn" class="t-btn" title="Play selected In-to-Out clip">▶ Play In→Out</button>
+            <button id="setInBtn" class="t-btn in-out-btn" title="Set In point at current playhead (Shortcut: I)">[ Set In</button>
+            <button id="setOutBtn" class="t-btn in-out-btn" title="Set Out point at current playhead (Shortcut: O)">Set Out ]</button>
+          </div>
+
+          <div class="transport-center">
+            <span class="timecode-readout" id="transportTimeReadout">01:42 / 10:00</span>
+          </div>
+
+          <div class="transport-right">
+            <div class="clip-range-pill">
+              <span>✂️ CLIP:</span>
+              <span id="clipRangeText">01:36 – 01:55 (19.0s)</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: MULTI-CAM ANGLES + ASPECT RATIO + CREATOR DOWNLOAD -->
+      <aside class="export-studio-panel">
+        <!-- STEP 1: 4 CAMERA ANGLES -->
+        <div class="studio-section">
+          <div class="section-head">
+            <div class="section-label">
+              <span class="step-num">1</span> Select Camera Angle (4 ISO Feeds)
+            </div>
+            <span style="font-size:10px; color:var(--g-green); font-family:'JetBrains Mono',monospace;">● 4 SYNCED FEEDS</span>
+          </div>
+
+          <div class="camera-angles-grid" id="cameraGrid">
+            <!-- CAM 1: Big Screen -->
+            <div class="cam-card" data-cam="cam1" data-name="Big Screen / Slides" data-code="CAM 1 · STAGE LED">
+              <div class="cam-video-wrap">
+                <video src="/media/cam1-screen.mp4" autoplay muted loop playsinline></video>
+                <div class="cam-badge-top">
+                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 1</span>
+                  <span class="cam-id-tag">DIRECT FEED</span>
+                </div>
+              </div>
+              <div class="cam-info-bar">
+                <div>
+                  <div class="cam-name">Big Screen / Slides</div>
+                  <div class="cam-sub">Veo & Deck Direct</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CAM 2: Sundar Close-Up -->
+            <div class="cam-card active" data-cam="cam2" data-name="Sundar Close-Up" data-code="CAM 2 · 85MM TIGHT">
+              <div class="cam-video-wrap">
+                <video src="/media/cam2-closeup.mp4" autoplay muted loop playsinline></video>
+                <div class="cam-badge-top">
+                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 2</span>
+                  <span class="cam-id-tag">85MM PRIME</span>
+                </div>
+              </div>
+              <div class="cam-info-bar">
+                <div>
+                  <div class="cam-name">Sundar Close-Up</div>
+                  <div class="cam-sub">Speaker Track ISO</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CAM 3: Wide Stage -->
+            <div class="cam-card" data-cam="cam3" data-name="Wide Stage Shot" data-code="CAM 3 · STAGE WIDE">
+              <div class="cam-video-wrap">
+                <video src="/media/cam3-wide.mp4" autoplay muted loop playsinline></video>
+                <div class="cam-badge-top">
+                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 3</span>
+                  <span class="cam-id-tag">24MM WIDE</span>
+                </div>
+              </div>
+              <div class="cam-info-bar">
+                <div>
+                  <div class="cam-name">Wide Stage</div>
+                  <div class="cam-sub">Shoreline Full Stage</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CAM 4: Crowd Shots -->
+            <div class="cam-card" data-cam="cam4" data-name="Crowd & Reaction" data-code="CAM 4 · CROWD JIB">
+              <div class="cam-video-wrap">
+                <video src="/media/cam4-crowd.mp4" autoplay muted loop playsinline></video>
+                <div class="cam-badge-top">
+                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 4</span>
+                  <span class="cam-id-tag">AUDIENCE</span>
+                </div>
+              </div>
+              <div class="cam-info-bar">
+                <div>
+                  <div class="cam-name">Crowd Shots</div>
+                  <div class="cam-sub">Amphitheatre Reaction</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2 & 3 COMBINED SIDE-BY-SIDE: ASPECT RATIO + LIVE FRAMING PREVIEW + DOWNLOAD -->
+        <div class="studio-section" style="flex:1; min-height:0; justify-content:space-between;">
+          <div class="section-head">
+            <div class="section-label">
+              <span class="step-num">2</span> Aspect Ratio & Creator Export
+            </div>
+            <span id="activeResolutionLabel" style="font-size:9.5px; color:var(--g-blue-glow); font-family:'JetBrains Mono',monospace;">1080×1920 VERTICAL</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: stretch; flex: 1; min-height: 0;">
+            <!-- Left: Live Cropped Video Preview -->
+            <div class="framing-preview-stage" style="height: 100%; min-height: 120px; max-height: 136px;">
+              <div class="crop-viewport" id="cropViewport" style="aspect-ratio: 9 / 16; max-height: 124px; max-width: 128px;">
+                <video id="exportPreviewVideo" src="/media/cam2-closeup.mp4" autoplay muted loop playsinline></video>
+                <div class="crop-overlay-badge" id="cropOverlayBadge">CAM 2 · 9:16</div>
+                <div class="crop-caption-burned" id="cropBurnedCaption">"...Lyria and Veo..."</div>
+              </div>
+            </div>
+
+            <!-- Right: Aspect Ratio Selector + Spec + Download Button -->
+            <div style="display:flex; flex-direction:column; justify-content:space-between; gap:6px;">
+              <div class="aspect-grid" id="aspectGrid">
+                <button class="aspect-btn" data-ar="16x9" data-css="16 / 9" data-res="1920×1080 LANDSCAPE">
+                  <div class="aspect-icon-box" style="width:20px; height:11px;"></div>
+                  <span class="aspect-ratio-label">16:9</span>
+                  <span class="aspect-ratio-desc">Wide</span>
+                </button>
+
+                <button class="aspect-btn" data-ar="5x4" data-css="5 / 4" data-res="1350×1080 FEED">
+                  <div class="aspect-icon-box" style="width:15px; height:12px;"></div>
+                  <span class="aspect-ratio-label">5:4</span>
+                  <span class="aspect-ratio-desc">Feed</span>
+                </button>
+
+                <button class="aspect-btn active" data-ar="9x16" data-css="9 / 16" data-res="1080×1920 VERTICAL">
+                  <div class="aspect-icon-box" style="width:9px; height:15px;"></div>
+                  <span class="aspect-ratio-label">9:16</span>
+                  <span class="aspect-ratio-desc">Vertical</span>
+                </button>
+
+                <button class="aspect-btn" data-ar="1x1" data-css="1 / 1" data-res="1080×1080 SQUARE">
+                  <div class="aspect-icon-box" style="width:13px; height:13px;"></div>
+                  <span class="aspect-ratio-label">1:1</span>
+                  <span class="aspect-ratio-desc">Square</span>
+                </button>
+              </div>
+
+              <div style="display:flex; align-items:center; justify-content:space-between; padding: 2px 2px;">
+                <label style="font-size:10.5px; color:var(--text-secondary); display:flex; align-items:center; gap:5px; cursor:pointer;">
+                  <input type="checkbox" id="burnCaptionsCheck" checked />
+                  <span>Burn-in Auto Captions</span>
+                </label>
+                <span style="font-size:9.5px; color:var(--g-green); font-family:'JetBrains Mono',monospace;">SynthID ✓</span>
+              </div>
+
+              <div class="export-cta-box">
+                <div class="export-spec-summary">
+                  <span id="exportSummaryLeft">CAM 2 · Sundar Close-Up</span>
+                  <span id="exportSummaryRight">9:16 · 19.0s</span>
+                </div>
+
+                <div class="export-progress-wrap" id="exportProgressWrap">
+                  <div style="display:flex; justify-content:space-between; font-size:9.5px; font-family:'JetBrains Mono',monospace;">
+                    <span id="exportStatusText" style="color:var(--g-blue-glow);">Reframing ISO...</span>
+                    <span id="exportPercentText">0%</span>
+                  </div>
+                  <div class="export-progress-bar">
+                    <div class="export-progress-fill" id="exportProgressFill"></div>
+                  </div>
+                </div>
+
+                <button class="download-primary-btn" id="downloadClipBtn">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                  </svg>
+                  <span id="downloadBtnText">Download Clip (CAM 2 · 9:16 .MP4)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- BOTTOM DOCK: INTERACTIVE TIMELINE WITH SEARCH HIGHLIGHTS & THUMBNAILS -->
+    <footer class="timeline-dock">
+      <div class="timeline-toolbar">
+        <div class="timeline-legend">
+          <span style="font-weight:700; color:var(--text-primary);">KEYNOTE TIMELINE</span>
+          <span class="legend-item">
+            <span class="legend-swatch" style="background:#38bdf8; box-shadow:0 0 6px #38bdf8;"></span>
+            <span id="timelineLegendMatch">Search Matches ("video generation" · 16 hits)</span>
+          </span>
+          <span class="legend-item">
+            <span class="legend-swatch" style="background:var(--g-yellow);"></span>
+            <span>Drag [ IN / OUT ] Handles or Click Any Highlight</span>
+          </span>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary);">
+          Tip: Drag handles on timeline to trim · Click any cyan bar to snap In/Out
+        </div>
+      </div>
+
+      <!-- INTERACTIVE TIMELINE TRACK -->
+      <div class="timeline-track-container" id="timelineTrack">
+        <!-- Floating Hover Thumbnail Loupe -->
+        <div class="timeline-hover-loupe" id="timelineLoupe">
+          <img id="loupeImg" class="loupe-img" src="/media/thumbs/thumb_11.jpg" alt="Frame preview" />
+          <div class="loupe-meta">
+            <span id="loupeTime">01:42</span>
+            <span id="loupeSpeaker">Sundar Pichai</span>
+          </div>
+          <div class="loupe-caption" id="loupeCaption">Musicians and artists using generative AI models like Lyria and Veo...</div>
+        </div>
+
+        <!-- Chapters Row -->
+        <div class="timeline-chapters-row" id="chaptersRow">
+          <div class="chapter-seg" style="width: 16%;" data-start="9" data-end="95">01 · Opening · Sundar Pichai</div>
+          <div class="chapter-seg" style="width: 12%;" data-start="96" data-end="148">02 · Generative AI, Lyria & Veo</div>
+          <div class="chapter-seg" style="width: 14%;" data-start="149" data-end="235">03 · 3.2 Quadrillion Tokens</div>
+          <div class="chapter-seg" style="width: 13%;" data-start="236" data-end="329">04 · AI Mode & Gemini App</div>
+          <div class="chapter-seg" style="width: 15%;" data-start="330" data-end="404">05 · Gemini Omni · Demis Hassabis</div>
+          <div class="chapter-seg" style="width: 18%;" data-start="405" data-end="530">06 · Veo, Nano Banana & Video Gen</div>
+          <div class="chapter-seg" style="width: 12%;" data-start="531" data-end="598">07 · Omni Flash & Sundar Closing</div>
+        </div>
+
+        <!-- Filmstrip Row -->
+        <div class="timeline-filmstrip-row" id="filmstripRow"></div>
+
+        <!-- Search Match Highlight Pillars -->
+        <div class="timeline-highlights-layer" id="highlightsLayer"></div>
+
+        <!-- Draggable In/Out Selection Box -->
+        <div class="clip-selection-Overlay" id="selectionBox" style="left: 16%; width: 4%;">
+          <div class="clip-selection-badge" id="selectionBadge">IN 01:36 → OUT 01:55 (19.0s)</div>
+          <div class="clip-handle in-handle" id="inHandle" title="Drag In Point">[</div>
+          <div class="clip-handle out-handle" id="outHandle" title="Drag Out Point">]</div>
+        </div>
+
+        <!-- Playhead -->
+        <div class="playhead-line" id="playheadLine" style="left: 17%;">
+          <div class="playhead-cap"></div>
+        </div>
+
+        <!-- Time Ruler -->
+        <div class="timeline-ruler-row" id="rulerRow"></div>
+      </div>
+
+      <!-- SELECTED SECTION THUMBNAIL STORYBOARD STRIP -->
+      <div class="selected-storyboard-strip">
+        <div class="storyboard-info">
+          <div class="storyboard-title">
+            <span>🎞️</span> Selected Clip Frames
+            <span id="sbTimeSpan" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#fff;">[01:36 – 01:55]</span>
+          </div>
+          <div class="storyboard-sub" id="sbSnippetText">"Musicians and artists using generative AI models like Lyria and Veo..."</div>
+        </div>
+        <div class="storyboard-thumbs" id="storyboardThumbs">
+          <!-- Populated dynamically with thumbnails from the selected In-Out range -->
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      const DURATION = 600; // 10:00 master keynote reel
+      let transcript = [];
+      let matches = [];
+      let currentQuery = 'video generation';
+      let currentSpeaker = 'all';
+      let onlyMatches = false;
+
+      // Selection state (Default: Sundar talking about generative AI models Lyria & Veo at 01:36 - 01:55)
+      let clipIn = 96;
+      let clipOut = 115;
+      let loopInOut = true;
+
+      // Camera & Aspect Ratio state
+      let selectedCam = 'cam2';
+      let selectedCamName = 'Sundar Close-Up';
+      let selectedCamCode = 'CAM 2 · 85MM TIGHT';
+      let selectedAr = '9x16';
+      let selectedArCss = '9 / 16';
+      let selectedArLabel = '9:16';
+
+      const camVideoFiles = {
+        cam1: '/media/cam1-screen.mp4',
+        cam2: '/media/cam2-closeup.mp4',
+        cam3: '/media/cam3-wide.mp4',
+        cam4: '/media/cam4-crowd.mp4'
+      };
+
+      // DOM elements
+      const mainVideo = document.getElementById('mainVideo');
+      const exportPreviewVideo = document.getElementById('exportPreviewVideo');
+      const searchInput = document.getElementById('searchInput');
+      const matchCountBadge = document.getElementById('matchCountBadge');
+      const clearSearchBtn = document.getElementById('clearSearchBtn');
+      const quickChips = document.getElementById('quickChips');
+      const transcriptList = document.getElementById('transcriptList');
+      const highlightsLayer = document.getElementById('highlightsLayer');
+      const timelineTrack = document.getElementById('timelineTrack');
+      const selectionBox = document.getElementById('selectionBox');
+      const selectionBadge = document.getElementById('selectionBadge');
+      const inHandle = document.getElementById('inHandle');
+      const outHandle = document.getElementById('outHandle');
+      const playheadLine = document.getElementById('playheadLine');
+      const timelineLoupe = document.getElementById('timelineLoupe');
+      const loupeImg = document.getElementById('loupeImg');
+      const loupeTime = document.getElementById('loupeTime');
+      const loupeSpeaker = document.getElementById('loupeSpeaker');
+      const loupeCaption = document.getElementById('loupeCaption');
+      const storyboardThumbs = document.getElementById('storyboardThumbs');
+      const sbTimeSpan = document.getElementById('sbTimeSpan');
+      const sbSnippetText = document.getElementById('sbSnippetText');
+      const playPauseBtn = document.getElementById('playPauseBtn');
+      const playClipBtn = document.getElementById('playClipBtn');
+      const setInBtn = document.getElementById('setInBtn');
+      const setOutBtn = document.getElementById('setOutBtn');
+      const transportTimeReadout = document.getElementById('transportTimeReadout');
+      const clipRangeText = document.getElementById('clipRangeText');
+      const hudTimecode = document.getElementById('hudTimecode');
+      const hudCamText = document.getElementById('hudCamText');
+      const liveSpeakerLabel = document.getElementById('liveSpeakerLabel');
+      const liveCaptionText = document.getElementById('liveCaptionText');
+      const cropViewport = document.getElementById('cropViewport');
+      const cropOverlayBadge = document.getElementById('cropOverlayBadge');
+      const cropBurnedCaption = document.getElementById('cropBurnedCaption');
+      const exportSummaryLeft = document.getElementById('exportSummaryLeft');
+      const exportSummaryRight = document.getElementById('exportSummaryRight');
+      const downloadBtnText = document.getElementById('downloadBtnText');
+      const downloadClipBtn = document.getElementById('downloadClipBtn');
+
+      function fmtTime(sec) {
+        sec = Math.max(0, Math.min(DURATION, sec));
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      }
+
+      function getThumbUrl(sec) {
+        const idx = Math.max(1, Math.min(60, Math.floor(sec / 10) + 1));
+        return '/media/thumbs/thumb_' + String(idx).padStart(2, '0') + '.jpg';
+      }
+
+      // Build Filmstrip & Ruler
+      function initTimelineVisuals() {
+        const filmstripRow = document.getElementById('filmstripRow');
+        let fsHtml = '';
+        for (let i = 1; i <= 20; i++) {
+          const thumbIdx = Math.min(60, i * 3 - 1);
+          fsHtml += '<img class="filmstrip-cell" src="/media/thumbs/thumb_' + String(thumbIdx).padStart(2, '0') + '.jpg" alt="" />';
+        }
+        filmstripRow.innerHTML = fsHtml;
+
+        const rulerRow = document.getElementById('rulerRow');
+        let rulerHtml = '';
+        for (let t = 0; t <= DURATION; t += 60) {
+          const pct = (t / DURATION) * 100;
+          rulerHtml += '<span class="ruler-tick" style="left:' + pct + '%;">' + fmtTime(t) + '</span>';
+        }
+        rulerRow.innerHTML = rulerHtml;
+      }
+
+      // Match evaluation (supports keyword + semantic tags)
+      function isCueMatch(cue, q) {
+        if (!q || !q.trim()) return false;
+        const cleanQ = q.trim().toLowerCase();
+        const textLower = cue.text.toLowerCase();
+        const speakerLower = cue.speaker.toLowerCase();
+        const tags = cue.tags || [];
+
+        if (textLower.includes(cleanQ) || speakerLower.includes(cleanQ)) return true;
+        if (tags.some(t => t.includes(cleanQ) || cleanQ.includes(t))) return true;
+
+        const terms = cleanQ.split(/\s+/).filter(Boolean);
+        if (terms.length > 1) {
+          return terms.every(term =>
+            textLower.includes(term) ||
+            speakerLower.includes(term) ||
+            tags.some(t => t.includes(term))
+          );
+        }
+        return false;
+      }
+
+      function highlightText(text, q) {
+        if (!q || !q.trim()) return text;
+        const terms = q.trim().split(/\s+/).filter(t => t.length >= 2);
+        // Also highlight related video/model terms when searching "video generation"
+        if (q.toLowerCase().includes('video')) {
+          ['Veo', 'Lyria', 'Omni', 'video', 'videos', 'generative'].forEach(w => {
+            if (!terms.includes(w)) terms.push(w);
+          });
+        }
+        if (!terms.length) return text;
+        const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        const regex = new RegExp('(' + escaped.join('|') + ')', 'gi');
+        return text.replace(regex, '<mark>$1</mark>');
+      }
+
+      function runSearch() {
+        currentQuery = searchInput.value;
+        matches = transcript.filter(cue => isCueMatch(cue, currentQuery));
+
+        matchCountBadge.textContent = currentQuery.trim()
+          ? matches.length + (matches.length === 1 ? ' match' : ' matches')
+          : transcript.length + ' segments';
+
+        document.getElementById('timelineLegendMatch').textContent = currentQuery.trim()
+          ? 'Search Matches ("' + currentQuery.trim() + '" · ' + matches.length + ' hits)'
+          : 'All Keynote Segments';
+
+        renderTimelineHighlights();
+        renderTranscriptList();
+      }
+
+      function renderTimelineHighlights() {
+        if (!currentQuery.trim()) {
+          highlightsLayer.innerHTML = '';
+          return;
+        }
+        let html = '';
+        matches.forEach(cue => {
+          const leftPct = (cue.start / DURATION) * 100;
+          const widthPct = Math.max(0.8, ((cue.end - cue.start) / DURATION) * 100);
+          html += '<div class="timeline-match-marker" ' +
+            'style="left:' + leftPct + '%; width:' + widthPct + '%;" ' +
+            'data-start="' + cue.start + '" data-end="' + cue.end + '" ' +
+            'title="[' + cue.timecode + '] ' + cue.speaker + ': ' + cue.text.replace(/"/g, '&quot;') + '"></div>';
+        });
+        highlightsLayer.innerHTML = html;
+
+        highlightsLayer.querySelectorAll('.timeline-match-marker').forEach(el => {
+          el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const s = parseFloat(el.getAttribute('data-start'));
+            const end = parseFloat(el.getAttribute('data-end'));
+            selectClipSegment(Math.max(0, s - 3), Math.min(DURATION, end + 6), s);
+          });
+        });
+      }
+
+      function renderTranscriptList() {
+        const filtered = transcript.filter(cue => {
+          if (currentSpeaker !== 'all' && cue.speaker !== currentSpeaker) return false;
+          if (onlyMatches && currentQuery.trim() && !isCueMatch(cue, currentQuery)) return false;
+          return true;
+        });
+
+        let html = '';
+        filtered.forEach(cue => {
+          const matched = isCueMatch(cue, currentQuery);
+          const inRange = cue.end > clipIn && cue.start < clipOut;
+          const speakerClass = cue.speaker.includes('Sundar') ? 'sundar' : 'demis';
+          html += '<div class="cue-card ' + (matched ? 'is-match ' : '') + (inRange ? 'in-clip-range' : '') + '" data-id="' + cue.id + '" data-start="' + cue.start + '" data-end="' + cue.end + '">' +
+            '<div class="cue-meta">' +
+              '<div class="cue-time">' +
+                '<span>' + cue.timecode + '</span>' +
+                '<span class="cue-speaker ' + speakerClass + '">' + cue.speaker + '</span>' +
+              '</div>' +
+              '<button class="cue-clip-btn" data-start="' + cue.start + '" data-end="' + cue.end + '">✂️ Clip [I–O]</button>' +
+            '</div>' +
+            '<div class="cue-text">' + (matched ? highlightText(cue.text, currentQuery) : cue.text) + '</div>' +
+          '</div>';
+        });
+
+        transcriptList.innerHTML = html || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No matching spoken phrases found.</div>';
+
+        transcriptList.querySelectorAll('.cue-card').forEach(card => {
+          card.addEventListener('click', (e) => {
+            const s = parseFloat(card.getAttribute('data-start'));
+            const end = parseFloat(card.getAttribute('data-end'));
+            if (e.target.classList.contains('cue-clip-btn')) {
+              selectClipSegment(Math.max(0, s - 2), Math.min(DURATION, end + 6), s);
+            } else {
+              mainVideo.currentTime = s;
+              updatePlayheadUI(s);
+            }
+          });
+        });
+      }
+
+      function selectClipSegment(newIn, newOut, seekTo) {
+        clipIn = Math.max(0, Math.min(newIn, DURATION - 4));
+        clipOut = Math.max(clipIn + 4, Math.min(DURATION, newOut));
+        if (typeof seekTo === 'number') {
+          mainVideo.currentTime = seekTo;
+          updatePlayheadUI(seekTo);
+        }
+        updateSelectionUI();
+        renderTranscriptList();
+        const firstInClip = transcriptList.querySelector('.cue-card.in-clip-range') || transcriptList.querySelector('.cue-card.is-match');
+        if (firstInClip) {
+          transcriptList.scrollTop = Math.max(0, firstInClip.offsetTop - transcriptList.offsetTop - 40);
+        }
+      }
+
+      function updateSelectionUI() {
+        const leftPct = (clipIn / DURATION) * 100;
+        const widthPct = ((clipOut - clipIn) / DURATION) * 100;
+        selectionBox.style.left = leftPct + '%';
+        selectionBox.style.width = widthPct + '%';
+
+        const dur = (clipOut - clipIn).toFixed(1);
+        const rangeStr = fmtTime(clipIn) + ' – ' + fmtTime(clipOut) + ' (' + dur + 's)';
+        selectionBadge.textContent = 'IN ' + fmtTime(clipIn) + ' → OUT ' + fmtTime(clipOut) + ' (' + dur + 's)';
+        clipRangeText.textContent = rangeStr;
+        sbTimeSpan.textContent = '[' + fmtTime(clipIn) + ' – ' + fmtTime(clipOut) + ']';
+
+        // Find transcript snippet inside clipIn..clipOut
+        const cuesInRange = transcript.filter(c => c.end > clipIn && c.start < clipOut);
+        if (cuesInRange.length > 0) {
+          const combined = cuesInRange.map(c => c.text).join(' ');
+          sbSnippetText.textContent = '"' + combined + '"';
+          cropBurnedCaption.textContent = cuesInRange[0].text;
+        }
+
+        // Render 6 keyframe thumbnails spanning clipIn..clipOut
+        let sbHtml = '';
+        const steps = 6;
+        for (let i = 0; i < steps; i++) {
+          const t = clipIn + ((clipOut - clipIn) * (i / Math.max(1, steps - 1)));
+          sbHtml += '<div class="sb-thumb-card" data-t="' + t + '" title="Jump to ' + fmtTime(t) + '">' +
+            '<img src="' + getThumbUrl(t) + '" alt="Frame at ' + fmtTime(t) + '" />' +
+            '<span class="sb-thumb-time">' + fmtTime(t) + '</span>' +
+          '</div>';
+        }
+        storyboardThumbs.innerHTML = sbHtml;
+        storyboardThumbs.querySelectorAll('.sb-thumb-card').forEach(el => {
+          el.addEventListener('click', () => {
+            const t = parseFloat(el.getAttribute('data-t'));
+            mainVideo.currentTime = t;
+            updatePlayheadUI(t);
+          });
+        });
+
+        updateExportSummary();
+      }
+
+      function updateExportSummary() {
+        const dur = (clipOut - clipIn).toFixed(1);
+        const camShort = selectedCam.toUpperCase().replace('CAM', 'CAM ');
+        cropOverlayBadge.textContent = camShort + ' · ' + selectedArLabel;
+        exportSummaryLeft.textContent = camShort + ' · ' + selectedCamName;
+        exportSummaryRight.textContent = selectedArLabel + ' · ' + dur + 's · MP4';
+        downloadBtnText.textContent = 'Download Clip (' + camShort + ' · ' + selectedArLabel + ' .MP4)';
+        hudCamText.textContent = 'EXPORT ANGLE: ' + selectedCamCode;
+      }
+
+      function updatePlayheadUI(curr) {
+        const pct = (curr / DURATION) * 100;
+        playheadLine.style.left = pct + '%';
+        transportTimeReadout.textContent = fmtTime(curr) + ' / ' + fmtTime(DURATION);
+        hudTimecode.textContent = 'TC ' + fmtTime(curr);
+
+        // Active cue
+        const activeCue = transcript.find(c => curr >= c.start && curr <= c.end + 1.5);
+        if (activeCue) {
+          liveSpeakerLabel.textContent = activeCue.speaker.toUpperCase() + ' · ' + activeCue.role.toUpperCase();
+          liveCaptionText.textContent = activeCue.text;
+          document.getElementById('hudChapter').textContent = activeCue.chapter;
+          if (document.getElementById('burnCaptionsCheck').checked) {
+            cropBurnedCaption.textContent = activeCue.text;
+          }
+        }
+      }
+
+      // Timeline Mouse Dragging (In Handle, Out Handle, Range Bar, or Scrub)
+      let dragMode = null;
+      let dragStartX = 0;
+      let dragInitialIn = 0;
+      let dragInitialOut = 0;
+
+      function getSecFromClientX(clientX) {
+        const rect = timelineTrack.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        return ratio * DURATION;
+      }
+
+      inHandle.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        dragMode = 'in';
+      });
+
+      outHandle.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        dragMode = 'out';
+      });
+
+      selectionBox.addEventListener('mousedown', (e) => {
+        if (e.target === inHandle || e.target === outHandle) return;
+        e.stopPropagation();
+        dragMode = 'move';
+        dragStartX = e.clientX;
+        dragInitialIn = clipIn;
+        dragInitialOut = clipOut;
+      });
+
+      timelineTrack.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('chapter-seg')) return;
+        const sec = getSecFromClientX(e.clientX);
+        mainVideo.currentTime = sec;
+        updatePlayheadUI(sec);
+        dragMode = 'scrub';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        // Hover Loupe when inside timelineTrack
+        const rect = timelineTrack.getBoundingClientRect();
+        const isInside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top - 20 && e.clientY <= rect.bottom + 10;
+
+        if (isInside || dragMode) {
+          const hoverSec = getSecFromClientX(e.clientX);
+          const clampedX = Math.max(98, Math.min(rect.width - 98, e.clientX - rect.left));
+          timelineLoupe.style.left = clampedX + 'px';
+          timelineLoupe.classList.add('visible');
+          loupeImg.src = getThumbUrl(hoverSec);
+          loupeTime.textContent = fmtTime(hoverSec);
+          const hCue = transcript.find(c => hoverSec >= c.start && hoverSec <= c.end + 2) || transcript.find(c => c.start >= hoverSec);
+          if (hCue) {
+            loupeSpeaker.textContent = hCue.speaker;
+            loupeCaption.textContent = hCue.text;
+          }
+        } else {
+          timelineLoupe.classList.remove('visible');
+        }
+
+        if (!dragMode) return;
+        const sec = getSecFromClientX(e.clientX);
+
+        if (dragMode === 'in') {
+          clipIn = Math.max(0, Math.min(sec, clipOut - 3));
+          mainVideo.currentTime = clipIn;
+          updatePlayheadUI(clipIn);
+          updateSelectionUI();
+        } else if (dragMode === 'out') {
+          clipOut = Math.min(DURATION, Math.max(sec, clipIn + 3));
+          mainVideo.currentTime = clipOut;
+          updatePlayheadUI(clipOut);
+          updateSelectionUI();
+        } else if (dragMode === 'move') {
+          const deltaSec = ((e.clientX - dragStartX) / rect.width) * DURATION;
+          const span = dragInitialOut - dragInitialIn;
+          let nextIn = Math.max(0, Math.min(DURATION - span, dragInitialIn + deltaSec));
+          clipIn = nextIn;
+          clipOut = nextIn + span;
+          updateSelectionUI();
+        } else if (dragMode === 'scrub') {
+          mainVideo.currentTime = sec;
+          updatePlayheadUI(sec);
+        }
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (dragMode) {
+          dragMode = null;
+          timelineLoupe.classList.remove('visible');
+          renderTranscriptList();
+        }
+      });
+
+      timelineTrack.addEventListener('mouseleave', () => {
+        if (!dragMode) timelineLoupe.classList.remove('visible');
+      });
+
+      // Chapters click
+      document.querySelectorAll('.chapter-seg').forEach(seg => {
+        seg.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const s = parseFloat(seg.getAttribute('data-start'));
+          const end = parseFloat(seg.getAttribute('data-end'));
+          selectClipSegment(s, Math.min(s + 24, end), s);
+        });
+      });
+
+      // Camera Angle Selection
+      function selectCameraAngle(camId) {
+        selectedCam = camId;
+        document.querySelectorAll('.cam-card').forEach(card => {
+          const isMatch = card.getAttribute('data-cam') === camId;
+          card.classList.toggle('active', isMatch);
+          if (isMatch) {
+            selectedCamName = card.getAttribute('data-name');
+            selectedCamCode = card.getAttribute('data-code');
+          }
+        });
+        document.querySelectorAll('.quad-cell').forEach(cell => {
+          cell.classList.toggle('selected', cell.getAttribute('data-cam') === camId);
+        });
+
+        const nextSrc = camVideoFiles[camId];
+        if (!exportPreviewVideo.src.endsWith(nextSrc)) {
+          exportPreviewVideo.src = nextSrc;
+          exportPreviewVideo.play().catch(() => {});
+        }
+
+        // If "Preview Selected Camera on Main Screen" is checked, swap main video source or sync
+        syncMainMonitorSource();
+        updateExportSummary();
+      }
+
+      function syncMainMonitorSource() {
+        const previewCamOnMain = document.getElementById('syncMainToCamCheck').checked;
+        if (previewCamOnMain) {
+          const target = camVideoFiles[selectedCam];
+          if (!mainVideo.src.endsWith(target)) {
+            mainVideo.src = target;
+            mainVideo.loop = true;
+            mainVideo.play().catch(() => {});
+          }
+        } else {
+          if (!mainVideo.src.endsWith('/media/keynote-main.mp4')) {
+            mainVideo.src = '/media/keynote-main.mp4';
+            mainVideo.loop = false;
+            mainVideo.currentTime = clipIn;
+          }
+        }
+      }
+
+      document.getElementById('syncMainToCamCheck').addEventListener('change', syncMainMonitorSource);
+
+      document.querySelectorAll('.cam-card').forEach(card => {
+        card.addEventListener('click', () => {
+          selectCameraAngle(card.getAttribute('data-cam'));
+        });
+      });
+
+      document.querySelectorAll('.quad-cell').forEach(cell => {
+        cell.addEventListener('click', () => {
+          selectCameraAngle(cell.getAttribute('data-cam'));
+        });
+      });
+
+      // Aspect Ratio Selection
+      document.querySelectorAll('.aspect-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedAr = btn.getAttribute('data-ar');
+          selectedArCss = btn.getAttribute('data-css');
+          selectedArLabel = btn.querySelector('.aspect-ratio-label').textContent;
+          document.getElementById('activeResolutionLabel').textContent = btn.getAttribute('data-res');
+          cropViewport.style.aspectRatio = selectedArCss;
+          updateExportSummary();
+        });
+      });
+
+      // Burn Captions toggle
+      document.getElementById('burnCaptionsCheck').addEventListener('change', (e) => {
+        cropBurnedCaption.style.display = e.target.checked ? 'block' : 'none';
+      });
+
+      // Search & Quick Chips
+      searchInput.addEventListener('input', () => {
+        document.querySelectorAll('.chip-btn').forEach(b => {
+          b.classList.toggle('active', b.getAttribute('data-query').toLowerCase() === searchInput.value.trim().toLowerCase());
+        });
+        runSearch();
+      });
+
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+        runSearch();
+      });
+
+      quickChips.querySelectorAll('.chip-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const q = btn.getAttribute('data-query');
+          searchInput.value = q;
+          quickChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          runSearch();
+          if (matches.length > 0) {
+            const first = matches[0];
+            selectClipSegment(Math.max(0, first.start - 2), Math.min(DURATION, first.end + 8), first.start);
+          }
+        });
+      });
+
+      // Speaker filter & Matches-only toggle
+      document.querySelectorAll('.speaker-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.speaker-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          currentSpeaker = tab.getAttribute('data-speaker');
+          renderTranscriptList();
+        });
+      });
+
+      document.getElementById('onlyMatchesCheck').addEventListener('change', (e) => {
+        onlyMatches = e.target.checked;
+        renderTranscriptList();
+      });
+
+      // Prev / Next Match Navigation
+      let matchCursor = 0;
+      document.getElementById('nextMatchBtn').addEventListener('click', () => {
+        if (!matches.length) return;
+        matchCursor = (matchCursor + 1) % matches.length;
+        const m = matches[matchCursor];
+        selectClipSegment(Math.max(0, m.start - 2), Math.min(DURATION, m.end + 7), m.start);
+      });
+
+      document.getElementById('prevMatchBtn').addEventListener('click', () => {
+        if (!matches.length) return;
+        matchCursor = (matchCursor - 1 + matches.length) % matches.length;
+        const m = matches[matchCursor];
+        selectClipSegment(Math.max(0, m.start - 2), Math.min(DURATION, m.end + 7), m.start);
+      });
+
+      // Transport Controls
+      playPauseBtn.addEventListener('click', () => {
+        if (mainVideo.paused) {
+          mainVideo.play();
+        } else {
+          mainVideo.pause();
+        }
+      });
+
+      mainVideo.addEventListener('play', () => {
+        playPauseBtn.textContent = '⏸ Pause';
+      });
+
+      mainVideo.addEventListener('pause', () => {
+        playPauseBtn.textContent = '▶ Play';
+      });
+
+      mainVideo.addEventListener('timeupdate', () => {
+        if (document.getElementById('syncMainToCamCheck').checked) return;
+        const curr = mainVideo.currentTime;
+        if (loopInOut && !mainVideo.paused && curr >= clipOut) {
+          mainVideo.currentTime = clipIn;
+        }
+        updatePlayheadUI(curr);
+      });
+
+      playClipBtn.addEventListener('click', () => {
+        document.getElementById('syncMainToCamCheck').checked = false;
+        syncMainMonitorSource();
+        mainVideo.currentTime = clipIn;
+        mainVideo.play();
+      });
+
+      setInBtn.addEventListener('click', () => {
+        selectClipSegment(mainVideo.currentTime, Math.max(clipOut, mainVideo.currentTime + 8));
+      });
+
+      setOutBtn.addEventListener('click', () => {
+        selectClipSegment(Math.min(clipIn, mainVideo.currentTime - 8), mainVideo.currentTime);
+      });
+
+      // Multiview & Loop Toggles
+      const quadViewToggle = document.getElementById('quadViewToggle');
+      const quadGrid = document.getElementById('quadGrid');
+      quadViewToggle.addEventListener('click', () => {
+        const active = quadGrid.classList.toggle('active');
+        quadViewToggle.classList.toggle('active', active);
+        if (active) {
+          ['quadCam1', 'quadCam2', 'quadCam3', 'quadCam4'].forEach(id => {
+            document.getElementById(id).play().catch(() => {});
+          });
+        }
+      });
+
+      const loopClipToggle = document.getElementById('loopClipToggle');
+      loopClipToggle.addEventListener('click', () => {
+        loopInOut = !loopInOut;
+        loopClipToggle.classList.toggle('active', loopInOut);
+      });
+
+      // Download Clip (.MP4) — serves real pre-cropped MP4 file with dynamic creator filename
+      downloadClipBtn.addEventListener('click', () => {
+        const wrap = document.getElementById('exportProgressWrap');
+        const fill = document.getElementById('exportProgressFill');
+        const pctText = document.getElementById('exportPercentText');
+        const statusText = document.getElementById('exportStatusText');
+
+        wrap.classList.add('active');
+        fill.style.width = '0%';
+        let pct = 0;
+
+        const timer = setInterval(() => {
+          pct += 25;
+          if (pct <= 100) {
+            fill.style.width = pct + '%';
+            pctText.textContent = pct + '%';
+            if (pct === 50) statusText.textContent = 'Applying ' + selectedArLabel + ' aspect crop on ' + selectedCam.toUpperCase() + '...';
+            if (pct === 100) statusText.textContent = 'Download ready!';
+          } else {
+            clearInterval(timer);
+            const realFileUrl = '/media/exports/export_' + selectedCam + '_' + selectedAr + '.mp4';
+            const cleanCam = selectedCamName.replace(/[^a-zA-Z0-9]+/g, '-');
+            const inStr = fmtTime(clipIn).replace(':', 'm') + 's';
+            const outStr = fmtTime(clipOut).replace(':', 'm') + 's';
+            const downloadName = 'Google-IO26_' + selectedCam.toUpperCase() + '-' + cleanCam + '_' + selectedAr + '_' + inStr + '-' + outStr + '.mp4';
+
+            const a = document.createElement('a');
+            a.href = realFileUrl;
+            a.download = downloadName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            setTimeout(() => {
+              wrap.classList.remove('active');
+              statusText.textContent = 'Cutting ISO stream & reframing...';
+            }, 1800);
+          }
+        }, 180);
+      });
+
+      // Keyboard shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (document.activeElement === searchInput) return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          playPauseBtn.click();
+        } else if (e.key === 'i' || e.key === 'I') {
+          setInBtn.click();
+        } else if (e.key === 'o' || e.key === 'O') {
+          setOutBtn.click();
+        } else if (['1', '2', '3', '4'].includes(e.key)) {
+          selectCameraAngle('cam' + e.key);
+        }
+      });
+
+      // Load Transcript & Initialize
+      initTimelineVisuals();
+      fetch('/media/transcript.json')
+        .then(r => r.json())
+        .then(data => {
+          transcript = data;
+          runSearch();
+          selectClipSegment(96, 115, 102);
+        });
+    })();
+  </script>
+</body>
+</html>
