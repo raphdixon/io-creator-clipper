@@ -244,16 +244,22 @@
     }
 
     .cue-card.is-match {
-      background: var(--blue-clip);
+      background: rgba(179, 214, 251, 0.34);
+      border-color: var(--blue-playhead);
     }
 
     .cue-card.is-match:hover {
-      background: #a2ccf9;
+      background: rgba(179, 214, 251, 0.52);
     }
 
     .cue-card.in-clip-range {
-      border-color: var(--yellow-export);
+      background: var(--blue-clip);
+      border-color: #82b8f5;
       box-shadow: inset 3px 0 0 var(--yellow-export);
+    }
+
+    .cue-card.in-clip-range:hover {
+      background: #a2ccf9;
     }
 
     .cue-card.is-playing {
@@ -273,26 +279,36 @@
       color: var(--ink-muted);
     }
 
+    .cue-card.in-clip-range .cue-header,
     .cue-card.is-match .cue-header {
-      color: #52657c;
+      color: #4b5d73;
     }
 
-    .cue-quick-add {
+    .cue-remove-btn {
       opacity: 0;
       border: none;
-      background: var(--yellow-export);
+      background: rgba(16, 20, 29, 0.14);
       color: var(--ink-primary);
       font-family: var(--font-mono);
       font-size: 9.5px;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 6px;
+      font-weight: 700;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      transition: opacity 0.12s ease;
+      transition: opacity 0.12s ease, background 0.12s ease, color 0.12s ease;
     }
 
-    .cue-card:hover .cue-quick-add {
+    .cue-card.in-clip-range:hover .cue-remove-btn {
       opacity: 1;
+    }
+
+    .cue-remove-btn:hover {
+      background: var(--red-ended);
+      color: #ffffff;
     }
 
     .cue-body {
@@ -1408,58 +1424,6 @@
       display: none;
     }
 
-    /* Floating "+ Add to Export Panel" pill above selection (Figma V2/V3) */
-    .add-to-export-float {
-      position: absolute;
-      bottom: calc(100% + 21px);
-      left: 50%;
-      transform: translateX(-50%);
-      height: 30px;
-      padding: 0 11px;
-      border-radius: var(--radius-pill);
-      border: 1.5px solid var(--yellow-export);
-      background: var(--bg-surface);
-      color: var(--ink-primary);
-      font-family: var(--font-sans);
-      font-size: 11.5px;
-      font-weight: 500;
-      display: none;
-      align-items: center;
-      gap: 6px;
-      white-space: nowrap;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
-      z-index: 30;
-    }
-
-    .trim-bracket:hover .add-to-export-float,
-    .add-to-export-float.visible {
-      display: inline-flex;
-    }
-
-    .trim-bracket:hover .drag-hint-label {
-      opacity: 0;
-    }
-
-    .add-plus-circle {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background: var(--yellow-export);
-      color: var(--ink-primary);
-      font-weight: 700;
-      font-size: 12px;
-      line-height: 1;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .add-to-export-float.added {
-      background: var(--yellow-export);
-      font-weight: 600;
-    }
-
     /* Yellow IN -> OUT Pill Badge at Bottom of Bracket (Figma 29:3697) */
     .trim-range-pill {
       position: absolute;
@@ -1653,7 +1617,7 @@
 </head>
 <body>
   <div class="clipper-shell">
-    <div class="clipper-top" id="clipperTop">
+    <div class="clipper-top export-open" id="clipperTop">
       <!-- LEFT COLUMN: TRANSCRIPT -->
       <aside class="transcript-col">
         <div class="col-heading-row">
@@ -1668,11 +1632,11 @@
             id="searchInput"
             class="search-input"
             type="text"
-            value="Artemis"
+            value=""
             placeholder="Keyword search"
             autocomplete="off"
           />
-          <span class="search-matches-label" id="matchCountLabel">7 matches</span>
+          <span class="search-matches-label" id="matchCountLabel">30 cues</span>
           <button class="search-clear-btn" id="clearSearchBtn" title="Clear search" aria-label="Clear search">✕</button>
         </div>
 
@@ -1763,7 +1727,7 @@
         <!-- Bottom-Right Export Drawer Toggle -->
         <div class="stage-bottom-right">
           <button class="btn-export-drawer" id="toggleExportBtn" type="button">
-            <span id="exportChevron">‹</span>
+            <span id="exportChevron">›</span>
             <span>Export</span>
             <span class="export-count-pill" id="exportCountBadge">2</span>
           </button>
@@ -1889,7 +1853,7 @@
           isLive: true,
           duration: 192,
           trueIsoSync: true,
-          defaultQuery: 'Artemis',
+          defaultQuery: '',
           defaultIn: 14,
           defaultOut: 25,
           quickTopics: ['Artemis', 'liftoff', 'Integrity', 'Houston', 'supersonic', 'separation'],
@@ -1931,7 +1895,7 @@
       let exportAr = '16x9';
       let exportArLabel = '16:9';
       let quadMode = false;
-      let exportOpen = false;
+      let exportOpen = window.innerWidth > 980;
       let showSpeakers = true;
       let exportQueue = [];
       let activeClipId = null;
@@ -2244,6 +2208,7 @@
         }
 
         runSearch();
+        setExportDrawer(window.innerWidth > 980);
         renderTimelineClips();
         renderExportQueue();
         seekTo(clipIn);
@@ -2462,6 +2427,12 @@
         renderTranscriptCards();
       }
 
+      function ensureExportBarVisible() {
+        if (!exportOpen && window.innerWidth > 980) {
+          setExportDrawer(true);
+        }
+      }
+
       function addClipRange(startSec, endSec, customText) {
         const minSpan = 1.5;
         let s = Math.max(0, Math.min(startSec, endSec));
@@ -2482,6 +2453,7 @@
         exportQueue.push(newClip);
         exportQueue.sort((a, b) => a.start - b.start);
         setActiveClip(newId, false);
+        ensureExportBarVisible();
         renderTimelineClips();
         renderExportQueue();
         renderTranscriptCards();
@@ -2510,17 +2482,18 @@
         const curr = getCurrentTime();
         transcriptList.innerHTML = transcript.map(cue => {
           const matched = isCueMatch(cue, currentQuery);
-          const inRange = exportQueue.some(cl => cue.end > cl.start && cue.start < cl.end);
+          const ownerClip = exportQueue.find(cl => cue.end > cl.start && cue.start < cl.end);
+          const inRange = Boolean(ownerClip);
           const playing = curr >= cue.start && curr < cue.end;
           const headerLeft = showSpeakers ? (cue.timecode + '  ' + cue.speaker) : cue.timecode;
           return '<div class="cue-card' +
             (matched ? ' is-match' : '') +
             (inRange ? ' in-clip-range' : '') +
             (playing ? ' is-playing' : '') +
-            '" data-start="' + cue.start + '" data-end="' + cue.end + '" data-text="' + cue.text.replace(/"/g, '&quot;') + '">' +
+            '" data-start="' + cue.start + '" data-end="' + cue.end + '" data-clip-id="' + (ownerClip ? ownerClip.id : '') + '" data-text="' + cue.text.replace(/"/g, '&quot;') + '">' +
               '<div class="cue-header">' +
                 '<span>' + headerLeft + '</span>' +
-                '<button type="button" class="cue-quick-add" title="Create In/Out clip">+ Clip</button>' +
+                (inRange ? '<button type="button" class="cue-remove-btn" data-action="remove-cue" title="Remove highlighted section" aria-label="Remove highlighted section">✕</button>' : '') +
               '</div>' +
               '<div class="cue-body">' + (matched ? highlightMatchesInText(cue.text, currentQuery) : cue.text) + '</div>' +
             '</div>';
@@ -2528,24 +2501,25 @@
 
         transcriptList.querySelectorAll('.cue-card').forEach(card => {
           card.addEventListener('click', (e) => {
+            const sel = window.getSelection && window.getSelection();
+            if (sel && !sel.isCollapsed && sel.toString().trim().length >= 2) return;
+
             const s = parseFloat(card.getAttribute('data-start'));
             const end = parseFloat(card.getAttribute('data-end'));
             const txt = card.getAttribute('data-text');
-            if (e.target.classList.contains('cue-quick-add')) {
+            const ownerClipId = card.getAttribute('data-clip-id');
+
+            if (e.target.closest('.cue-remove-btn')) {
               e.stopPropagation();
-              const cIn = Math.max(0, s - 1.5);
-              const cOut = Math.min(ev.duration, end + 4.5);
-              addClipRange(cIn, cOut, txt);
+              if (ownerClipId) removeClipById(ownerClipId);
+              return;
+            }
+
+            if (ownerClipId) {
+              setActiveClip(ownerClipId, true);
               seekTo(s);
-              setExportDrawer(true);
             } else {
-              const containing = exportQueue.find(cl => s >= cl.start && s < cl.end);
-              if (containing) {
-                setActiveClip(containing.id, true);
-              } else {
-                playbackMode = 'full';
-                updateTransportButtons();
-              }
+              addClipRange(s, Math.max(end, s + 2.5), txt);
               seekTo(s);
             }
           });
@@ -2992,7 +2966,7 @@
       vids.cam1.addEventListener('play', updateTransportButtons);
       vids.cam1.addEventListener('pause', updateTransportButtons);
 
-      // Multi-Range Timeline Scrubbing, Drag-to-Create, Resize & Slide
+      // Multi-Range Timeline Scrubbing, Live Drag-to-Create, Resize & Slide
       let dragMode = null;
       let dragMoved = false;
       let dragStartX = 0;
@@ -3000,7 +2974,24 @@
       let dragStartIn = 0;
       let dragStartOut = 0;
       let dragTargetId = null;
-      let draftBracketEl = null;
+
+      // Drag-selecting text across transcript cards automatically highlights & adds that section to Export
+      transcriptList.addEventListener('mouseup', () => {
+        const sel = window.getSelection && window.getSelection();
+        if (!sel || sel.isCollapsed) return;
+        const selectedText = sel.toString().replace(/\s+/g, ' ').trim();
+        if (selectedText.length < 2 || sel.rangeCount === 0) return;
+        const range = sel.getRangeAt(0);
+        const cards = Array.from(transcriptList.querySelectorAll('.cue-card')).filter(c => {
+          try { return range.intersectsNode(c); } catch (_) { return false; }
+        });
+        if (!cards.length) return;
+        const s = parseFloat(cards[0].getAttribute('data-start'));
+        const end = parseFloat(cards[cards.length - 1].getAttribute('data-end'));
+        sel.removeAllRanges();
+        addClipRange(s, Math.max(end, s + 2.5));
+        seekTo(s);
+      });
 
       function secFromClientX(clientX) {
         const rect = timelineTrack.getBoundingClientRect();
@@ -3017,6 +3008,23 @@
         const pill = el.querySelector('.trim-range-pill');
         if (pill) {
           pill.textContent = formatBracketPillText(startSec, endSec, isActive);
+        }
+      }
+
+      function updateExportCardLive(clip) {
+        if (!clip) return;
+        const card = exportClipsGrid.querySelector('[data-id="' + clip.id + '"]');
+        if (!card) return;
+        const camObj = ev.cameras.find(c => c.id === clip.cam) || ev.cameras[0];
+        const midSec = (clip.start + clip.end) * 0.5;
+        const img = card.querySelector('img');
+        if (img) img.src = getThumbForTime(midSec);
+        const meta = card.querySelector('.export-card-meta-pill');
+        if (meta) meta.textContent = camObj.short + ' · ' + fmtTime(clip.start) + '–' + fmtTime(clip.end);
+        const cap = card.querySelector('.export-card-caption-text');
+        if (cap) {
+          clip.text = computeClipText(clip.start, clip.end);
+          cap.textContent = clip.text;
         }
       }
 
@@ -3099,14 +3107,8 @@
           if (Math.abs(e.clientX - dragStartX) >= 5) {
             dragMode = 'create';
             dragMoved = true;
-            clipsLayer.querySelectorAll('.trim-bracket.is-active').forEach(b => b.classList.remove('is-active'));
-            draftBracketEl = document.createElement('div');
-            draftBracketEl.className = 'trim-bracket is-active';
-            draftBracketEl.innerHTML =
-              '<div class="trim-handle in">[</div>' +
-              '<div class="trim-handle out">]</div>' +
-              '<div class="trim-range-pill"></div>';
-            clipsLayer.appendChild(draftBracketEl);
+            const created = addClipRange(dragAnchorSec, sec);
+            dragTargetId = created.id;
           } else {
             seekTo(sec);
             return;
@@ -3114,13 +3116,21 @@
         }
 
         if (dragMode === 'create') {
+          const clip = exportQueue.find(c => c.id === dragTargetId);
+          if (!clip) return;
           let s = Math.max(0, Math.min(dragAnchorSec, sec));
           let end = Math.min(ev.duration, Math.max(dragAnchorSec, sec));
           if (end - s < minSpan) {
             if (sec >= dragAnchorSec) end = Math.min(ev.duration, s + minSpan);
             else s = Math.max(0, end - minSpan);
           }
-          updateBracketElementLive(draftBracketEl, s, end, true);
+          clip.start = Number(s.toFixed(2));
+          clip.end = Number(end.toFixed(2));
+          clipIn = clip.start;
+          clipOut = clip.end;
+          const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
+          updateBracketElementLive(el, clip.start, clip.end, true);
+          updateExportCardLive(clip);
           seekTo(sec);
         } else if (dragMode === 'in') {
           dragMoved = true;
@@ -3131,6 +3141,7 @@
           clipOut = clip.end;
           const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
           updateBracketElementLive(el, clip.start, clip.end, true);
+          updateExportCardLive(clip);
           seekTo(clip.start);
         } else if (dragMode === 'out') {
           dragMoved = true;
@@ -3141,6 +3152,7 @@
           clipOut = clip.end;
           const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
           updateBracketElementLive(el, clip.start, clip.end, true);
+          updateExportCardLive(clip);
           seekTo(clip.end);
         } else if (dragMode === 'move') {
           if (Math.abs(e.clientX - dragStartX) >= 5) {
@@ -3157,6 +3169,7 @@
             clipOut = clip.end;
             const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
             updateBracketElementLive(el, clip.start, clip.end, true);
+            updateExportCardLive(clip);
           }
         }
       });
@@ -3169,16 +3182,9 @@
 
         if (mode === 'pending-create') {
           seekTo(sec);
-        } else if (mode === 'create') {
-          if (draftBracketEl && draftBracketEl.parentNode) {
-            draftBracketEl.parentNode.removeChild(draftBracketEl);
-          }
-          draftBracketEl = null;
-          addClipRange(dragAnchorSec, sec);
-          seekTo(sec);
         } else if (mode === 'move' && !dragMoved) {
           seekTo(sec);
-        } else if (mode === 'in' || mode === 'out' || (mode === 'move' && dragMoved)) {
+        } else if (mode === 'create' || mode === 'in' || mode === 'out' || (mode === 'move' && dragMoved)) {
           const clip = exportQueue.find(c => c.id === dragTargetId);
           if (clip) {
             clip.text = computeClipText(clip.start, clip.end);
@@ -3187,6 +3193,9 @@
           renderTimelineClips();
           renderExportQueue();
           renderTranscriptCards();
+          if (mode === 'create') {
+            seekTo(sec);
+          }
         }
         dragTargetId = null;
       });
