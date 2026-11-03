@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="light" />
-  <title>Google I/O Creator Clipper</title>
-  <link rel="icon" type="image/png" href="/media/io-emblem.png" />
+  <title>Creator Clipper</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2310141d'/%3E%3Cpath d='M11 8H7v16h4M21 8h4v16h-4' stroke='%23fabd05' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpolygon points='14,11.5 21,16 14,20.5' fill='%23b3d6fb'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&family=Google+Sans+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
@@ -29,8 +29,8 @@
       --green-live: #00a749;
       --red-ended: #ea4335;
       --radius-pill: 10px;
-      --font-sans: 'Google Sans Flex', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Google Sans Mono', 'JetBrains Mono', ui-monospace, monospace;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
     }
 
     * {
@@ -352,12 +352,19 @@
       gap: 7px;
     }
 
-    .brand-io-emblem {
-      height: 23px;
-      width: auto;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 0 1px;
+    .brand-notch-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 21px;
+      padding: 0 5px;
+      border-radius: 6px;
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
     }
 
     /* Stacked 4-Camera Broadcast Viewport (instant 0ms switching + 2x2 Multiview) */
@@ -474,7 +481,7 @@
       position: absolute;
       top: 14px;
       left: 16px;
-      max-width: calc(50% - 195px);
+      max-width: calc(50% - 135px);
       z-index: 25;
       display: flex;
       align-items: center;
@@ -507,37 +514,16 @@
       min-width: 0;
     }
 
-    .event-Minimal-select {
-      appearance: none;
-      -webkit-appearance: none;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: 7px;
+    .event-title-label {
       color: #ffffff;
       font-family: var(--font-sans);
       font-size: 15.5px;
       font-weight: 500;
-      padding: 2px 18px 2px 3px;
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      cursor: pointer;
       text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 3px center;
-    }
-
-    .event-Minimal-select:hover {
-      background-color: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.28);
-    }
-
-    .event-Minimal-select option {
-      background: #10141d;
-      color: #ffffff;
-      font-size: 13px;
     }
 
     /* Top-Right Camera Angle Dropdown Pill (Figma 29:3600) */
@@ -1203,7 +1189,9 @@
       position: relative;
       width: 100%;
       height: 128px;
-      cursor: pointer;
+      cursor: crosshair;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     /* Chapters Row */
@@ -1282,7 +1270,7 @@
       border: 1px solid rgba(130, 184, 245, 0.95);
       border-radius: var(--radius-pill);
       pointer-events: auto;
-      cursor: pointer;
+      cursor: crosshair;
       transition: background 0.12s ease, transform 0.12s ease;
     }
 
@@ -1291,17 +1279,39 @@
       z-index: 10;
     }
 
-    /* Yellow Draggable [ IN / OUT ] Selection Bracket (Figma Group 4) */
+    /* Multi-Range Draggable [ IN / OUT ] Selection Brackets */
+    .timeline-clips-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 16;
+    }
+
     .trim-bracket {
       position: absolute;
       top: 19px;
       height: 103px;
-      background: var(--blue-clip-tint);
-      border-top: 2.5px solid var(--yellow-export);
-      border-bottom: 2.5px solid var(--yellow-export);
+      background: rgba(250, 189, 5, 0.16);
+      border-top: 2px solid var(--yellow-export);
+      border-bottom: 2px solid var(--yellow-export);
       border-radius: var(--radius-pill);
       z-index: 16;
+      opacity: 0.84;
+      pointer-events: auto;
       cursor: grab;
+      transition: opacity 0.12s ease;
+    }
+
+    .trim-bracket:hover {
+      opacity: 0.96;
+    }
+
+    .trim-bracket.is-active {
+      background: var(--blue-clip-tint);
+      border-top-width: 2.5px;
+      border-bottom-width: 2.5px;
+      opacity: 1;
+      z-index: 20;
     }
 
     .trim-bracket:active {
@@ -1312,12 +1322,12 @@
       position: absolute;
       top: -2px;
       bottom: -2px;
-      width: 17px;
+      width: 14px;
       background: var(--yellow-export);
       color: #000000;
       border-radius: var(--radius-pill);
       font-family: var(--font-mono);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
       display: flex;
       align-items: center;
@@ -1327,12 +1337,55 @@
       z-index: 18;
     }
 
+    .trim-bracket.is-active .trim-handle {
+      width: 17px;
+      font-size: 11px;
+      z-index: 22;
+    }
+
     .trim-handle.in {
-      left: -8px;
+      left: -7px;
     }
 
     .trim-handle.out {
+      right: -7px;
+    }
+
+    .trim-bracket.is-active .trim-handle.in {
+      left: -8px;
+    }
+
+    .trim-bracket.is-active .trim-handle.out {
       right: -8px;
+    }
+
+    .trim-remove-btn {
+      position: absolute;
+      top: -9px;
+      right: 8px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 1.5px solid var(--yellow-export);
+      background: var(--ink-primary);
+      color: #ffffff;
+      font-size: 10px;
+      line-height: 1;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 26;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    .trim-bracket:hover .trim-remove-btn {
+      display: inline-flex;
+    }
+
+    .trim-remove-btn:hover {
+      background: var(--red-ended);
+      border-color: var(--red-ended);
     }
 
     /* Drag Instruction above chapters row (disappears after first drag per Figma) */
@@ -1539,8 +1592,9 @@
         font-size: 15px;
       }
 
-      .brand-io-emblem {
-        height: 18px;
+      .brand-notch-mark {
+        height: 19px;
+        font-size: 11px;
       }
 
       .timeline-dock {
@@ -1600,10 +1654,10 @@
 <body>
   <div class="clipper-shell">
     <div class="clipper-top" id="clipperTop">
-      <!-- LEFT COLUMN: KEYNOTE TRANSCRIPT -->
+      <!-- LEFT COLUMN: TRANSCRIPT -->
       <aside class="transcript-col">
         <div class="col-heading-row">
-          <h2 class="col-heading" id="transcriptHeading">Keynote Transcript</h2>
+          <h2 class="col-heading" id="transcriptHeading">Launch Transcript</h2>
         </div>
 
         <div class="search-box">
@@ -1614,11 +1668,11 @@
             id="searchInput"
             class="search-input"
             type="text"
-            value="AI"
+            value="Artemis"
             placeholder="Keyword search"
             autocomplete="off"
           />
-          <span class="search-matches-label" id="matchCountLabel">16 matches</span>
+          <span class="search-matches-label" id="matchCountLabel">7 matches</span>
           <button class="search-clear-btn" id="clearSearchBtn" title="Clear search" aria-label="Clear search">✕</button>
         </div>
 
@@ -1630,8 +1684,7 @@
         <!-- Top-Center White Brand Notch -->
         <div class="brand-notch">
           <div class="brand-notch-text">
-            <span>Google</span>
-            <img class="brand-io-emblem" src="/media/io-emblem.png" alt="I/O" />
+            <span class="brand-notch-mark">[ ]</span>
             <span>Creator Clipper</span>
           </div>
         </div>
@@ -1659,13 +1712,13 @@
         <div class="stage-scrim-top"></div>
         <div class="stage-scrim-bottom"></div>
 
-        <!-- Top-Left Timecode + Event Selector -->
+        <!-- Top-Left Timecode + Event Title -->
         <div class="stage-top-left">
           <span class="status-dot" id="liveDot"></span>
           <div class="stage-stream-title">
-            <span id="stageTimecode">00:04</span>
+            <span id="stageTimecode">00:14</span>
             <span>•</span>
-            <select id="eventSwitcher" class="event-Minimal-select" aria-label="Select event feed"></select>
+            <span class="event-title-label" id="eventTitleText">NASA Artemis II Moon Launch</span>
           </div>
         </div>
 
@@ -1712,7 +1765,7 @@
           <button class="btn-export-drawer" id="toggleExportBtn" type="button">
             <span id="exportChevron">‹</span>
             <span>Export</span>
-            <span class="export-count-pill" id="exportCountBadge">4</span>
+            <span class="export-count-pill" id="exportCountBadge">2</span>
           </button>
         </div>
       </main>
@@ -1780,7 +1833,7 @@
           </div>
 
           <button class="btn-download-yellow" id="downloadClipsBtn" type="button">
-            <span id="downloadClipsLabel">Download 4 Clips (CAM 1 • 16:9 .MP4)</span>
+            <span id="downloadClipsLabel">Download 2 Clips (CAM 1 • 16:9 .MP4)</span>
           </button>
         </div>
       </aside>
@@ -1815,16 +1868,8 @@
         <!-- Blue Search Match Blocks -->
         <div class="timeline-matches-layer" id="matchesLayer"></div>
 
-        <!-- Draggable Yellow [ IN .. OUT ] Trim Bracket -->
-        <div class="trim-bracket" id="trimBracket">
-          <button class="add-to-export-float" id="addToExportBtn" type="button">
-            <span class="add-plus-circle">+</span>
-            <span id="addToExportText">Add to Export Panel</span>
-          </button>
-          <div class="trim-handle in" id="inHandle" title="Drag In point">[</div>
-          <div class="trim-handle out" id="outHandle" title="Drag Out point">]</div>
-          <div class="trim-range-pill" id="trimRangePill">IN 00:14 → OUT 00:25 (11.0s)</div>
-        </div>
+        <!-- Multi-Range Draggable [ IN → OUT ] Trim Brackets -->
+        <div class="timeline-clips-layer" id="clipsLayer"></div>
 
         <!-- Blue Playhead -->
         <div class="playhead-needle" id="playheadNeedle">
@@ -1867,45 +1912,7 @@
           ],
           starterExports: [
             { id: 'art_ex1', start: 14, end: 25, cam: 'cam1', text: 'Booster ignition and liftoff! The crew of Artemis II, now bound for the Moon!', selected: true },
-            { id: 'art_ex2', start: 14, end: 25, cam: 'cam4', text: 'The crew of Artemis II, now bound for the Moon! Humanity\'s next great voyage begins.', selected: true },
-            { id: 'art_ex3', start: 28, end: 42, cam: 'cam3', text: 'Good roll pitch. Houston now controlling the flight of Integrity on the Artemis II mission.', selected: true },
-            { id: 'art_ex4', start: 141, end: 155, cam: 'cam2', text: 'Confirm separation! Main engines throttling up. Guidance converged.', selected: true }
-          ]
-        },
-        io26: {
-          id: 'io26',
-          title: 'Google I/O 26 Keynote',
-          transcriptTitle: 'Keynote Transcript',
-          isLive: true,
-          duration: 600,
-          trueIsoSync: false, // master keynote-main + ISO camera feeds
-          masterAudioSrc: '/media/keynote-main.mp4',
-          defaultQuery: 'AI',
-          defaultIn: 61,
-          defaultOut: 79,
-          quickTopics: ['AI', 'video generation', 'Veo', 'Sundar', 'Omni', 'quadrillion'],
-          transcriptUrl: '/media/transcript.json',
-          thumbCount: 60,
-          thumbPath: (idx) => '/media/thumbs/thumb_' + String(idx).padStart(2, '0') + '.jpg',
-          exportUrl: (camId, ar) => '/media/exports/export_' + camId + '_' + ar + '.mp4',
-          cameras: [
-            { id: 'cam1', code: 'CAMERA 1', short: 'CAM 1', name: 'Big Screen / Stage', src: '/media/cam1-screen.mp4' },
-            { id: 'cam2', code: 'CAMERA 2', short: 'CAM 2', name: 'Sundar Close-Up', src: '/media/cam2-closeup.mp4' },
-            { id: 'cam3', code: 'CAMERA 3', short: 'CAM 3', name: 'Wide Stage', src: '/media/cam3-wide.mp4' },
-            { id: 'cam4', code: 'CAMERA 4', short: 'CAM 4', name: 'Crowd Shots', src: '/media/cam4-crowd.mp4' }
-          ],
-          chapters: [
-            { start: 0, end: 95, label: '01 • Opening • Sundar Pichai' },
-            { start: 96, end: 185, label: '02 • Generative AI, Lyria & Veo' },
-            { start: 186, end: 295, label: '03 • 3.2 Quadrillion Tokens' },
-            { start: 296, end: 415, label: '04 • AI Mode & Gemini App' },
-            { start: 416, end: 600, label: '05 • Gemini Omni & Veo' }
-          ],
-          starterExports: [
-            { id: 'ex1', start: 59, end: 76, cam: 'cam2', text: 'This is why we are taking a differentiated, full stack approach to AI innovation.', selected: true },
-            { id: 'ex2', start: 96, end: 115, cam: 'cam1', text: 'Musicians and artists using generative AI models like Lyria and Veo as part of their creative flow.', selected: true },
-            { id: 'ex3', start: 162, end: 182, cam: 'cam3', text: 'Over 3.2 quadrillion tokens processed monthly across our developer ecosystem.', selected: true },
-            { id: 'ex4', start: 332, end: 352, cam: 'cam4', text: 'Gemini Omni brings native multimodal reasoning and real-time audio-video understanding.', selected: true }
+            { id: 'art_ex2', start: 141, end: 155, cam: 'cam2', text: 'Confirm separation! Main engines throttling up. Guidance converged.', selected: true }
           ]
         }
       };
@@ -1918,26 +1925,25 @@
       let clipIn = ev.defaultIn;
       let clipOut = ev.defaultOut;
       let desiredTime = ev.defaultIn;
-      let playbackMode = 'clip'; // 'clip' (loops In->Out) or 'full' (continuous stream)
+      let playbackMode = 'clip'; // 'clip' (loops active In->Out) or 'full' (continuous stream)
       let selectedCam = 'cam1';
       let exportCam = 'cam1';
       let exportAr = '16x9';
       let exportArLabel = '16:9';
       let quadMode = false;
       let exportOpen = false;
-      let dragHintDismissed = false;
       let showSpeakers = true;
       let exportQueue = [];
+      let activeClipId = null;
 
       // DOM References
       const clipperTop = document.getElementById('clipperTop');
       const searchInput = document.getElementById('searchInput');
       const matchCountLabel = document.getElementById('matchCountLabel');
       const clearSearchBtn = document.getElementById('clearSearchBtn');
-      const topicPills = document.getElementById('topicPills');
       const transcriptList = document.getElementById('transcriptList');
       const multicamCanvas = document.getElementById('multicamCanvas');
-      const eventSwitcher = document.getElementById('eventSwitcher');
+      const eventTitleText = document.getElementById('eventTitleText');
       const stageTimecode = document.getElementById('stageTimecode');
       const liveSubtitleText = document.getElementById('liveSubtitleText');
       const camDropdownBtn = document.getElementById('camDropdownBtn');
@@ -1968,13 +1974,7 @@
       const chaptersBar = document.getElementById('chaptersBar');
       const filmstripTrack = document.getElementById('filmstripTrack');
       const matchesLayer = document.getElementById('matchesLayer');
-      const trimBracket = document.getElementById('trimBracket');
-      const dragHintLabel = document.getElementById('dragHintLabel');
-      const addToExportBtn = document.getElementById('addToExportBtn');
-      const addToExportText = document.getElementById('addToExportText');
-      const inHandle = document.getElementById('inHandle');
-      const outHandle = document.getElementById('outHandle');
-      const trimRangePill = document.getElementById('trimRangePill');
+      const clipsLayer = document.getElementById('clipsLayer');
       const playheadNeedle = document.getElementById('playheadNeedle');
       const timelineClockReadout = document.getElementById('timelineClockReadout');
       const hoverLoupe = document.getElementById('hoverLoupe');
@@ -2165,27 +2165,22 @@
           (playing && playbackMode === 'full') ? 'Pause Stream' : (ev.isLive ? 'Watch Live' : 'Full Stream');
       }
 
-      // Populate Event Switcher
-      function renderEventSwitcher() {
-        eventSwitcher.innerHTML = Object.values(EVENTS).map(item =>
-          '<option value="' + item.id + '"' + (item.id === activeEventKey ? ' selected' : '') + '>' + item.title + '</option>'
-        ).join('');
-      }
-
       // Load an Event into Stage, Transcript, Timeline, and Export Queue
       async function loadEvent(eventKey) {
         pauseAllSynced();
         activeEventKey = eventKey;
         ev = EVENTS[eventKey];
         currentQuery = ev.defaultQuery;
-        clipIn = ev.defaultIn;
-        clipOut = ev.defaultOut;
+        exportQueue = ev.starterExports.map(x => ({ ...x }));
+        activeClipId = exportQueue[0] ? exportQueue[0].id : null;
+        clipIn = exportQueue[0] ? exportQueue[0].start : ev.defaultIn;
+        clipOut = exportQueue[0] ? exportQueue[0].end : ev.defaultOut;
         desiredTime = clipIn;
         selectedCam = ev.cameras[0].id;
         exportCam = ev.cameras[0].id;
-        exportQueue = ev.starterExports.map(x => ({ ...x }));
 
-        document.getElementById('transcriptHeading').textContent = ev.transcriptTitle || 'Keynote Transcript';
+        if (eventTitleText) eventTitleText.textContent = ev.title;
+        document.getElementById('transcriptHeading').textContent = ev.transcriptTitle || 'Transcript';
         document.getElementById('liveDot').classList.toggle('ended', !ev.isLive);
         document.getElementById('watchBtnDot').classList.toggle('ended', !ev.isLive);
         searchInput.value = currentQuery;
@@ -2249,7 +2244,7 @@
         }
 
         runSearch();
-        updateTrimUI();
+        renderTimelineClips();
         renderExportQueue();
         seekTo(clipIn);
         updatePlayheadUI(clipIn);
@@ -2263,24 +2258,6 @@
           if (target) {
             transcriptList.scrollTop = Math.max(0, target.offsetTop - transcriptList.offsetTop - 52);
           }
-        });
-      }
-
-      function renderTopicPills() {
-        topicPills.innerHTML = (ev.quickTopics || []).map(q =>
-          '<button type="button" class="topic-pill' + (q.toLowerCase() === currentQuery.toLowerCase() ? ' active' : '') + '" data-q="' + q.replace(/"/g, '&quot;') + '">' + q + '</button>'
-        ).join('');
-
-        topicPills.querySelectorAll('.topic-pill').forEach(btn => {
-          btn.addEventListener('click', () => {
-            const q = btn.getAttribute('data-q');
-            searchInput.value = q;
-            runSearch();
-            if (matches.length > 0) {
-              const m = matches[0];
-              setClipRange(Math.max(0, m.start - 2), Math.min(ev.duration, m.end + 6), m.start);
-            }
-          });
         });
       }
 
@@ -2360,8 +2337,11 @@
           lbl.addEventListener('click', (e) => {
             e.stopPropagation();
             const s = parseFloat(lbl.getAttribute('data-start'));
-            const end = parseFloat(lbl.getAttribute('data-end'));
-            setClipRange(s, Math.min(ev.duration, Math.min(end, s + 20)), s, true);
+            if (s < clipIn || s >= clipOut - 0.1) {
+              playbackMode = 'full';
+              updateTransportButtons();
+            }
+            seekTo(s);
           });
         });
 
@@ -2434,16 +2414,92 @@
             'data-start="' + cue.start + '" data-end="' + cue.end + '" ' +
             'title="' + cue.timecode + ' · ' + cue.speaker + ': ' + cue.text.replace(/"/g, '&quot;') + '"></div>';
         }).join('');
+      }
 
-        matchesLayer.querySelectorAll('.timeline-match-block').forEach(el => {
-          el.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const s = parseFloat(el.getAttribute('data-start'));
-            const end = parseFloat(el.getAttribute('data-end'));
-            const clickSec = secFromClientX(e.clientX);
-            setClipRange(Math.max(0, s - 2), Math.min(ev.duration, end + 6), clickSec, true);
-          });
-        });
+      function computeClipText(startSec, endSec, customText) {
+        if (customText) return customText;
+        const cuesInRange = transcript.filter(c => c.end > startSec && c.start < endSec);
+        return cuesInRange.length
+          ? cuesInRange.map(c => c.text).join(' ')
+          : (ev.title + ' (' + fmtTime(startSec) + '–' + fmtTime(endSec) + ')');
+      }
+
+      function formatBracketPillText(startSec, endSec, isActive) {
+        const widthPct = ((endSec - startSec) / ev.duration) * 100;
+        const dur = (endSec - startSec).toFixed(1);
+        if (isActive && widthPct >= 8.5) {
+          return 'IN ' + fmtTime(startSec) + ' → OUT ' + fmtTime(endSec) + ' (' + dur + 's)';
+        }
+        return fmtTime(startSec) + ' → ' + fmtTime(endSec);
+      }
+
+      function setActiveClip(id, shouldRender) {
+        activeClipId = id;
+        const found = exportQueue.find(c => c.id === id);
+        if (found) {
+          clipIn = found.start;
+          clipOut = found.end;
+        }
+        if (shouldRender !== false) {
+          renderTimelineClips();
+        }
+      }
+
+      function removeClipById(id) {
+        exportQueue = exportQueue.filter(c => c.id !== id);
+        if (activeClipId === id) {
+          activeClipId = exportQueue[0] ? exportQueue[0].id : null;
+          if (exportQueue[0]) {
+            clipIn = exportQueue[0].start;
+            clipOut = exportQueue[0].end;
+          } else {
+            playbackMode = 'full';
+            updateTransportButtons();
+          }
+        }
+        renderTimelineClips();
+        renderExportQueue();
+        renderTranscriptCards();
+      }
+
+      function addClipRange(startSec, endSec, customText) {
+        const minSpan = 1.5;
+        let s = Math.max(0, Math.min(startSec, endSec));
+        let end = Math.min(ev.duration, Math.max(startSec, endSec));
+        if (end - s < minSpan) {
+          end = Math.min(ev.duration, s + minSpan);
+          if (end - s < minSpan) s = Math.max(0, end - minSpan);
+        }
+        const newId = 'clip_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+        const newClip = {
+          id: newId,
+          start: Number(s.toFixed(2)),
+          end: Number(end.toFixed(2)),
+          cam: selectedCam,
+          text: computeClipText(s, end, customText),
+          selected: true
+        };
+        exportQueue.push(newClip);
+        exportQueue.sort((a, b) => a.start - b.start);
+        setActiveClip(newId, false);
+        renderTimelineClips();
+        renderExportQueue();
+        renderTranscriptCards();
+        return newClip;
+      }
+
+      function renderTimelineClips() {
+        clipsLayer.innerHTML = exportQueue.map(item => {
+          const isActive = item.id === activeClipId;
+          const leftPct = (item.start / ev.duration) * 100;
+          const widthPct = Math.max(1.4, ((item.end - item.start) / ev.duration) * 100);
+          return '<div class="trim-bracket' + (isActive ? ' is-active' : '') + '" data-id="' + item.id + '" style="left:' + leftPct + '%; width:' + widthPct + '%;">' +
+            '<button type="button" class="trim-remove-btn" data-action="remove" title="Remove range" aria-label="Remove range">✕</button>' +
+            '<div class="trim-handle in" data-action="in" title="Drag In point">[</div>' +
+            '<div class="trim-handle out" data-action="out" title="Drag Out point">]</div>' +
+            '<div class="trim-range-pill">' + formatBracketPillText(item.start, item.end, isActive) + '</div>' +
+          '</div>';
+        }).join('');
       }
 
       function renderTranscriptCards() {
@@ -2454,7 +2510,7 @@
         const curr = getCurrentTime();
         transcriptList.innerHTML = transcript.map(cue => {
           const matched = isCueMatch(cue, currentQuery);
-          const inRange = cue.end > clipIn && cue.start < clipOut;
+          const inRange = exportQueue.some(cl => cue.end > cl.start && cue.start < cl.end);
           const playing = curr >= cue.start && curr < cue.end;
           const headerLeft = showSpeakers ? (cue.timecode + '  ' + cue.speaker) : cue.timecode;
           return '<div class="cue-card' +
@@ -2464,7 +2520,7 @@
             '" data-start="' + cue.start + '" data-end="' + cue.end + '" data-text="' + cue.text.replace(/"/g, '&quot;') + '">' +
               '<div class="cue-header">' +
                 '<span>' + headerLeft + '</span>' +
-                '<button type="button" class="cue-quick-add" title="Add segment to Export Panel">+ Export</button>' +
+                '<button type="button" class="cue-quick-add" title="Create In/Out clip">+ Clip</button>' +
               '</div>' +
               '<div class="cue-body">' + (matched ? highlightMatchesInText(cue.text, currentQuery) : cue.text) + '</div>' +
             '</div>';
@@ -2479,21 +2535,39 @@
               e.stopPropagation();
               const cIn = Math.max(0, s - 1.5);
               const cOut = Math.min(ev.duration, end + 4.5);
-              setClipRange(cIn, cOut, s);
-              queueCurrentClip(txt);
+              addClipRange(cIn, cOut, txt);
+              seekTo(s);
               setExportDrawer(true);
             } else {
-              setClipRange(Math.max(0, s - 1.5), Math.min(ev.duration, end + 4.5), s);
+              const containing = exportQueue.find(cl => s >= cl.start && s < cl.end);
+              if (containing) {
+                setActiveClip(containing.id, true);
+              } else {
+                playbackMode = 'full';
+                updateTransportButtons();
+              }
+              seekTo(s);
             }
           });
         });
       }
 
       function setClipRange(newIn, newOut, seekSec, scrollCard) {
-        const minSpan = Math.min(3, ev.duration * 0.05);
-        clipIn = Math.max(0, Math.min(newIn, ev.duration - minSpan));
-        clipOut = Math.max(clipIn + minSpan, Math.min(ev.duration, newOut));
-        updateTrimUI();
+        const minSpan = 1.5;
+        const clampedIn = Math.max(0, Math.min(newIn, ev.duration - minSpan));
+        const clampedOut = Math.max(clampedIn + minSpan, Math.min(ev.duration, newOut));
+        clipIn = clampedIn;
+        clipOut = clampedOut;
+        const active = exportQueue.find(c => c.id === activeClipId);
+        if (active) {
+          active.start = Number(clampedIn.toFixed(2));
+          active.end = Number(clampedOut.toFixed(2));
+          active.text = computeClipText(active.start, active.end);
+          renderTimelineClips();
+          renderExportQueue();
+        } else {
+          addClipRange(clampedIn, clampedOut);
+        }
         renderTranscriptCards();
         if (typeof seekSec === 'number') {
           seekTo(seekSec);
@@ -2501,15 +2575,6 @@
         if (scrollCard) {
           scrollTranscriptToActive();
         }
-      }
-
-      function updateTrimUI() {
-        const leftPct = (clipIn / ev.duration) * 100;
-        const widthPct = Math.max(1.8, ((clipOut - clipIn) / ev.duration) * 100);
-        trimBracket.style.left = leftPct + '%';
-        trimBracket.style.width = widthPct + '%';
-        const dur = (clipOut - clipIn).toFixed(1);
-        trimRangePill.textContent = 'IN ' + fmtTime(clipIn) + ' → OUT ' + fmtTime(clipOut) + ' (' + dur + 's)';
       }
 
       function findCueAtTime(sec) {
@@ -2527,34 +2592,13 @@
         liveSubtitleText.textContent = activeCue ? activeCue.text : '';
       }
 
-      // Export Queue Management
-      function queueCurrentClip(customText) {
-        const cuesInRange = transcript.filter(c => c.end > clipIn && c.start < clipOut);
-        const snippet = customText || (cuesInRange.length ? cuesInRange.map(c => c.text).join(' ') : (ev.title + ' (' + fmtTime(clipIn) + '–' + fmtTime(clipOut) + ')'));
-        exportQueue.unshift({
-          id: 'clip_' + Date.now(),
-          start: clipIn,
-          end: clipOut,
-          cam: selectedCam,
-          text: snippet,
-          selected: true
-        });
-        renderExportQueue();
-        addToExportBtn.classList.add('added', 'visible');
-        addToExportText.textContent = 'Added!';
-        setTimeout(() => {
-          addToExportBtn.classList.remove('added', 'visible');
-          addToExportText.textContent = 'Add to Export Panel';
-        }, 1300);
-      }
-
       function renderExportQueue() {
         exportCountBadge.textContent = String(exportQueue.length);
         const allSelected = exportQueue.length > 0 && exportQueue.every(c => c.selected);
         selectAllDot.classList.toggle('checked', allSelected);
 
         if (!exportQueue.length) {
-          exportClipsGrid.innerHTML = '<div style="grid-column:1/-1; padding:24px 8px; text-align:center; color:var(--ink-muted); font-size:12px;">Trim a range on the timeline and click <b>+ Add to Export Panel</b>.</div>';
+          exportClipsGrid.innerHTML = '<div style="grid-column:1/-1; padding:24px 8px; text-align:center; color:var(--ink-muted); font-size:12px;">Drag across the timeline to create In &amp; Out clips.</div>';
           updateDownloadButtonLabel();
           return;
         }
@@ -2567,7 +2611,7 @@
               '<img src="' + getThumbForTime(midSec) + '" alt="" />' +
               '<button type="button" class="export-card-select" data-action="toggle" aria-label="Select clip"></button>' +
               '<button type="button" class="export-card-remove" data-action="remove" aria-label="Remove clip">✕</button>' +
-              '<span class="export-card-meta-pill">' + camObj.short + ' · ' + fmtTime(item.start) + '</span>' +
+              '<span class="export-card-meta-pill">' + camObj.short + ' · ' + fmtTime(item.start) + '–' + fmtTime(item.end) + '</span>' +
             '</div>' +
             '<div class="export-card-caption"><div class="export-card-caption-text">' + item.text + '</div></div>' +
           '</div>';
@@ -2581,16 +2625,16 @@
             if (!item) return;
             if (action === 'remove') {
               e.stopPropagation();
-              exportQueue = exportQueue.filter(x => x.id !== id);
-              renderExportQueue();
+              removeClipById(id);
             } else if (action === 'toggle') {
               e.stopPropagation();
               item.selected = !item.selected;
               renderExportQueue();
             } else {
-              // Preview this clip on main stage
               selectCamera(item.cam, false);
-              setClipRange(item.start, item.end, item.start, true);
+              setActiveClip(item.id, true);
+              seekTo(item.start);
+              scrollTranscriptToActive();
               playbackMode = 'clip';
               playAllSynced();
             }
@@ -2815,12 +2859,6 @@
       toggleExportBtn.addEventListener('click', () => setExportDrawer(!exportOpen));
       document.getElementById('mobileExportBackdrop').addEventListener('click', () => setExportDrawer(false));
 
-      addToExportBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        queueCurrentClip();
-        setExportDrawer(true);
-      });
-
       selectAllBtn.addEventListener('click', () => {
         const allSelected = exportQueue.length > 0 && exportQueue.every(c => c.selected);
         exportQueue.forEach(c => { c.selected = !allSelected; });
@@ -2901,6 +2939,10 @@
         if (!isPaused() && playbackMode === 'clip') {
           pauseAllSynced();
         } else {
+          if (!exportQueue.length) {
+            const curr = getCurrentTime();
+            addClipRange(curr, Math.min(ev.duration, curr + 10));
+          }
           playbackMode = 'clip';
           const curr = getCurrentTime();
           if (curr < clipIn || curr >= clipOut - 0.2) {
@@ -2919,10 +2961,6 @@
         }
       });
 
-      eventSwitcher.addEventListener('change', () => {
-        loadEvent(eventSwitcher.value);
-      });
-
       // Search Input
       searchInput.addEventListener('input', runSearch);
       clearSearchBtn.addEventListener('click', () => {
@@ -2932,7 +2970,7 @@
 
       // Master Clock Tick & Drift Correction Loop
       function onClockTick() {
-        if (dragMode === 'scrub') return;
+        if (dragMode) return;
         const curr = isPaused() ? desiredTime : getCurrentTime();
         if (!isPaused()) {
           desiredTime = curr;
@@ -2954,19 +2992,15 @@
       vids.cam1.addEventListener('play', updateTransportButtons);
       vids.cam1.addEventListener('pause', updateTransportButtons);
 
-      // Timeline Scrubbing & Yellow [ IN / OUT ] Dragging
+      // Multi-Range Timeline Scrubbing, Drag-to-Create, Resize & Slide
       let dragMode = null;
       let dragMoved = false;
       let dragStartX = 0;
+      let dragAnchorSec = 0;
       let dragStartIn = 0;
       let dragStartOut = 0;
-
-      function dismissDragHint() {
-        if (!dragHintDismissed) {
-          dragHintDismissed = true;
-          if (dragHintLabel) dragHintLabel.classList.add('dismissed');
-        }
-      }
+      let dragTargetId = null;
+      let draftBracketEl = null;
 
       function secFromClientX(clientX) {
         const rect = timelineTrack.getBoundingClientRect();
@@ -2974,40 +3008,68 @@
         return ratio * ev.duration;
       }
 
-      inHandle.addEventListener('mousedown', (e) => {
-        e.stopPropagation();
-        dismissDragHint();
-        dragMode = 'in';
-        dragMoved = false;
-      });
+      function updateBracketElementLive(el, startSec, endSec, isActive) {
+        if (!el) return;
+        const leftPct = (startSec / ev.duration) * 100;
+        const widthPct = Math.max(1.4, ((endSec - startSec) / ev.duration) * 100);
+        el.style.left = leftPct + '%';
+        el.style.width = widthPct + '%';
+        const pill = el.querySelector('.trim-range-pill');
+        if (pill) {
+          pill.textContent = formatBracketPillText(startSec, endSec, isActive);
+        }
+      }
 
-      outHandle.addEventListener('mousedown', (e) => {
-        e.stopPropagation();
-        dismissDragHint();
-        dragMode = 'out';
-        dragMoved = false;
-      });
+      clipsLayer.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        const bracket = e.target.closest('.trim-bracket');
+        if (!bracket) return;
+        const id = bracket.getAttribute('data-id');
 
-      trimBracket.addEventListener('mousedown', (e) => {
-        if (e.target === inHandle || e.target === outHandle || addToExportBtn.contains(e.target)) return;
+        const removeBtn = e.target.closest('.trim-remove-btn');
+        if (removeBtn) {
+          e.stopPropagation();
+          removeClipById(id);
+          return;
+        }
+
+        const handle = e.target.closest('.trim-handle');
+        if (handle) {
+          e.stopPropagation();
+          setActiveClip(id, true);
+          dragTargetId = id;
+          dragMode = handle.getAttribute('data-action'); // 'in' or 'out'
+          dragMoved = false;
+          return;
+        }
+
+        // Shift+drag inside an existing bracket draws a new overlapping bracket
+        if (e.shiftKey) return;
+
+        const clip = exportQueue.find(c => c.id === id);
+        if (!clip) return;
         e.stopPropagation();
-        dismissDragHint();
+        setActiveClip(id, true);
+        dragTargetId = id;
         dragMode = 'move';
         dragMoved = false;
         dragStartX = e.clientX;
-        dragStartIn = clipIn;
-        dragStartOut = clipOut;
+        dragStartIn = clip.start;
+        dragStartOut = clip.end;
+        seekTo(secFromClientX(e.clientX));
       });
 
       timelineTrack.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('chapter-marker-label') || addToExportBtn.contains(e.target)) return;
+        if (e.button !== 0 || e.target.classList.contains('chapter-marker-label')) return;
         const targetSec = secFromClientX(e.clientX);
         if (targetSec < clipIn || targetSec >= clipOut - 0.1) {
           playbackMode = 'full';
           updateTransportButtons();
         }
-        dragMode = 'scrub';
-        dragMoved = true;
+        dragMode = 'pending-create';
+        dragMoved = false;
+        dragStartX = e.clientX;
+        dragAnchorSec = targetSec;
         seekTo(targetSec);
       });
 
@@ -3031,63 +3093,130 @@
 
         if (!dragMode) return;
         const sec = secFromClientX(e.clientX);
-        const minSpan = Math.min(3, ev.duration * 0.05);
+        const minSpan = 1.5;
 
-        if (dragMode === 'in') {
+        if (dragMode === 'pending-create') {
+          if (Math.abs(e.clientX - dragStartX) >= 5) {
+            dragMode = 'create';
+            dragMoved = true;
+            clipsLayer.querySelectorAll('.trim-bracket.is-active').forEach(b => b.classList.remove('is-active'));
+            draftBracketEl = document.createElement('div');
+            draftBracketEl.className = 'trim-bracket is-active';
+            draftBracketEl.innerHTML =
+              '<div class="trim-handle in">[</div>' +
+              '<div class="trim-handle out">]</div>' +
+              '<div class="trim-range-pill"></div>';
+            clipsLayer.appendChild(draftBracketEl);
+          } else {
+            seekTo(sec);
+            return;
+          }
+        }
+
+        if (dragMode === 'create') {
+          let s = Math.max(0, Math.min(dragAnchorSec, sec));
+          let end = Math.min(ev.duration, Math.max(dragAnchorSec, sec));
+          if (end - s < minSpan) {
+            if (sec >= dragAnchorSec) end = Math.min(ev.duration, s + minSpan);
+            else s = Math.max(0, end - minSpan);
+          }
+          updateBracketElementLive(draftBracketEl, s, end, true);
+          seekTo(sec);
+        } else if (dragMode === 'in') {
           dragMoved = true;
-          clipIn = Math.max(0, Math.min(sec, clipOut - minSpan));
-          updateTrimUI();
-          seekTo(clipIn);
+          const clip = exportQueue.find(c => c.id === dragTargetId);
+          if (!clip) return;
+          clip.start = Number(Math.max(0, Math.min(sec, clip.end - minSpan)).toFixed(2));
+          clipIn = clip.start;
+          clipOut = clip.end;
+          const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
+          updateBracketElementLive(el, clip.start, clip.end, true);
+          seekTo(clip.start);
         } else if (dragMode === 'out') {
           dragMoved = true;
-          clipOut = Math.min(ev.duration, Math.max(sec, clipIn + minSpan));
-          updateTrimUI();
-          seekTo(clipOut);
+          const clip = exportQueue.find(c => c.id === dragTargetId);
+          if (!clip) return;
+          clip.end = Number(Math.min(ev.duration, Math.max(sec, clip.start + minSpan)).toFixed(2));
+          clipIn = clip.start;
+          clipOut = clip.end;
+          const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
+          updateBracketElementLive(el, clip.start, clip.end, true);
+          seekTo(clip.end);
         } else if (dragMode === 'move') {
-          if (Math.abs(e.clientX - dragStartX) > 3) {
+          if (Math.abs(e.clientX - dragStartX) >= 5) {
             dragMoved = true;
           }
           if (dragMoved) {
+            const clip = exportQueue.find(c => c.id === dragTargetId);
+            if (!clip) return;
             const delta = ((e.clientX - dragStartX) / rect.width) * ev.duration;
             const span = dragStartOut - dragStartIn;
-            clipIn = Math.max(0, Math.min(ev.duration - span, dragStartIn + delta));
-            clipOut = clipIn + span;
-            updateTrimUI();
+            clip.start = Number(Math.max(0, Math.min(ev.duration - span, dragStartIn + delta)).toFixed(2));
+            clip.end = Number((clip.start + span).toFixed(2));
+            clipIn = clip.start;
+            clipOut = clip.end;
+            const el = clipsLayer.querySelector('[data-id="' + dragTargetId + '"]');
+            updateBracketElementLive(el, clip.start, clip.end, true);
           }
-        } else if (dragMode === 'scrub') {
-          if (sec < clipIn || sec >= clipOut - 0.1) {
-            playbackMode = 'full';
-            updateTransportButtons();
-          }
-          seekTo(sec);
         }
       });
 
       window.addEventListener('mouseup', (e) => {
-        if (dragMode) {
-          if (dragMode === 'move' && !dragMoved) {
-            seekTo(secFromClientX(e.clientX));
-          } else if (dragMode === 'in' || dragMode === 'out' || (dragMode === 'move' && dragMoved)) {
-            addToExportBtn.classList.add('visible');
+        if (!dragMode) return;
+        const mode = dragMode;
+        dragMode = null;
+        const sec = secFromClientX(e.clientX);
+
+        if (mode === 'pending-create') {
+          seekTo(sec);
+        } else if (mode === 'create') {
+          if (draftBracketEl && draftBracketEl.parentNode) {
+            draftBracketEl.parentNode.removeChild(draftBracketEl);
           }
-          dragMode = null;
+          draftBracketEl = null;
+          addClipRange(dragAnchorSec, sec);
+          seekTo(sec);
+        } else if (mode === 'move' && !dragMoved) {
+          seekTo(sec);
+        } else if (mode === 'in' || mode === 'out' || (mode === 'move' && dragMoved)) {
+          const clip = exportQueue.find(c => c.id === dragTargetId);
+          if (clip) {
+            clip.text = computeClipText(clip.start, clip.end);
+          }
+          exportQueue.sort((a, b) => a.start - b.start);
+          renderTimelineClips();
+          renderExportQueue();
           renderTranscriptCards();
         }
+        dragTargetId = null;
       });
 
-      // Keyboard Shortcuts (Space, I, O, 1-4, M, E)
+      // Keyboard Shortcuts (Space, I, O, Backspace/Delete, 1-4, M, E)
       window.addEventListener('keydown', (e) => {
         if (document.activeElement === searchInput) return;
         if (e.code === 'Space') {
           e.preventDefault();
           if (isPaused()) playAllSynced();
           else pauseAllSynced();
+        } else if (e.key === 'Backspace' || e.key === 'Delete') {
+          if (activeClipId) {
+            e.preventDefault();
+            removeClipById(activeClipId);
+          }
         } else if (e.key === 'i' || e.key === 'I') {
-          dismissDragHint();
-          setClipRange(getCurrentTime(), Math.max(clipOut, getCurrentTime() + 6));
+          const curr = getCurrentTime();
+          if (activeClipId && curr < clipOut - 1.5) {
+            setClipRange(curr, clipOut);
+          } else {
+            addClipRange(curr, Math.min(ev.duration, curr + 10));
+          }
         } else if (e.key === 'o' || e.key === 'O') {
-          dismissDragHint();
-          setClipRange(Math.min(clipIn, getCurrentTime() - 6), getCurrentTime());
+          const curr = getCurrentTime();
+          if (activeClipId && curr > clipIn + 1.5) {
+            setClipRange(clipIn, curr);
+          } else {
+            addClipRange(Math.max(0, curr - 10), curr);
+          }
         } else if (['1', '2', '3', '4'].includes(e.key)) {
           const cam = ev.cameras[parseInt(e.key, 10) - 1];
           if (cam) selectCamera(cam.id, true);
@@ -3098,8 +3227,7 @@
         }
       });
 
-      // Boot primary synchronized 4-camera live event immediately
-      renderEventSwitcher();
+      // Boot synchronized 4-camera live event immediately
       loadEvent(activeEventKey);
     })();
   </script>
