@@ -3,33 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google I/O '26 · Creator Multi-Cam Clipper Studio</title>
+  <meta name="color-scheme" content="light" />
+  <title>Google I/O Creator Clipper</title>
+  <link rel="icon" type="image/png" href="/media/io-emblem.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@8..144,400;8..144,500;8..144,600;8..144,700&family=Google+Sans+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-canvas: #090b10;
-      --bg-panel: #10141d;
-      --bg-panel-elevated: #161b27;
-      --bg-panel-hover: #1c2333;
-      --border-subtle: #1f2738;
-      --border-strong: #2d3850;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --g-blue: #4285f4;
-      --g-blue-soft: rgba(66, 133, 244, 0.16);
-      --g-blue-glow: #7cacf8;
-      --g-red: #ea4335;
-      --g-yellow: #fbbc04;
-      --g-yellow-soft: rgba(251, 188, 4, 0.2);
-      --g-green: #34a853;
-      --accent-clip: #f59e0b;
-      --accent-match: #38bdf8;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
+      color-scheme: light;
+      --bg-surface: #ffffff;
+      --bg-card: #f1f1f1;
+      --bg-card-hover: #e7e9ee;
+      --bg-stage: #10141d;
+      --ink-primary: #10141d;
+      --ink-muted: #7b7b7b;
+      --line-divider: #c9cdd4;
+      --line-strong: #7b7b7b;
+      --blue-clip: #b3d6fb;
+      --blue-clip-translucent: rgba(179, 214, 251, 0.78);
+      --blue-clip-tint: rgba(179, 214, 251, 0.42);
+      --blue-playhead: #4285f4;
+      --yellow-export: #fabd05;
+      --yellow-highlight: #fbd44c;
+      --green-live: #00a749;
+      --red-ended: #ea4335;
+      --radius-pill: 10px;
+      --font-sans: 'Google Sans Flex', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Google Sans Mono', 'JetBrains Mono', ui-monospace, monospace;
     }
 
     * {
@@ -41,1802 +42,1793 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: var(--bg-canvas);
-      color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
       font-size: 13px;
-      line-height: 1.45;
+      line-height: 1.38;
       overflow: hidden;
-      user-select: none;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* App Shell Grid */
-    .studio-app {
+    /* Main Shell: Top Workspace + Bottom Timeline */
+    .clipper-shell {
       display: grid;
-      grid-template-rows: 48px 1fr 182px;
+      grid-template-rows: minmax(0, 1fr) 196px;
       width: 100vw;
       height: 100vh;
-      gap: 1px;
-      background: var(--border-subtle);
+      background: var(--bg-surface);
     }
 
-    /* Top Header */
-    .studio-header {
-      background: var(--bg-panel);
+    /* Top Row: Left Transcript | Center Video Stage | Optional Right Export Panel */
+    .clipper-top {
+      display: grid;
+      grid-template-columns: 296px minmax(0, 1fr) 0px;
+      min-height: 0;
+      border-bottom: 1px solid var(--line-strong);
+      transition: grid-template-columns 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .clipper-top.export-open {
+      grid-template-columns: 296px minmax(0, 1fr) 296px;
+    }
+
+    /* ==================== LEFT: TRANSCRIPT PANEL ==================== */
+    .transcript-col {
+      background: var(--bg-surface);
+      border-right: 1px solid var(--line-strong);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 14px 10px 10px 12px;
+      gap: 10px;
+      user-select: none;
+    }
+
+    .col-heading-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 12px;
-      gap: 10px;
-      z-index: 30;
-      overflow: hidden;
+      gap: 8px;
+      padding: 0 2px;
     }
 
-    .brand-cluster {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      flex-shrink: 0;
+    .col-heading {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      letter-spacing: -0.01em;
     }
 
-    .google-g-badge {
-      width: 30px;
-      height: 30px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, rgba(66,133,244,0.18), rgba(52,168,83,0.15), rgba(251,188,4,0.15), rgba(234,67,53,0.18));
-      border: 1px solid rgba(255,255,255,0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    .brand-title {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .proto-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(66, 133, 244, 0.16);
-      color: var(--g-blue-glow);
-      border: 1px solid rgba(66, 133, 244, 0.35);
-    }
-
-    .event-meta {
-      font-size: 10.5px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .live-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--g-green);
-      box-shadow: 0 0 8px var(--g-green);
-    }
-
-    /* Search Bar Center */
-    .search-command-bar {
-      flex: 1;
-      min-width: 0;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .search-input-wrap {
+    .search-box {
       position: relative;
-      flex: 1;
-      min-width: 180px;
       display: flex;
       align-items: center;
+      height: 41px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      background: var(--bg-surface);
+      padding: 0 10px;
+      gap: 7px;
+      flex-shrink: 0;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    .search-icon {
-      position: absolute;
-      left: 10px;
-      color: var(--g-blue-glow);
-      pointer-events: none;
+    .search-box:focus-within {
+      border-color: var(--blue-playhead);
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.16);
+    }
+
+    .search-box svg {
+      flex-shrink: 0;
+      color: var(--ink-primary);
     }
 
     .search-input {
-      width: 100%;
-      height: 32px;
-      background: #0b0e16;
-      border: 1px solid var(--border-strong);
-      border-radius: 7px;
-      padding: 0 104px 0 32px;
-      color: var(--text-primary);
-      font-size: 12px;
-      font-family: inherit;
-      outline: none;
-      transition: all 0.15s ease;
-    }
-
-    .search-input:focus {
-      border-color: var(--g-blue);
-      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.2);
-    }
-
-    .search-match-pill {
-      position: absolute;
-      right: 6px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .match-count-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 6px;
-      border-radius: 4px;
-      background: rgba(251, 188, 4, 0.18);
-      color: #fcd34d;
-      border: 1px solid rgba(251, 188, 4, 0.4);
-    }
-
-    .clear-search-btn {
-      background: transparent;
+      flex: 1;
+      min-width: 0;
       border: none;
-      color: var(--text-secondary);
+      outline: none;
+      background: transparent;
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 400;
+    }
+
+    .search-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .search-matches-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .search-clear-btn {
+      border: none;
+      background: transparent;
+      color: var(--ink-primary);
       cursor: pointer;
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       font-size: 13px;
       line-height: 1;
-      padding: 2px 4px;
-    }
-
-    .clear-search-btn:hover {
-      color: var(--text-primary);
-    }
-
-    .quick-chips {
-      display: flex;
-      align-items: center;
-      gap: 4px;
       flex-shrink: 0;
     }
 
-    .chip-btn {
-      height: 26px;
-      padding: 0 8px;
-      border-radius: 5px;
-      background: var(--bg-panel-elevated);
-      border: 1px solid var(--border-subtle);
-      color: var(--text-secondary);
-      font-size: 11px;
-      font-weight: 500;
-      cursor: pointer;
+    .search-clear-btn:hover {
+      background: var(--bg-card);
+    }
+
+    /* Quick search topic pills (compact, clean) */
+    .topic-pills {
       display: flex;
       align-items: center;
-      gap: 4px;
-      transition: all 0.15s ease;
-      white-space: nowrap;
-    }
-
-    .chip-btn:hover {
-      background: var(--bg-panel-hover);
-      color: var(--text-primary);
-      border-color: var(--border-strong);
-    }
-
-    .chip-btn.active {
-      background: rgba(251, 188, 4, 0.15);
-      border-color: var(--g-yellow);
-      color: #fde68a;
-      font-weight: 600;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      gap: 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 1px;
       flex-shrink: 0;
     }
+    .topic-pills::-webkit-scrollbar { display: none; }
 
-    .mode-toggle-btn {
-      height: 28px;
-      padding: 0 9px;
-      border-radius: 6px;
-      background: var(--bg-panel-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--text-secondary);
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.15s ease;
-      white-space: nowrap;
-    }
-
-    .mode-toggle-btn.active, .mode-toggle-btn:hover {
-      color: var(--text-primary);
-      border-color: var(--g-blue);
-      background: var(--g-blue-soft);
-    }
-
-    /* Main 3-Column Workspace */
-    .studio-workspace {
-      display: grid;
-      grid-template-columns: 300px 1fr 430px;
-      gap: 1px;
-      background: var(--border-subtle);
-      min-height: 0;
-      overflow: hidden;
-    }
-
-    /* Left Column: Searchable Transcript */
-    .transcript-panel {
-      background: var(--bg-panel);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-    }
-
-    .panel-header {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      background: rgba(16, 20, 29, 0.9);
-    }
-
-    .panel-title {
-      font-size: 11.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .transcript-filters {
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      background: #0c0f17;
-    }
-
-    .speaker-tabs {
-      display: flex;
-      gap: 4px;
-    }
-
-    .speaker-tab {
-      padding: 4px 8px;
-      border-radius: 5px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-secondary);
-      font-size: 11px;
+    .topic-pill {
+      border: 1px solid #d8dce3;
+      background: var(--bg-surface);
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
       font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 999px;
       cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.14s ease;
     }
 
-    .speaker-tab.active {
-      background: var(--bg-panel-elevated);
-      color: var(--text-primary);
-      border-color: var(--border-strong);
+    .topic-pill:hover {
+      border-color: var(--ink-primary);
+      color: var(--ink-primary);
     }
 
-    .filter-matches-toggle {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 11px;
-      color: var(--text-secondary);
-      cursor: pointer;
+    .topic-pill.active {
+      background: var(--blue-clip);
+      border-color: #82b8f5;
+      color: var(--ink-primary);
     }
 
-    .transcript-list {
+    .transcript-scroll {
       flex: 1;
       overflow-y: auto;
-      padding: 8px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      padding-right: 4px;
     }
 
-    .transcript-list::-webkit-scrollbar {
-      width: 6px;
+    .transcript-scroll::-webkit-scrollbar {
+      width: 4px;
     }
-    .transcript-list::-webkit-scrollbar-thumb {
-      background: var(--border-strong);
-      border-radius: 3px;
+
+    .transcript-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .transcript-scroll::-webkit-scrollbar-thumb {
+      background: var(--line-strong);
+      border-radius: 999px;
     }
 
     .cue-card {
-      padding: 9px 10px;
-      border-radius: 8px;
-      background: rgba(22, 27, 39, 0.55);
-      border: 1px solid transparent;
+      background: var(--bg-card);
+      border-radius: var(--radius-pill);
+      padding: 10px 12px;
       cursor: pointer;
-      transition: all 0.14s ease;
-      position: relative;
+      border: 1.5px solid transparent;
+      transition: background 0.14s ease, border-color 0.14s ease, transform 0.1s ease;
       user-select: text;
+      position: relative;
     }
 
     .cue-card:hover {
-      background: var(--bg-panel-elevated);
-      border-color: var(--border-strong);
+      background: var(--bg-card-hover);
     }
 
     .cue-card.is-match {
-      background: rgba(251, 188, 4, 0.08);
-      border-color: rgba(251, 188, 4, 0.35);
+      background: var(--blue-clip);
     }
 
-    .cue-card.is-active {
-      border-color: var(--g-blue);
-      background: rgba(66, 133, 244, 0.12);
-      box-shadow: inset 3px 0 0 var(--g-blue);
+    .cue-card.is-match:hover {
+      background: #a2ccf9;
     }
 
     .cue-card.in-clip-range {
-      box-shadow: inset 3px 0 0 var(--g-yellow);
+      border-color: var(--yellow-export);
+      box-shadow: inset 3px 0 0 var(--yellow-export);
     }
 
-    .cue-meta {
+    .cue-card.is-playing {
+      outline: 2px solid var(--blue-playhead);
+      outline-offset: -2px;
+    }
+
+    .cue-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 6px;
       margin-bottom: 4px;
-      gap: 6px;
-    }
-
-    .cue-time {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+
+    .cue-card.is-match .cue-header {
+      color: #52657c;
+    }
+
+    .cue-quick-add {
+      opacity: 0;
+      border: none;
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 9.5px;
       font-weight: 600;
-      color: var(--g-blue-glow);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .cue-speaker {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .cue-speaker.sundar {
-      color: #93c5fd;
-    }
-    .cue-speaker.demis {
-      color: #6ee7b7;
-    }
-
-    .cue-clip-btn {
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: rgba(251, 188, 4, 0.16);
-      border: 1px solid rgba(251, 188, 4, 0.45);
-      color: #fde68a;
-      font-size: 10px;
-      font-weight: 600;
-      cursor: pointer;
-      opacity: 0.85;
-      transition: all 0.12s;
-    }
-
-    .cue-clip-btn:hover {
-      opacity: 1;
-      background: var(--g-yellow);
-      color: #090b10;
-    }
-
-    .cue-text {
-      font-size: 12.5px;
-      color: #e2e8f0;
-      line-height: 1.45;
-    }
-
-    .cue-text mark {
-      background: rgba(251, 188, 4, 0.32);
-      color: #fef08a;
-      padding: 0 3px;
-      border-radius: 3px;
-      font-weight: 600;
-    }
-
-    /* Center Column: Main Keynote Monitor */
-    .monitor-stage {
-      background: #06080c;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      position: relative;
-    }
-
-    .monitor-topbar {
-      height: 40px;
-      padding: 0 14px;
-      background: var(--bg-panel);
-      border-bottom: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .monitor-status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11.5px;
-      font-weight: 600;
-    }
-
-    .pgm-tally {
-      background: var(--g-red);
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 700;
       padding: 2px 6px;
-      border-radius: 3px;
-      letter-spacing: 0.05em;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: opacity 0.12s ease;
     }
 
-    .monitor-viewport {
-      flex: 1;
+    .cue-card:hover .cue-quick-add {
+      opacity: 1;
+    }
+
+    .cue-body {
+      font-size: 12px;
+      line-height: 15.2px;
+      color: var(--ink-primary);
+      font-weight: 400;
+    }
+
+    .cue-body mark {
+      background: var(--yellow-highlight);
+      color: var(--ink-primary);
+      padding: 0 2px;
+      border-radius: 2px;
+      font-weight: 500;
+    }
+
+    /* ==================== CENTER: VIDEO STAGE ==================== */
+    .stage-col {
       position: relative;
+      background: var(--bg-stage);
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      background: radial-gradient(circle at center, #111622 0%, #05070a 100%);
-      padding: 12px;
+      user-select: none;
     }
 
-    .video-frame-container {
+    /* Top-Center Sculpted White Brand Notch (Figma V3 29:3707) */
+    .brand-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: var(--bg-surface);
+      padding: 7px 22px 9px;
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.22);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      border-top: 3px solid #e2e5ea;
+    }
+
+    .brand-notch-text {
+      font-family: var(--font-sans);
+      font-size: 19.5px;
+      font-weight: 600;
+      color: var(--ink-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .brand-io-emblem {
+      height: 23px;
+      width: auto;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 1px;
+    }
+
+    /* Stacked 4-Camera Broadcast Viewport (instant 0ms switching + 2x2 Multiview) */
+    .multicam-canvas {
       position: relative;
       width: 100%;
-      max-width: 860px;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid var(--border-strong);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      height: 100%;
+      background: #07090e;
     }
 
-    .video-frame-container video {
+    .cam-feed-slot {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .cam-feed-slot.active-cam {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .cam-feed-slot video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
     }
 
-    /* Quad Split Multiview Overlay inside Center Monitor */
-    .quad-multiview-grid {
-      position: absolute;
-      inset: 0;
+    .quad-label-pill {
       display: none;
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: rgba(16, 20, 29, 0.78);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 7px;
+      padding: 4px 9px;
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 500;
+      align-items: center;
+      gap: 6px;
+      z-index: 5;
+    }
+
+    /* 2x2 Multiview Mode on Main Stage */
+    .multicam-canvas.quad-mode {
+      display: grid;
       grid-template-columns: 1fr 1fr;
       grid-template-rows: 1fr 1fr;
       gap: 2px;
       background: #000;
-      z-index: 10;
     }
 
-    .quad-multiview-grid.active {
-      display: grid;
-    }
-
-    .quad-cell {
+    .multicam-canvas.quad-mode .cam-feed-slot {
       position: relative;
-      overflow: hidden;
+      inset: auto;
+      opacity: 1;
+      pointer-events: auto;
       cursor: pointer;
       border: 2px solid transparent;
     }
 
-    .quad-cell.selected {
-      border-color: var(--g-red);
+    .multicam-canvas.quad-mode .cam-feed-slot.active-cam {
+      border-color: var(--yellow-export);
     }
 
-    .quad-cell video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .quad-cell-label {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(9, 11, 16, 0.82);
-      backdrop-filter: blur(6px);
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 600;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.15);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Broadcast Overlays on Main Video */
-    .monitor-hud-top {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      display: flex;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 5;
-    }
-
-    .hud-pill {
-      background: rgba(9, 11, 16, 0.78);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: #f8fafc;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-
-    .monitor-caption-bar {
-      position: absolute;
-      bottom: 14px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 86%;
-      max-width: 680px;
-      background: rgba(9, 11, 16, 0.84);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 8px;
-      padding: 7px 14px;
-      text-align: center;
-      font-size: 13.5px;
-      font-weight: 500;
-      color: #f8fafc;
-      pointer-events: none;
-      z-index: 5;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
-    }
-
-    .monitor-caption-speaker {
-      font-size: 10px;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--g-yellow);
-      margin-bottom: 2px;
-    }
-
-    /* Transport Control Bar */
-    .transport-bar {
-      height: 48px;
-      background: var(--bg-panel);
-      border-top: 1px solid var(--border-subtle);
-      padding: 0 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .transport-left, .transport-center, .transport-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .t-btn {
-      height: 30px;
-      padding: 0 10px;
-      border-radius: 6px;
-      background: var(--bg-panel-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--text-primary);
-      font-size: 11.5px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.12s ease;
-    }
-
-    .t-btn:hover {
-      background: var(--bg-panel-hover);
-      border-color: var(--g-blue-glow);
-    }
-
-    .t-btn.play-primary {
-      background: var(--g-blue);
-      border-color: var(--g-blue);
-      color: #fff;
-      padding: 0 14px;
-    }
-
-    .t-btn.play-primary:hover {
-      background: #3b78e7;
-    }
-
-    .t-btn.in-out-btn {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      border-color: rgba(251, 188, 4, 0.45);
-      color: #fde68a;
-    }
-
-    .timecode-readout {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      background: #090b10;
-      border: 1px solid var(--border-subtle);
-      padding: 4px 9px;
-      border-radius: 6px;
-      color: #e2e8f0;
-    }
-
-    .clip-range-pill {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      background: rgba(251, 188, 4, 0.14);
-      border: 1px solid rgba(251, 188, 4, 0.4);
-      color: #fcd34d;
-      padding: 4px 9px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Right Column: Multi-Cam Angles + Aspect Ratio + Export */
-    .export-studio-panel {
-      background: var(--bg-panel);
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      overflow-y: auto;
-      padding: 8px 10px;
-      gap: 7px;
-    }
-
-    .studio-section {
-      background: #0c0f17;
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      padding: 7px 9px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .section-label {
-      font-size: 10.5px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .step-num {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      background: var(--g-blue-soft);
-      color: var(--g-blue-glow);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
+    .multicam-canvas.quad-mode .quad-label-pill {
       display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(66,133,244,0.35);
     }
 
-    /* 4 Camera Angles Grid */
-    .camera-angles-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
+    .multicam-canvas.quad-mode .cam-feed-slot[data-cam="cam3"] .quad-label-pill,
+    .multicam-canvas.quad-mode .cam-feed-slot[data-cam="cam4"] .quad-label-pill {
+      bottom: auto;
+      top: 10px;
     }
 
-    .cam-card {
-      position: relative;
-      background: var(--bg-panel-elevated);
-      border: 1.5px solid var(--border-subtle);
-      border-radius: 7px;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.14s ease;
+    .multicam-canvas.quad-mode .cam-feed-slot.active-cam .quad-label-pill {
+      border-color: var(--yellow-export);
+      color: var(--yellow-export);
     }
 
-    .cam-card:hover {
-      border-color: var(--border-strong);
-    }
-
-    .cam-card.active {
-      border-color: var(--g-red);
-      box-shadow: 0 0 0 2px rgba(234, 67, 53, 0.25);
-    }
-
-    .cam-video-wrap {
-      position: relative;
-      width: 100%;
-      height: 68px;
-      background: #000;
-      overflow: hidden;
-    }
-
-    .cam-video-wrap video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .cam-badge-top {
-      position: absolute;
-      top: 4px;
-      left: 5px;
-      right: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    .cam-id-tag {
-      background: rgba(9, 11, 16, 0.85);
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 5px;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .cam-tally-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--g-green);
-    }
-
-    .cam-card.active .cam-tally-dot {
-      background: var(--g-red);
-      box-shadow: 0 0 6px var(--g-red);
-    }
-
-    .cam-info-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 10px 6px 3px;
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      background: linear-gradient(180deg, transparent 0%, rgba(6, 8, 12, 0.92) 80%);
-      pointer-events: none;
-    }
-
-    .cam-name {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #fff;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    }
-
-    .cam-sub {
-      font-size: 9px;
-      color: #cbd5e1;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Aspect Ratio Selector */
-    .aspect-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 5px;
-    }
-
-    .aspect-btn {
-      background: var(--bg-panel-elevated);
-      border: 1.5px solid var(--border-subtle);
-      border-radius: 7px;
-      padding: 5px 4px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      color: var(--text-secondary);
-      transition: all 0.14s ease;
-    }
-
-    .aspect-btn:hover {
-      border-color: var(--border-strong);
-      color: var(--text-primary);
-    }
-
-    .aspect-btn.active {
-      background: var(--g-blue-soft);
-      border-color: var(--g-blue);
-      color: #fff;
-    }
-
-    .aspect-icon-box {
-      border: 1.5px solid currentColor;
-      border-radius: 2px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .aspect-ratio-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .aspect-ratio-desc {
-      font-size: 9px;
-      color: var(--text-muted);
-    }
-
-    .aspect-btn.active .aspect-ratio-desc {
-      color: var(--g-blue-glow);
-    }
-
-    /* Live Export Framing Preview */
-    .framing-preview-stage {
-      height: 118px;
-      background: radial-gradient(circle at center, #151b29 0%, #07090e 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      padding: 6px;
-    }
-
-    .crop-viewport {
-      position: relative;
-      height: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-      border: 2px solid var(--g-blue-glow);
-      border-radius: 5px;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
-      transition: aspect-ratio 0.22s ease, width 0.22s ease, height 0.22s ease;
-    }
-
-    .crop-viewport video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .crop-overlay-badge {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      background: rgba(9, 11, 16, 0.8);
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 1px 5px;
-      border-radius: 3px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8.5px;
-      color: #fde68a;
-      pointer-events: none;
-    }
-
-    .crop-caption-burned {
-      position: absolute;
-      bottom: 5px;
-      left: 5px;
-      right: 5px;
-      background: rgba(0, 0, 0, 0.78);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 700;
-      text-align: center;
-      padding: 2px 5px;
-      border-radius: 3px;
-      border: 1px solid rgba(251, 188, 4, 0.4);
-      pointer-events: none;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Export CTA Box */
-    .export-cta-box {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .export-spec-summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--text-secondary);
-      background: var(--bg-panel-elevated);
-      padding: 4px 8px;
-      border-radius: 5px;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .download-primary-btn {
-      height: 34px;
-      border-radius: 7px;
-      background: linear-gradient(135deg, #4285f4 0%, #2563eb 100%);
-      border: 1px solid #60a5fa;
-      color: #fff;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 7px;
-      box-shadow: 0 4px 14px rgba(66, 133, 244, 0.35);
-      transition: all 0.15s ease;
-    }
-
-    .download-primary-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(66, 133, 244, 0.5);
-    }
-
-    .export-progress-wrap {
-      display: none;
-      flex-direction: column;
-      gap: 4px;
-      background: #090b10;
-      padding: 7px 9px;
-      border-radius: 6px;
-      border: 1px solid var(--border-strong);
-    }
-
-    .export-progress-wrap.active {
-      display: flex;
-    }
-
-    .export-progress-bar {
-      height: 5px;
-      background: var(--border-subtle);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .export-progress-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--g-blue), var(--g-green));
-      transition: width 0.15s linear;
-    }
-
-    /* Bottom Dock: Interactive Search-Highlighted Timeline */
-    .timeline-dock {
-      background: var(--bg-panel);
-      display: flex;
-      flex-direction: column;
-      padding: 7px 14px;
-      gap: 6px;
-      position: relative;
-      z-index: 25;
-    }
-
-    .timeline-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .timeline-legend {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 10.5px;
-      color: var(--text-secondary);
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .legend-swatch {
-      width: 9px;
-      height: 9px;
-      border-radius: 2px;
-    }
-
-    /* Interactive Track Area */
-    .timeline-track-container {
-      position: relative;
-      height: 78px;
-      background: #080a0f;
-      border: 1px solid var(--border-strong);
-      border-radius: 8px;
-      cursor: crosshair;
-      overflow: visible;
-    }
-
-    /* Chapters Row */
-    .timeline-chapters-row {
-      height: 18px;
-      display: flex;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-      border-radius: 7px 7px 0 0;
-    }
-
-    .chapter-seg {
-      height: 100%;
-      border-right: 1px solid rgba(255,255,255,0.12);
-      padding: 0 6px;
-      font-size: 9.5px;
-      font-weight: 600;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      background: rgba(22, 27, 39, 0.7);
-      cursor: pointer;
-    }
-
-    .chapter-seg:hover {
-      background: rgba(66, 133, 244, 0.18);
-      color: #fff;
-    }
-
-    /* Filmstrip Row */
-    .timeline-filmstrip-row {
-      position: relative;
-      height: 42px;
-      display: grid;
-      grid-template-columns: repeat(20, 1fr);
-      overflow: hidden;
-      background: #05070b;
-    }
-
-    .filmstrip-cell {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.48;
-      border-right: 1px solid rgba(255,255,255,0.05);
-      pointer-events: none;
-    }
-
-    /* Search Highlight Pillars on Timeline */
-    .timeline-highlights-layer {
-      position: absolute;
-      top: 20px;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      pointer-events: none;
-      z-index: 6;
-    }
-
-    .timeline-match-marker {
+    /* Subtle top & bottom stage vignette for overlay legibility */
+    .stage-scrim-top {
       position: absolute;
       top: 0;
-      bottom: 0;
-      min-width: 6px;
-      background: linear-gradient(180deg, rgba(56, 189, 248, 0.85) 0%, rgba(56, 189, 248, 0.35) 100%);
-      border: 1px solid #38bdf8;
-      border-radius: 3px;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.65);
-      pointer-events: auto;
-      cursor: pointer;
-      transition: transform 0.12s ease;
-    }
-
-    .timeline-match-marker:hover {
-      transform: scaleY(1.08);
-      background: #38bdf8;
+      left: 0;
+      right: 0;
+      height: 86px;
+      background: linear-gradient(180deg, rgba(10, 13, 20, 0.72) 0%, rgba(10, 13, 20, 0) 100%);
+      pointer-events: none;
       z-index: 10;
     }
 
-    /* Time Ruler Bottom */
-    .timeline-ruler-row {
-      height: 18px;
-      background: #0b0e15;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      border-radius: 0 0 7px 7px;
-      position: relative;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
-      color: var(--text-muted);
-    }
-
-    .ruler-tick {
+    .stage-scrim-bottom {
       position: absolute;
-      top: 2px;
-      transform: translateX(-50%);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 150px;
+      background: linear-gradient(0deg, rgba(10, 13, 20, 0.82) 0%, rgba(10, 13, 20, 0) 100%);
+      pointer-events: none;
+      z-index: 10;
     }
 
-    /* Draggable In / Out Selection Bracket */
-    .clip-selection-Overlay {
+    /* Top-Left Stream Time + Event Selector */
+    .stage-top-left {
       position: absolute;
-      top: 18px;
-      bottom: 16px;
-      background: rgba(251, 188, 4, 0.22);
-      border-top: 2px solid var(--g-yellow);
-      border-bottom: 2px solid var(--g-yellow);
-      z-index: 12;
-      cursor: grab;
-      box-shadow: 0 0 20px rgba(251, 188, 4, 0.25);
-    }
-
-    .clip-selection-Overlay:active {
-      cursor: grabbing;
-    }
-
-    .clip-handle {
-      position: absolute;
-      top: -4px;
-      bottom: -4px;
-      width: 14px;
-      background: var(--g-yellow);
-      color: #090b10;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 800;
+      top: 14px;
+      left: 16px;
+      max-width: calc(50% - 195px);
+      z-index: 25;
       display: flex;
       align-items: center;
-      justify-content: center;
-      cursor: ew-resize;
-      border-radius: 3px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-      z-index: 15;
+      gap: 7px;
     }
 
-    .clip-handle.in-handle {
-      left: -7px;
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-live);
+      box-shadow: 0 0 8px rgba(0, 167, 73, 0.8);
+      flex-shrink: 0;
     }
 
-    .clip-handle.out-handle {
-      right: -7px;
+    .status-dot.ended {
+      background: var(--red-ended);
+      box-shadow: none;
     }
 
-    .clip-selection-badge {
-      position: absolute;
-      top: -19px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--g-yellow);
-      color: #090b10;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
-      font-weight: 700;
-      padding: 1px 6px;
-      border-radius: 3px;
+    .stage-stream-title {
+      color: #ffffff;
+      font-size: 15.5px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .event-Minimal-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 15.5px;
+      font-weight: 500;
+      padding: 2px 18px 2px 3px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: nowrap;
-      pointer-events: none;
+      cursor: pointer;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.55);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 3px center;
     }
 
-    /* Playhead Needle */
-    .playhead-line {
-      position: absolute;
-      top: -4px;
-      bottom: 0;
-      width: 2px;
-      background: var(--g-red);
-      z-index: 18;
-      pointer-events: none;
-      box-shadow: 0 0 8px var(--g-red);
+    .event-Minimal-select:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.28);
     }
 
-    .playhead-cap {
-      position: absolute;
-      top: -4px;
-      left: -5px;
-      width: 12px;
-      height: 10px;
-      background: var(--g-red);
-      clip-path: polygon(0 0, 100% 0, 100% 60%, 50% 100%, 0 60%);
+    .event-Minimal-select option {
+      background: #10141d;
+      color: #ffffff;
+      font-size: 13px;
     }
 
-    /* Floating Hover Thumbnail Loupe */
-    .timeline-hover-loupe {
+    /* Top-Right Camera Angle Dropdown Pill (Figma 29:3600) */
+    .stage-top-right {
       position: absolute;
-      bottom: 102px;
-      transform: translateX(-50%);
-      width: 196px;
-      background: #0d111a;
-      border: 1px solid var(--g-blue);
-      border-radius: 8px;
-      padding: 5px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.8);
-      pointer-events: none;
+      top: 15px;
+      right: 16px;
+      z-index: 35;
+    }
+
+    .cam-dropdown-trigger {
+      height: 41px;
+      padding: 0 13px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      background: rgba(16, 20, 29, 0.52);
+      backdrop-filter: blur(10px);
+      color: #ffffff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .cam-dropdown-trigger:hover,
+    .cam-dropdown-trigger.open {
+      background: rgba(16, 20, 29, 0.85);
+      border-color: var(--yellow-export);
+    }
+
+    .cam-trigger-code {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--yellow-export);
+      letter-spacing: 0.02em;
+    }
+
+    .cam-trigger-name {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: #ffffff;
+    }
+
+    /* Camera Switcher Popover Menu */
+    .cam-switcher-menu {
+      position: absolute;
+      top: 48px;
+      right: 0;
+      width: 268px;
+      background: rgba(16, 20, 29, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
       display: none;
       flex-direction: column;
-      gap: 4px;
-      z-index: 40;
+      gap: 5px;
     }
 
-    .timeline-hover-loupe.visible {
+    .cam-switcher-menu.open {
       display: flex;
     }
 
-    .loupe-img {
+    .cam-option-btn {
       width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      border-radius: 5px;
-      background: #000;
-    }
-
-    .loupe-meta {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: #ffffff;
+      cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--g-yellow);
+      text-align: left;
+      transition: all 0.12s ease;
     }
 
-    .loupe-caption {
+    .cam-option-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .cam-option-btn.active {
+      background: rgba(250, 189, 5, 0.18);
+      border-color: var(--yellow-export);
+    }
+
+    .cam-opt-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cam-opt-code {
+      font-family: var(--font-mono);
       font-size: 10.5px;
-      color: #e2e8f0;
+      font-weight: 600;
+      color: var(--yellow-export);
+    }
+
+    .cam-opt-label {
+      font-size: 12px;
+      color: #ffffff;
+    }
+
+    .cam-opt-key {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .cam-menu-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.14);
+      margin: 2px 0;
+    }
+
+    /* Live Subtitle Overlay (Figma 29:3605) */
+    .stage-subtitle {
+      position: absolute;
+      bottom: 66px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(82%, 580px);
+      text-align: center;
+      color: #ffffff;
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.28;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.95);
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    /* Bottom-Left Stage Controls: Play In -> Out & Watch Live */
+    .stage-bottom-left {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-play-inout {
+      height: 40px;
+      padding: 0 15px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--blue-clip);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    .btn-play-inout:hover {
+      background: #9fcaf9;
+    }
+
+    .btn-watch-live {
+      height: 40px;
+      padding: 0 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      background: rgba(16, 20, 29, 0.48);
+      backdrop-filter: blur(8px);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-watch-live:hover,
+    .btn-watch-live.active {
+      background: rgba(16, 20, 29, 0.82);
+      border-color: #ffffff;
+    }
+
+    /* Bottom-Right Stage Toggle: < Export / > Export */
+    .stage-bottom-right {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 25;
+    }
+
+    .btn-export-drawer {
+      height: 40px;
+      padding: 0 15px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--yellow-export);
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
+      transition: all 0.15s ease;
+    }
+
+    .btn-export-drawer:hover {
+      filter: brightness(1.04);
+    }
+
+    .clipper-top.export-open .btn-export-drawer {
+      background: rgba(16, 20, 29, 0.52);
+      backdrop-filter: blur(8px);
+      border-color: rgba(255, 255, 255, 0.9);
+      color: #ffffff;
+    }
+
+    .export-count-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      background: rgba(16, 20, 29, 0.14);
+      padding: 1px 6px;
+      border-radius: 999px;
+    }
+
+    .clipper-top.export-open .export-count-pill {
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+    }
+
+    /* ==================== RIGHT: COLLAPSIBLE EXPORT PANEL (Figma 31:7377) ==================== */
+    .export-col {
+      background: var(--bg-surface);
+      border-left: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+      user-select: none;
+    }
+
+    .clipper-top.export-open .export-col {
+      border-left-color: var(--line-strong);
+      padding: 14px 12px 12px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .export-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .export-title {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-muted);
+    }
+
+    .select-all-btn {
+      border: none;
+      background: transparent;
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .radio-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 1px solid #cbd0d8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .radio-dot.checked::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--yellow-export);
+    }
+
+    /* 2-Column Saved Clips Grid */
+    .export-clips-grid {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-content: start;
+      gap: 10px;
+      padding-right: 2px;
+    }
+
+    .export-clips-grid::-webkit-scrollbar {
+      width: 4px;
+    }
+    .export-clips-grid::-webkit-scrollbar-thumb {
+      background: var(--line-divider);
+      border-radius: 999px;
+    }
+
+    .export-clip-card {
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      background: var(--bg-card);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      border: 1.5px solid transparent;
+      transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+
+    .export-clip-card:hover {
+      border-color: #cbd5e1;
+    }
+
+    .export-clip-card.selected {
+      background: var(--yellow-export);
+    }
+
+    .export-card-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #10141d;
+      overflow: hidden;
+    }
+
+    .export-card-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .export-card-select {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    }
+
+    .export-clip-card.selected .export-card-select::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--yellow-export);
+    }
+
+    .export-card-remove {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(16, 20, 29, 0.55);
+      color: #ffffff;
+      font-size: 11px;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .export-card-remove:hover {
+      background: rgba(234, 67, 53, 0.9);
+    }
+
+    .export-card-meta-pill {
+      position: absolute;
+      bottom: 4px;
+      right: 5px;
+      background: rgba(16, 20, 29, 0.78);
+      color: #ffffff;
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .export-card-caption {
+      padding: 7px 8px;
+      min-height: 41px;
+    }
+
+    .export-card-caption-text {
+      font-size: 10.5px;
+      line-height: 13.5px;
+      color: var(--ink-primary);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    /* Selected Clip Storyboard Strip */
-    .selected-storyboard-strip {
+    /* Export Footer Controls */
+    .export-footer {
+      padding-top: 10px;
+      margin-top: 8px;
+      border-top: 1px solid #eceef2;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .export-options-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      height: 50px;
-      background: #0c0f17;
-      border: 1px solid var(--border-subtle);
+      gap: 6px;
+    }
+
+    .clean-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-color: transparent;
+      border: 1px solid transparent;
       border-radius: 7px;
-      padding: 4px 10px;
-    }
-
-    .storyboard-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      min-width: 195px;
-    }
-
-    .storyboard-title {
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #fde68a;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .storyboard-sub {
-      font-size: 10px;
-      color: var(--text-secondary);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 240px;
-    }
-
-    .storyboard-thumbs {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      overflow-x: auto;
-      height: 100%;
-    }
-
-    .sb-thumb-card {
-      position: relative;
-      height: 38px;
-      aspect-ratio: 16 / 9;
-      border-radius: 4px;
-      overflow: hidden;
-      border: 1px solid rgba(251, 188, 4, 0.45);
-      flex-shrink: 0;
+      padding: 5px 20px 5px 6px;
+      color: var(--ink-primary);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
       cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2310141d' stroke-width='2.4'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 4px center;
     }
 
-    .sb-thumb-card img {
+    .clean-select:hover {
+      background-color: var(--bg-card);
+    }
+
+    .advanced-toggle-link {
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-decoration: underline;
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+
+    .advanced-toggle-link:hover {
+      color: var(--ink-primary);
+    }
+
+    /* Advanced Framing & Crop Preview Drawer */
+    .advanced-drawer {
+      display: none;
+      background: #f8f9fb;
+      border: 1px solid #dfe3ea;
+      border-radius: var(--radius-pill);
+      padding: 9px;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .advanced-drawer.open {
+      display: flex;
+    }
+
+    .advanced-preview-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .crop-preview-box {
+      width: 92px;
+      height: 82px;
+      background: #10141d;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .crop-frame-live {
+      position: relative;
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border: 1.5px solid var(--yellow-export);
+      border-radius: 4px;
+      background: #000;
+    }
+
+    .crop-frame-live video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
-    .sb-thumb-time {
+    .adv-controls-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--ink-primary);
+    }
+
+    .adv-check-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .export-progress-box {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+
+    .export-progress-box.active {
+      display: flex;
+    }
+
+    .export-progress-track {
+      height: 5px;
+      background: #d8dce3;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .export-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--blue-playhead);
+      transition: width 0.12s linear;
+    }
+
+    .btn-download-yellow {
+      width: 100%;
+      height: 39px;
+      border-radius: var(--radius-pill);
+      border: none;
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: filter 0.14s ease, transform 0.1s ease;
+    }
+
+    .btn-download-yellow:hover {
+      filter: brightness(0.97);
+    }
+
+    .btn-download-yellow:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ==================== BOTTOM: TIMELINE DOCK (Figma 29:3582) ==================== */
+    .timeline-dock {
+      background: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 0 14px;
+      position: relative;
+      user-select: none;
+    }
+
+    .timeline-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      height: 30px;
+      position: relative;
+    }
+
+    .timeline-heading {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink-muted);
+      letter-spacing: -0.01em;
+    }
+
+    .timeline-right-time {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Track Wrapper */
+    .timeline-track-area {
+      position: relative;
+      width: 100%;
+      height: 128px;
+      cursor: pointer;
+    }
+
+    /* Chapters Row */
+    .chapters-bar {
+      position: relative;
+      height: 24px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .chapter-marker {
       position: absolute;
-      bottom: 2px;
-      right: 3px;
-      background: rgba(0,0,0,0.8);
-      color: #fde68a;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8.5px;
-      padding: 0 3px;
-      border-radius: 2px;
+      top: 2px;
+      bottom: -95px;
+      border-left: 1px solid var(--line-strong);
+      padding-left: 6px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .chapter-marker-label {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink-primary);
+      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.86);
+      padding: 0 4px 0 0;
+      border-radius: 3px;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .chapter-marker-label:hover {
+      color: var(--blue-playhead);
+    }
+
+    /* Filmstrip Row (height 93px per Figma) */
+    .filmstrip-track {
+      position: relative;
+      width: 100%;
+      height: 93px;
+      background: #10141d;
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      overflow: hidden;
+    }
+
+    .filmstrip-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.78;
+      pointer-events: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Blue Search Highlight Blocks (Figma #B3D6FB rounded 10px) */
+    .timeline-matches-layer {
+      position: absolute;
+      top: 24px;
+      height: 93px;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .timeline-match-block {
+      position: absolute;
+      top: 0;
+      height: 93px;
+      min-width: 14px;
+      background: var(--blue-clip-translucent);
+      border: 1px solid rgba(130, 184, 245, 0.95);
+      border-radius: var(--radius-pill);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: background 0.12s ease, transform 0.12s ease;
+    }
+
+    .timeline-match-block:hover {
+      background: rgba(154, 202, 252, 0.92);
+      z-index: 10;
+    }
+
+    /* Yellow Draggable [ IN / OUT ] Selection Bracket (Figma Group 4) */
+    .trim-bracket {
+      position: absolute;
+      top: 19px;
+      height: 103px;
+      background: var(--blue-clip-tint);
+      border-top: 2.5px solid var(--yellow-export);
+      border-bottom: 2.5px solid var(--yellow-export);
+      border-radius: var(--radius-pill);
+      z-index: 16;
+      cursor: grab;
+    }
+
+    .trim-bracket:active {
+      cursor: grabbing;
+    }
+
+    .trim-handle {
+      position: absolute;
+      top: -2px;
+      bottom: -2px;
+      width: 17px;
+      background: var(--yellow-export);
+      color: #000000;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: ew-resize;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.22);
+      z-index: 18;
+    }
+
+    .trim-handle.in {
+      left: -8px;
+    }
+
+    .trim-handle.out {
+      right: -8px;
+    }
+
+    /* Drag Instruction above chapters row (disappears after first drag per Figma) */
+    .drag-hint-label {
+      position: absolute;
+      bottom: calc(100% + 22px);
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      line-height: 1.2;
+      color: var(--ink-muted);
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .drag-hint-label.dismissed {
+      display: none;
+    }
+
+    /* Floating "+ Add to Export Panel" pill above selection (Figma V2/V3) */
+    .add-to-export-float {
+      position: absolute;
+      bottom: calc(100% + 21px);
+      left: 50%;
+      transform: translateX(-50%);
+      height: 30px;
+      padding: 0 11px;
+      border-radius: var(--radius-pill);
+      border: 1.5px solid var(--yellow-export);
+      background: var(--bg-surface);
+      color: var(--ink-primary);
+      font-family: var(--font-sans);
+      font-size: 11.5px;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+      z-index: 30;
+    }
+
+    .trim-bracket:hover .add-to-export-float,
+    .add-to-export-float.visible {
+      display: inline-flex;
+    }
+
+    .trim-bracket:hover .drag-hint-label {
+      opacity: 0;
+    }
+
+    .add-plus-circle {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--yellow-export);
+      color: var(--ink-primary);
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .add-to-export-float.added {
+      background: var(--yellow-export);
+      font-weight: 600;
+    }
+
+    /* Yellow IN -> OUT Pill Badge at Bottom of Bracket (Figma 29:3697) */
+    .trim-range-pill {
+      position: absolute;
+      bottom: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 19px;
+      padding: 0 10px;
+      border-radius: var(--radius-pill);
+      background: var(--yellow-export);
+      color: #000000;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+      z-index: 20;
+    }
+
+    /* Blue Playhead Needle (Figma 29:3670) */
+    .playhead-needle {
+      position: absolute;
+      top: 22px;
+      height: 98px;
+      width: 2.5px;
+      background: var(--blue-playhead);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 24;
+    }
+
+    .playhead-head {
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 15px;
+      height: 13px;
+      background: var(--blue-playhead);
+      clip-path: polygon(0 0, 100% 0, 100% 58%, 50% 100%, 0 58%);
+    }
+
+    /* Hover Frame Preview Loupe */
+    .hover-loupe {
+      position: absolute;
+      bottom: 134px;
+      transform: translateX(-50%);
+      width: 188px;
+      background: var(--bg-surface);
+      border: 1px solid var(--line-divider);
+      border-radius: 10px;
+      padding: 5px;
+      box-shadow: 0 10px 28px rgba(16, 20, 29, 0.2);
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      z-index: 45;
+    }
+
+    .hover-loupe.visible {
+      display: flex;
+    }
+
+    .hover-loupe img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      border-radius: 6px;
+      background: #10141d;
+    }
+
+    .hover-loupe-meta {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink-muted);
+      padding: 0 2px;
+    }
+
+    .hover-loupe-text {
+      font-size: 10.5px;
+      color: var(--ink-primary);
+      padding: 0 2px 2px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ==================== RESPONSIVE MOBILE & MODAL (Figma 38:8463 & 31:5412) ==================== */
+    .mobile-export-backdrop {
+      display: none;
+    }
+
+    @media (max-width: 960px) {
+      html, body {
+        overflow: auto;
+      }
+
+      .clipper-shell {
+        display: flex;
+        flex-direction: column;
+        height: 100dvh;
+      }
+
+      .clipper-top,
+      .clipper-top.export-open {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .stage-col {
+        order: 1;
+        flex: 1;
+        min-height: 260px;
+      }
+
+      .brand-notch {
+        padding: 6px 16px 7px;
+      }
+
+      .brand-notch-text {
+        font-size: 15px;
+      }
+
+      .brand-io-emblem {
+        height: 18px;
+      }
+
+      .timeline-dock {
+        order: 2;
+        height: 154px;
+        flex-shrink: 0;
+      }
+
+      .transcript-col {
+        order: 3;
+        height: 190px;
+        border-right: none;
+        border-top: 1px solid var(--line-strong);
+        flex-shrink: 0;
+      }
+
+      .transcript-scroll {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .cue-card {
+        min-width: 220px;
+        max-width: 240px;
+        flex-shrink: 0;
+      }
+
+      /* Export panel becomes centered Figma "Export Clips" modal on mobile */
+      .clipper-top.export-open .mobile-export-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 20, 29, 0.55);
+        z-index: 60;
+      }
+
+      .export-col {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: min(92vw, 560px);
+        max-height: 82dvh;
+        border-radius: 16px;
+        border: 1px solid var(--line-divider);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+        z-index: 70;
+      }
+
+      .clipper-top.export-open .export-col {
+        padding: 16px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="studio-app">
-    <!-- TOP HEADER -->
-    <header class="studio-header">
-      <div class="brand-cluster">
-        <div class="google-g-badge" title="Google I/O Creator Studio">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path d="M21.35 11.1H12V13.9H17.55C17.05 16.4 14.95 17.9 12 17.9C8.65 17.9 5.95 15.2 5.95 11.85C5.95 8.5 8.65 5.8 12 5.8C13.5 5.8 14.85 6.35 15.9 7.3L18.05 5.15C16.45 3.65 14.35 2.75 12 2.75C6.95 2.75 2.9 6.8 2.9 11.85C2.9 16.9 6.95 20.95 12 20.95C16.75 20.95 21.5 17.55 21.5 11.85C21.5 11.55 21.45 11.3 21.35 11.1Z" fill="#4285F4"/>
-          </svg>
+  <div class="clipper-shell">
+    <div class="clipper-top" id="clipperTop">
+      <!-- LEFT COLUMN: KEYNOTE TRANSCRIPT -->
+      <aside class="transcript-col">
+        <div class="col-heading-row">
+          <h2 class="col-heading" id="transcriptHeading">Keynote Transcript</h2>
         </div>
-        <div>
-          <div class="brand-title">
-            Google I/O Creator Clipper
-            <span class="proto-pill">Concept Demo</span>
-          </div>
-          <div class="event-meta">
-            <span class="live-dot"></span>
-            <span>Google I/O '26 Keynote · Shoreline Amphitheatre · 4-Cam ISO Feed</span>
-          </div>
-        </div>
-      </div>
 
-      <!-- SEARCH COMMAND BAR -->
-      <div class="search-command-bar">
-        <div class="search-input-wrap">
-          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input
             id="searchInput"
-            type="text"
             class="search-input"
-            value="video generation"
-            placeholder="Search keynote spoken words or topics (e.g. 'video generation', 'Veo', 'Sundar', 'tokens')..."
+            type="text"
+            value="AI"
+            placeholder="Keyword search"
             autocomplete="off"
           />
-          <div class="search-match-pill">
-            <span id="matchCountBadge" class="match-count-badge">16 matches</span>
-            <button id="clearSearchBtn" class="clear-search-btn" title="Clear search">✕</button>
+          <span class="search-matches-label" id="matchCountLabel">16 matches</span>
+          <button class="search-clear-btn" id="clearSearchBtn" title="Clear search" aria-label="Clear search">✕</button>
+        </div>
+
+        <div class="transcript-scroll" id="transcriptList"></div>
+      </aside>
+
+      <!-- CENTER COLUMN: LIVE / MULTICAM STAGE -->
+      <main class="stage-col">
+        <!-- Top-Center White Brand Notch -->
+        <div class="brand-notch">
+          <div class="brand-notch-text">
+            <span>Google</span>
+            <img class="brand-io-emblem" src="/media/io-emblem.png" alt="I/O" />
+            <span>Creator Clipper</span>
           </div>
         </div>
 
-        <div class="quick-chips" id="quickChips">
-          <button class="chip-btn active" data-query="video generation">✨ Video Gen</button>
-          <button class="chip-btn" data-query="Veo">🎬 Veo & Lyria</button>
-          <button class="chip-btn" data-query="Sundar">🎙️ Sundar</button>
-          <button class="chip-btn" data-query="Omni">🌐 Omni</button>
-          <button class="chip-btn" data-query="quadrillion">📊 3.2Q</button>
-        </div>
-      </div>
-
-      <!-- RIGHT HEADER CONTROLS -->
-      <div class="header-actions">
-        <button id="quadViewToggle" class="mode-toggle-btn" title="Toggle 4-Camera Split Multiview on Main Monitor">
-          <span>⊞</span> 4-Cam Multiview
-        </button>
-        <button id="loopClipToggle" class="mode-toggle-btn active" title="Loop between In and Out points">
-          <span>↻</span> Loop In/Out
-        </button>
-      </div>
-    </header>
-
-    <!-- MAIN 3-COLUMN WORKSPACE -->
-    <main class="studio-workspace">
-      <!-- LEFT: SEARCHABLE TRANSCRIPT -->
-      <section class="transcript-panel">
-        <div class="panel-header">
-          <div class="panel-title">
-            <span>🔎</span> Searchable Keynote Transcript
+        <!-- Stacked 4-Cam Video Canvas -->
+        <div class="multicam-canvas" id="multicamCanvas">
+          <div class="cam-feed-slot active-cam" data-cam="cam1">
+            <video id="vid_cam1" playsinline preload="auto"></video>
+            <div class="quad-label-pill"><span>●</span> <span class="q-lbl">CAMERA 1</span></div>
           </div>
-          <div style="display:flex; gap:4px;">
-            <button id="prevMatchBtn" class="t-btn" style="height:24px; padding:0 7px; font-size:10.5px;">◀ Prev</button>
-            <button id="nextMatchBtn" class="t-btn" style="height:24px; padding:0 7px; font-size:10.5px;">Next ▶</button>
+          <div class="cam-feed-slot" data-cam="cam2">
+            <video id="vid_cam2" muted playsinline preload="auto"></video>
+            <div class="quad-label-pill"><span>●</span> <span class="q-lbl">CAMERA 2</span></div>
+          </div>
+          <div class="cam-feed-slot" data-cam="cam3">
+            <video id="vid_cam3" muted playsinline preload="auto"></video>
+            <div class="quad-label-pill"><span>●</span> <span class="q-lbl">CAMERA 3</span></div>
+          </div>
+          <div class="cam-feed-slot" data-cam="cam4">
+            <video id="vid_cam4" muted playsinline preload="auto"></video>
+            <div class="quad-label-pill"><span>●</span> <span class="q-lbl">CAMERA 4</span></div>
           </div>
         </div>
 
-        <div class="transcript-filters">
-          <div class="speaker-tabs" id="speakerTabs">
-            <button class="speaker-tab active" data-speaker="all">All</button>
-            <button class="speaker-tab" data-speaker="Sundar Pichai">Sundar</button>
-            <button class="speaker-tab" data-speaker="Demis Hassabis">Demis</button>
-          </div>
-          <label class="filter-matches-toggle">
-            <input type="checkbox" id="onlyMatchesCheck" />
-            <span>Matches only</span>
-          </label>
-        </div>
+        <div class="stage-scrim-top"></div>
+        <div class="stage-scrim-bottom"></div>
 
-        <div class="transcript-list" id="transcriptList">
-          <!-- Populated dynamically from transcript.json -->
-        </div>
-      </section>
-
-      <!-- CENTER: MASTER KEYNOTE MONITOR -->
-      <section class="monitor-stage">
-        <div class="monitor-topbar">
-          <div class="monitor-status">
-            <span class="pgm-tally">PGM MASTER</span>
-            <span id="activeStageLabel">Google I/O '26 Keynote · Broadcast Program + ISO Sync</span>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px;">
-            <label style="font-size:11px; color:var(--text-secondary); display:flex; align-items:center; gap:5px; cursor:pointer;">
-              <input type="checkbox" id="syncMainToCamCheck" />
-              <span>Preview Selected Camera on Main Screen</span>
-            </label>
+        <!-- Top-Left Timecode + Event Selector -->
+        <div class="stage-top-left">
+          <span class="status-dot" id="liveDot"></span>
+          <div class="stage-stream-title">
+            <span id="stageTimecode">00:04</span>
+            <span>•</span>
+            <select id="eventSwitcher" class="event-Minimal-select" aria-label="Select event feed"></select>
           </div>
         </div>
 
-        <div class="monitor-viewport">
-          <div class="video-frame-container">
-            <video id="mainVideo" src="/media/keynote-main.mp4" playsinline preload="auto"></video>
+        <!-- Top-Right Camera Switcher Dropdown -->
+        <div class="stage-top-right">
+          <button class="cam-dropdown-trigger" id="camDropdownBtn" type="button">
+            <span class="cam-trigger-code" id="camTriggerCode">CAMERA 1</span>
+            <span class="cam-trigger-name" id="camTriggerName">Stage</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </button>
 
-            <!-- Optional 2x2 Quad Multiview Overlay -->
-            <div class="quad-multiview-grid" id="quadGrid">
-              <div class="quad-cell" data-cam="cam1">
-                <video id="quadCam1" src="/media/cam1-screen.mp4" muted loop playsinline></video>
-                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 1 · BIG SCREEN / VEO</div>
+          <div class="cam-switcher-menu" id="camSwitcherMenu">
+            <div id="camMenuOptions"></div>
+            <div class="cam-menu-divider"></div>
+            <button class="cam-option-btn" id="quadToggleMenuBtn" type="button">
+              <div class="cam-opt-left">
+                <span class="cam-opt-code">⊞ QUAD</span>
+                <span class="cam-opt-label">4-Cam Multiview Split</span>
               </div>
-              <div class="quad-cell selected" data-cam="cam2">
-                <video id="quadCam2" src="/media/cam2-closeup.mp4" muted loop playsinline></video>
-                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 2 · SUNDAR CLOSE-UP</div>
-              </div>
-              <div class="quad-cell" data-cam="cam3">
-                <video id="quadCam3" src="/media/cam3-wide.mp4" muted loop playsinline></video>
-                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 3 · WIDE STAGE</div>
-              </div>
-              <div class="quad-cell" data-cam="cam4">
-                <video id="quadCam4" src="/media/cam4-crowd.mp4" muted loop playsinline></video>
-                <div class="quad-cell-label"><span class="cam-tally-dot"></span> CAM 4 · CROWD REACTION</div>
-              </div>
-            </div>
-
-            <div class="monitor-hud-top">
-              <div class="hud-pill">
-                <span style="color:var(--g-red);">●</span>
-                <span id="hudTimecode">TC 01:42.00</span>
-                <span style="color:var(--text-muted);">|</span>
-                <span id="hudChapter">Generative AI & Veo</span>
-              </div>
-              <div class="hud-pill" id="hudActiveCamPill">
-                <span>🎥</span>
-                <span id="hudCamText">EXPORT ANGLE: CAM 2 · SUNDAR CLOSE-UP</span>
-              </div>
-            </div>
-
-            <div class="monitor-caption-bar">
-              <div class="monitor-caption-speaker" id="liveSpeakerLabel">SUNDAR PICHAI · CEO, GOOGLE & ALPHABET</div>
-              <div id="liveCaptionText">Musicians and artists using generative AI models like Lyria and Veo as part of their creative flow.</div>
-            </div>
+              <span class="cam-opt-key">M</span>
+            </button>
           </div>
         </div>
 
-        <div class="transport-bar">
-          <div class="transport-left">
-            <button id="playPauseBtn" class="t-btn play-primary">▶ Play</button>
-            <button id="playClipBtn" class="t-btn" title="Play selected In-to-Out clip">▶ Play In→Out</button>
-            <button id="setInBtn" class="t-btn in-out-btn" title="Set In point at current playhead (Shortcut: I)">[ Set In</button>
-            <button id="setOutBtn" class="t-btn in-out-btn" title="Set Out point at current playhead (Shortcut: O)">Set Out ]</button>
-          </div>
+        <!-- Live Subtitle Overlay -->
+        <div class="stage-subtitle" id="liveSubtitleText"></div>
 
-          <div class="transport-center">
-            <span class="timecode-readout" id="transportTimeReadout">01:42 / 10:00</span>
-          </div>
-
-          <div class="transport-right">
-            <div class="clip-range-pill">
-              <span>✂️ CLIP:</span>
-              <span id="clipRangeText">01:36 – 01:55 (19.0s)</span>
-            </div>
-          </div>
+        <!-- Bottom-Left Transport Pills -->
+        <div class="stage-bottom-left">
+          <button class="btn-play-inout" id="playInOutBtn" type="button">
+            <span id="playInOutIcon">▶</span>
+            <span id="playInOutLabel">Play In → Out</span>
+          </button>
+          <button class="btn-watch-live" id="watchFullBtn" type="button">
+            <span class="status-dot" id="watchBtnDot"></span>
+            <span id="watchBtnLabel">Watch Live</span>
+          </button>
         </div>
-      </section>
 
-      <!-- RIGHT: MULTI-CAM ANGLES + ASPECT RATIO + CREATOR DOWNLOAD -->
-      <aside class="export-studio-panel">
-        <!-- STEP 1: 4 CAMERA ANGLES -->
-        <div class="studio-section">
-          <div class="section-head">
-            <div class="section-label">
-              <span class="step-num">1</span> Select Camera Angle (4 ISO Feeds)
-            </div>
-            <span style="font-size:10px; color:var(--g-green); font-family:'JetBrains Mono',monospace;">● 4 SYNCED FEEDS</span>
-          </div>
+        <!-- Bottom-Right Export Drawer Toggle -->
+        <div class="stage-bottom-right">
+          <button class="btn-export-drawer" id="toggleExportBtn" type="button">
+            <span id="exportChevron">‹</span>
+            <span>Export</span>
+            <span class="export-count-pill" id="exportCountBadge">4</span>
+          </button>
+        </div>
+      </main>
 
-          <div class="camera-angles-grid" id="cameraGrid">
-            <!-- CAM 1: Big Screen -->
-            <div class="cam-card" data-cam="cam1" data-name="Big Screen / Slides" data-code="CAM 1 · STAGE LED">
-              <div class="cam-video-wrap">
-                <video src="/media/cam1-screen.mp4" autoplay muted loop playsinline></video>
-                <div class="cam-badge-top">
-                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 1</span>
-                  <span class="cam-id-tag">DIRECT FEED</span>
+      <div class="mobile-export-backdrop" id="mobileExportBackdrop"></div>
+
+      <!-- RIGHT COLUMN: COLLAPSIBLE EXPORT PANEL -->
+      <aside class="export-col" id="exportCol">
+        <div class="export-header">
+          <span class="export-title">Export</span>
+          <button class="select-all-btn" id="selectAllBtn" type="button">
+            <span>SELECT ALL</span>
+            <span class="radio-dot checked" id="selectAllDot"></span>
+          </button>
+        </div>
+
+        <div class="export-clips-grid" id="exportClipsGrid"></div>
+
+        <div class="export-footer">
+          <div class="advanced-drawer" id="advancedDrawer">
+            <div class="advanced-preview-row">
+              <div class="crop-preview-box">
+                <div class="crop-frame-live" id="cropFrameLive">
+                  <video id="cropPreviewVideo" muted loop playsinline></video>
                 </div>
               </div>
-              <div class="cam-info-bar">
-                <div>
-                  <div class="cam-name">Big Screen / Slides</div>
-                  <div class="cam-sub">Veo & Deck Direct</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CAM 2: Sundar Close-Up -->
-            <div class="cam-card active" data-cam="cam2" data-name="Sundar Close-Up" data-code="CAM 2 · 85MM TIGHT">
-              <div class="cam-video-wrap">
-                <video src="/media/cam2-closeup.mp4" autoplay muted loop playsinline></video>
-                <div class="cam-badge-top">
-                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 2</span>
-                  <span class="cam-id-tag">85MM PRIME</span>
-                </div>
-              </div>
-              <div class="cam-info-bar">
-                <div>
-                  <div class="cam-name">Sundar Close-Up</div>
-                  <div class="cam-sub">Speaker Track ISO</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CAM 3: Wide Stage -->
-            <div class="cam-card" data-cam="cam3" data-name="Wide Stage Shot" data-code="CAM 3 · STAGE WIDE">
-              <div class="cam-video-wrap">
-                <video src="/media/cam3-wide.mp4" autoplay muted loop playsinline></video>
-                <div class="cam-badge-top">
-                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 3</span>
-                  <span class="cam-id-tag">24MM WIDE</span>
-                </div>
-              </div>
-              <div class="cam-info-bar">
-                <div>
-                  <div class="cam-name">Wide Stage</div>
-                  <div class="cam-sub">Shoreline Full Stage</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CAM 4: Crowd Shots -->
-            <div class="cam-card" data-cam="cam4" data-name="Crowd & Reaction" data-code="CAM 4 · CROWD JIB">
-              <div class="cam-video-wrap">
-                <video src="/media/cam4-crowd.mp4" autoplay muted loop playsinline></video>
-                <div class="cam-badge-top">
-                  <span class="cam-id-tag"><span class="cam-tally-dot"></span> CAM 4</span>
-                  <span class="cam-id-tag">AUDIENCE</span>
-                </div>
-              </div>
-              <div class="cam-info-bar">
-                <div>
-                  <div class="cam-name">Crowd Shots</div>
-                  <div class="cam-sub">Amphitheatre Reaction</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- STEP 2 & 3 COMBINED SIDE-BY-SIDE: ASPECT RATIO + LIVE FRAMING PREVIEW + DOWNLOAD -->
-        <div class="studio-section" style="flex:1; min-height:0; justify-content:space-between;">
-          <div class="section-head">
-            <div class="section-label">
-              <span class="step-num">2</span> Aspect Ratio & Creator Export
-            </div>
-            <span id="activeResolutionLabel" style="font-size:9.5px; color:var(--g-blue-glow); font-family:'JetBrains Mono',monospace;">1080×1920 VERTICAL</span>
-          </div>
-
-          <div style="display:grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: stretch; flex: 1; min-height: 0;">
-            <!-- Left: Live Cropped Video Preview -->
-            <div class="framing-preview-stage" style="height: 100%; min-height: 120px; max-height: 136px;">
-              <div class="crop-viewport" id="cropViewport" style="aspect-ratio: 9 / 16; max-height: 124px; max-width: 128px;">
-                <video id="exportPreviewVideo" src="/media/cam2-closeup.mp4" autoplay muted loop playsinline></video>
-                <div class="crop-overlay-badge" id="cropOverlayBadge">CAM 2 · 9:16</div>
-                <div class="crop-caption-burned" id="cropBurnedCaption">"...Lyria and Veo..."</div>
-              </div>
-            </div>
-
-            <!-- Right: Aspect Ratio Selector + Spec + Download Button -->
-            <div style="display:flex; flex-direction:column; justify-content:space-between; gap:6px;">
-              <div class="aspect-grid" id="aspectGrid">
-                <button class="aspect-btn" data-ar="16x9" data-css="16 / 9" data-res="1920×1080 LANDSCAPE">
-                  <div class="aspect-icon-box" style="width:20px; height:11px;"></div>
-                  <span class="aspect-ratio-label">16:9</span>
-                  <span class="aspect-ratio-desc">Wide</span>
-                </button>
-
-                <button class="aspect-btn" data-ar="5x4" data-css="5 / 4" data-res="1350×1080 FEED">
-                  <div class="aspect-icon-box" style="width:15px; height:12px;"></div>
-                  <span class="aspect-ratio-label">5:4</span>
-                  <span class="aspect-ratio-desc">Feed</span>
-                </button>
-
-                <button class="aspect-btn active" data-ar="9x16" data-css="9 / 16" data-res="1080×1920 VERTICAL">
-                  <div class="aspect-icon-box" style="width:9px; height:15px;"></div>
-                  <span class="aspect-ratio-label">9:16</span>
-                  <span class="aspect-ratio-desc">Vertical</span>
-                </button>
-
-                <button class="aspect-btn" data-ar="1x1" data-css="1 / 1" data-res="1080×1080 SQUARE">
-                  <div class="aspect-icon-box" style="width:13px; height:13px;"></div>
-                  <span class="aspect-ratio-label">1:1</span>
-                  <span class="aspect-ratio-desc">Square</span>
-                </button>
-              </div>
-
-              <div style="display:flex; align-items:center; justify-content:space-between; padding: 2px 2px;">
-                <label style="font-size:10.5px; color:var(--text-secondary); display:flex; align-items:center; gap:5px; cursor:pointer;">
+              <div class="adv-controls-stack">
+                <label class="adv-check-label">
                   <input type="checkbox" id="burnCaptionsCheck" checked />
-                  <span>Burn-in Auto Captions</span>
+                  <span>Burn-in captions</span>
                 </label>
-                <span style="font-size:9.5px; color:var(--g-green); font-family:'JetBrains Mono',monospace;">SynthID ✓</span>
-              </div>
-
-              <div class="export-cta-box">
-                <div class="export-spec-summary">
-                  <span id="exportSummaryLeft">CAM 2 · Sundar Close-Up</span>
-                  <span id="exportSummaryRight">9:16 · 19.0s</span>
-                </div>
-
-                <div class="export-progress-wrap" id="exportProgressWrap">
-                  <div style="display:flex; justify-content:space-between; font-size:9.5px; font-family:'JetBrains Mono',monospace;">
-                    <span id="exportStatusText" style="color:var(--g-blue-glow);">Reframing ISO...</span>
-                    <span id="exportPercentText">0%</span>
-                  </div>
-                  <div class="export-progress-bar">
-                    <div class="export-progress-fill" id="exportProgressFill"></div>
-                  </div>
-                </div>
-
-                <button class="download-primary-btn" id="downloadClipBtn">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-                  </svg>
-                  <span id="downloadBtnText">Download Clip (CAM 2 · 9:16 .MP4)</span>
-                </button>
+                <label class="adv-check-label">
+                  <input type="checkbox" id="showSpeakersCheck" checked />
+                  <span>Show speaker names</span>
+                </label>
+                <label class="adv-check-label">
+                  <input type="checkbox" id="liveTrimCheck" />
+                  <span>Exact In → Out capture</span>
+                </label>
               </div>
             </div>
           </div>
+
+          <div class="export-progress-box" id="exportProgressBox">
+            <div style="display:flex; justify-content:space-between;">
+              <span id="exportProgressText">Trimming & reframing clip...</span>
+              <span id="exportProgressPct">0%</span>
+            </div>
+            <div class="export-progress-track">
+              <div class="export-progress-bar" id="exportProgressBar"></div>
+            </div>
+          </div>
+
+          <div class="export-options-row">
+            <select id="exportAspectSelect" class="clean-select" aria-label="Export aspect ratio">
+              <option value="9x16" data-css="9 / 16" data-label="9:16">9:16</option>
+              <option value="16x9" data-css="16 / 9" data-label="16:9" selected>16:9</option>
+              <option value="5x4" data-css="5 / 4" data-label="5:4">5:4</option>
+              <option value="1x1" data-css="1 / 1" data-label="1:1">1:1</option>
+            </select>
+
+            <select id="exportCamSelect" class="clean-select" aria-label="Export camera angle"></select>
+
+            <button class="advanced-toggle-link" id="advancedToggleBtn" type="button">Advanced</button>
+          </div>
+
+          <button class="btn-download-yellow" id="downloadClipsBtn" type="button">
+            <span id="downloadClipsLabel">Download 4 Clips (CAM 1 • 16:9 .MP4)</span>
+          </button>
         </div>
       </aside>
-    </main>
+    </div>
 
-    <!-- BOTTOM DOCK: INTERACTIVE TIMELINE WITH SEARCH HIGHLIGHTS & THUMBNAILS -->
+    <!-- BOTTOM DOCK: TIMELINE -->
     <footer class="timeline-dock">
-      <div class="timeline-toolbar">
-        <div class="timeline-legend">
-          <span style="font-weight:700; color:var(--text-primary);">KEYNOTE TIMELINE</span>
-          <span class="legend-item">
-            <span class="legend-swatch" style="background:#38bdf8; box-shadow:0 0 6px #38bdf8;"></span>
-            <span id="timelineLegendMatch">Search Matches ("video generation" · 16 hits)</span>
-          </span>
-          <span class="legend-item">
-            <span class="legend-swatch" style="background:var(--g-yellow);"></span>
-            <span>Drag [ IN / OUT ] Handles or Click Any Highlight</span>
-          </span>
-        </div>
-        <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-secondary);">
-          Tip: Drag handles on timeline to trim · Click any cyan bar to snap In/Out
+      <div class="timeline-top-meta">
+        <span class="timeline-heading">Timeline</span>
+        <div class="timeline-right-time">
+          <span id="timelineClockReadout">01:01 / 10:00</span>
         </div>
       </div>
 
-      <!-- INTERACTIVE TIMELINE TRACK -->
-      <div class="timeline-track-container" id="timelineTrack">
-        <!-- Floating Hover Thumbnail Loupe -->
-        <div class="timeline-hover-loupe" id="timelineLoupe">
-          <img id="loupeImg" class="loupe-img" src="/media/thumbs/thumb_11.jpg" alt="Frame preview" />
-          <div class="loupe-meta">
-            <span id="loupeTime">01:42</span>
-            <span id="loupeSpeaker">Sundar Pichai</span>
+      <div class="timeline-track-area" id="timelineTrack">
+        <!-- Hover Thumbnail Loupe -->
+        <div class="hover-loupe" id="hoverLoupe">
+          <img id="loupeImg" src="" alt="Preview" />
+          <div class="hover-loupe-meta">
+            <span id="loupeTime">01:01</span>
+            <span id="loupeSpeaker"></span>
           </div>
-          <div class="loupe-caption" id="loupeCaption">Musicians and artists using generative AI models like Lyria and Veo...</div>
+          <div class="hover-loupe-text" id="loupeCaption"></div>
         </div>
 
-        <!-- Chapters Row -->
-        <div class="timeline-chapters-row" id="chaptersRow">
-          <div class="chapter-seg" style="width: 16%;" data-start="9" data-end="95">01 · Opening · Sundar Pichai</div>
-          <div class="chapter-seg" style="width: 12%;" data-start="96" data-end="148">02 · Generative AI, Lyria & Veo</div>
-          <div class="chapter-seg" style="width: 14%;" data-start="149" data-end="235">03 · 3.2 Quadrillion Tokens</div>
-          <div class="chapter-seg" style="width: 13%;" data-start="236" data-end="329">04 · AI Mode & Gemini App</div>
-          <div class="chapter-seg" style="width: 15%;" data-start="330" data-end="404">05 · Gemini Omni · Demis Hassabis</div>
-          <div class="chapter-seg" style="width: 18%;" data-start="405" data-end="530">06 · Veo, Nano Banana & Video Gen</div>
-          <div class="chapter-seg" style="width: 12%;" data-start="531" data-end="598">07 · Omni Flash & Sundar Closing</div>
+        <!-- Chapters Bar -->
+        <div class="chapters-bar" id="chaptersBar"></div>
+
+        <!-- Filmstrip Thumbnails -->
+        <div class="filmstrip-track" id="filmstripTrack"></div>
+
+        <!-- Blue Search Match Blocks -->
+        <div class="timeline-matches-layer" id="matchesLayer"></div>
+
+        <!-- Draggable Yellow [ IN .. OUT ] Trim Bracket -->
+        <div class="trim-bracket" id="trimBracket">
+          <button class="add-to-export-float" id="addToExportBtn" type="button">
+            <span class="add-plus-circle">+</span>
+            <span id="addToExportText">Add to Export Panel</span>
+          </button>
+          <div class="trim-handle in" id="inHandle" title="Drag In point">[</div>
+          <div class="trim-handle out" id="outHandle" title="Drag Out point">]</div>
+          <div class="trim-range-pill" id="trimRangePill">IN 00:14 → OUT 00:25 (11.0s)</div>
         </div>
 
-        <!-- Filmstrip Row -->
-        <div class="timeline-filmstrip-row" id="filmstripRow"></div>
-
-        <!-- Search Match Highlight Pillars -->
-        <div class="timeline-highlights-layer" id="highlightsLayer"></div>
-
-        <!-- Draggable In/Out Selection Box -->
-        <div class="clip-selection-Overlay" id="selectionBox" style="left: 16%; width: 4%;">
-          <div class="clip-selection-badge" id="selectionBadge">IN 01:36 → OUT 01:55 (19.0s)</div>
-          <div class="clip-handle in-handle" id="inHandle" title="Drag In Point">[</div>
-          <div class="clip-handle out-handle" id="outHandle" title="Drag Out Point">]</div>
-        </div>
-
-        <!-- Playhead -->
-        <div class="playhead-line" id="playheadLine" style="left: 17%;">
-          <div class="playhead-cap"></div>
-        </div>
-
-        <!-- Time Ruler -->
-        <div class="timeline-ruler-row" id="rulerRow"></div>
-      </div>
-
-      <!-- SELECTED SECTION THUMBNAIL STORYBOARD STRIP -->
-      <div class="selected-storyboard-strip">
-        <div class="storyboard-info">
-          <div class="storyboard-title">
-            <span>🎞️</span> Selected Clip Frames
-            <span id="sbTimeSpan" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#fff;">[01:36 – 01:55]</span>
-          </div>
-          <div class="storyboard-sub" id="sbSnippetText">"Musicians and artists using generative AI models like Lyria and Veo..."</div>
-        </div>
-        <div class="storyboard-thumbs" id="storyboardThumbs">
-          <!-- Populated dynamically with thumbnails from the selected In-Out range -->
+        <!-- Blue Playhead -->
+        <div class="playhead-needle" id="playheadNeedle">
+          <div class="playhead-head"></div>
         </div>
       </div>
     </footer>
@@ -1844,678 +1836,1188 @@
 
   <script>
     (function() {
-      const DURATION = 600; // 10:00 master keynote reel
-      let transcript = [];
-      let matches = [];
-      let currentQuery = 'video generation';
-      let currentSpeaker = 'all';
-      let onlyMatches = false;
-
-      // Selection state (Default: Sundar talking about generative AI models Lyria & Veo at 01:36 - 01:55)
-      let clipIn = 96;
-      let clipOut = 115;
-      let loopInOut = true;
-
-      // Camera & Aspect Ratio state
-      let selectedCam = 'cam2';
-      let selectedCamName = 'Sundar Close-Up';
-      let selectedCamCode = 'CAM 2 · 85MM TIGHT';
-      let selectedAr = '9x16';
-      let selectedArCss = '9 / 16';
-      let selectedArLabel = '9:16';
-
-      const camVideoFiles = {
-        cam1: '/media/cam1-screen.mp4',
-        cam2: '/media/cam2-closeup.mp4',
-        cam3: '/media/cam3-wide.mp4',
-        cam4: '/media/cam4-crowd.mp4'
+      const EVENTS = {
+        artemis2: {
+          id: 'artemis2',
+          title: 'NASA Artemis II Moon Launch',
+          transcriptTitle: 'Launch Transcript',
+          isLive: true,
+          duration: 192,
+          trueIsoSync: true,
+          defaultQuery: 'Artemis',
+          defaultIn: 14,
+          defaultOut: 25,
+          quickTopics: ['Artemis', 'liftoff', 'Integrity', 'Houston', 'supersonic', 'separation'],
+          transcriptUrl: '/media/artemis2/transcript.json',
+          thumbCount: 60,
+          thumbPath: (idx) => '/media/artemis2/thumbs/thumb_' + String(idx).padStart(2, '0') + '.jpg',
+          exportUrl: (camId, ar) => '/media/artemis2/exports/export_' + camId + '_' + ar + '.mp4',
+          cameras: [
+            { id: 'cam1', code: 'CAMERA 1', short: 'CAM 1', name: 'Pad 39B Wide', src: '/media/artemis2/cam3-wide.mp4' },
+            { id: 'cam2', code: 'CAMERA 2', short: 'CAM 2', name: 'Rocket Onboard', src: '/media/artemis2/cam1-onboard.mp4' },
+            { id: 'cam3', code: 'CAMERA 3', short: 'CAM 3', name: '8K Chase Plane', src: '/media/artemis2/cam2-aerial.mp4' },
+            { id: 'cam4', code: 'CAMERA 4', short: 'CAM 4', name: 'VIP Crowd', src: '/media/artemis2/cam4-crowd.mp4' }
+          ],
+          chapters: [
+            { start: 0, end: 28, label: '01 • Ignition & Liftoff' },
+            { start: 28, end: 85, label: '02 • Roll Pitch & Houston' },
+            { start: 85, end: 128, label: '03 • Max-Q & Supersonic' },
+            { start: 128, end: 161, label: '04 • Booster Separation' },
+            { start: 161, end: 192, label: '05 • Upper Stage Ascent' }
+          ],
+          starterExports: [
+            { id: 'art_ex1', start: 14, end: 25, cam: 'cam1', text: 'Booster ignition and liftoff! The crew of Artemis II, now bound for the Moon!', selected: true },
+            { id: 'art_ex2', start: 14, end: 25, cam: 'cam4', text: 'The crew of Artemis II, now bound for the Moon! Humanity\'s next great voyage begins.', selected: true },
+            { id: 'art_ex3', start: 28, end: 42, cam: 'cam3', text: 'Good roll pitch. Houston now controlling the flight of Integrity on the Artemis II mission.', selected: true },
+            { id: 'art_ex4', start: 141, end: 155, cam: 'cam2', text: 'Confirm separation! Main engines throttling up. Guidance converged.', selected: true }
+          ]
+        },
+        io26: {
+          id: 'io26',
+          title: 'Google I/O 26 Keynote',
+          transcriptTitle: 'Keynote Transcript',
+          isLive: true,
+          duration: 600,
+          trueIsoSync: false, // master keynote-main + ISO camera feeds
+          masterAudioSrc: '/media/keynote-main.mp4',
+          defaultQuery: 'AI',
+          defaultIn: 61,
+          defaultOut: 79,
+          quickTopics: ['AI', 'video generation', 'Veo', 'Sundar', 'Omni', 'quadrillion'],
+          transcriptUrl: '/media/transcript.json',
+          thumbCount: 60,
+          thumbPath: (idx) => '/media/thumbs/thumb_' + String(idx).padStart(2, '0') + '.jpg',
+          exportUrl: (camId, ar) => '/media/exports/export_' + camId + '_' + ar + '.mp4',
+          cameras: [
+            { id: 'cam1', code: 'CAMERA 1', short: 'CAM 1', name: 'Big Screen / Stage', src: '/media/cam1-screen.mp4' },
+            { id: 'cam2', code: 'CAMERA 2', short: 'CAM 2', name: 'Sundar Close-Up', src: '/media/cam2-closeup.mp4' },
+            { id: 'cam3', code: 'CAMERA 3', short: 'CAM 3', name: 'Wide Stage', src: '/media/cam3-wide.mp4' },
+            { id: 'cam4', code: 'CAMERA 4', short: 'CAM 4', name: 'Crowd Shots', src: '/media/cam4-crowd.mp4' }
+          ],
+          chapters: [
+            { start: 0, end: 95, label: '01 • Opening • Sundar Pichai' },
+            { start: 96, end: 185, label: '02 • Generative AI, Lyria & Veo' },
+            { start: 186, end: 295, label: '03 • 3.2 Quadrillion Tokens' },
+            { start: 296, end: 415, label: '04 • AI Mode & Gemini App' },
+            { start: 416, end: 600, label: '05 • Gemini Omni & Veo' }
+          ],
+          starterExports: [
+            { id: 'ex1', start: 59, end: 76, cam: 'cam2', text: 'This is why we are taking a differentiated, full stack approach to AI innovation.', selected: true },
+            { id: 'ex2', start: 96, end: 115, cam: 'cam1', text: 'Musicians and artists using generative AI models like Lyria and Veo as part of their creative flow.', selected: true },
+            { id: 'ex3', start: 162, end: 182, cam: 'cam3', text: 'Over 3.2 quadrillion tokens processed monthly across our developer ecosystem.', selected: true },
+            { id: 'ex4', start: 332, end: 352, cam: 'cam4', text: 'Gemini Omni brings native multimodal reasoning and real-time audio-video understanding.', selected: true }
+          ]
+        }
       };
 
-      // DOM elements
-      const mainVideo = document.getElementById('mainVideo');
-      const exportPreviewVideo = document.getElementById('exportPreviewVideo');
+      let activeEventKey = 'artemis2';
+      let ev = EVENTS[activeEventKey];
+      let transcript = [];
+      let matches = [];
+      let currentQuery = ev.defaultQuery;
+      let clipIn = ev.defaultIn;
+      let clipOut = ev.defaultOut;
+      let desiredTime = ev.defaultIn;
+      let playbackMode = 'clip'; // 'clip' (loops In->Out) or 'full' (continuous stream)
+      let selectedCam = 'cam1';
+      let exportCam = 'cam1';
+      let exportAr = '16x9';
+      let exportArLabel = '16:9';
+      let quadMode = false;
+      let exportOpen = false;
+      let dragHintDismissed = false;
+      let showSpeakers = true;
+      let exportQueue = [];
+
+      // DOM References
+      const clipperTop = document.getElementById('clipperTop');
       const searchInput = document.getElementById('searchInput');
-      const matchCountBadge = document.getElementById('matchCountBadge');
+      const matchCountLabel = document.getElementById('matchCountLabel');
       const clearSearchBtn = document.getElementById('clearSearchBtn');
-      const quickChips = document.getElementById('quickChips');
+      const topicPills = document.getElementById('topicPills');
       const transcriptList = document.getElementById('transcriptList');
-      const highlightsLayer = document.getElementById('highlightsLayer');
+      const multicamCanvas = document.getElementById('multicamCanvas');
+      const eventSwitcher = document.getElementById('eventSwitcher');
+      const stageTimecode = document.getElementById('stageTimecode');
+      const liveSubtitleText = document.getElementById('liveSubtitleText');
+      const camDropdownBtn = document.getElementById('camDropdownBtn');
+      const camTriggerCode = document.getElementById('camTriggerCode');
+      const camTriggerName = document.getElementById('camTriggerName');
+      const camSwitcherMenu = document.getElementById('camSwitcherMenu');
+      const camMenuOptions = document.getElementById('camMenuOptions');
+      const quadToggleMenuBtn = document.getElementById('quadToggleMenuBtn');
+      const playInOutBtn = document.getElementById('playInOutBtn');
+      const playInOutIcon = document.getElementById('playInOutIcon');
+      const playInOutLabel = document.getElementById('playInOutLabel');
+      const watchFullBtn = document.getElementById('watchFullBtn');
+      const toggleExportBtn = document.getElementById('toggleExportBtn');
+      const exportChevron = document.getElementById('exportChevron');
+      const exportCountBadge = document.getElementById('exportCountBadge');
+      const exportClipsGrid = document.getElementById('exportClipsGrid');
+      const selectAllBtn = document.getElementById('selectAllBtn');
+      const selectAllDot = document.getElementById('selectAllDot');
+      const exportAspectSelect = document.getElementById('exportAspectSelect');
+      const exportCamSelect = document.getElementById('exportCamSelect');
+      const advancedToggleBtn = document.getElementById('advancedToggleBtn');
+      const advancedDrawer = document.getElementById('advancedDrawer');
+      const cropFrameLive = document.getElementById('cropFrameLive');
+      const cropPreviewVideo = document.getElementById('cropPreviewVideo');
+      const downloadClipsBtn = document.getElementById('downloadClipsBtn');
+      const downloadClipsLabel = document.getElementById('downloadClipsLabel');
       const timelineTrack = document.getElementById('timelineTrack');
-      const selectionBox = document.getElementById('selectionBox');
-      const selectionBadge = document.getElementById('selectionBadge');
+      const chaptersBar = document.getElementById('chaptersBar');
+      const filmstripTrack = document.getElementById('filmstripTrack');
+      const matchesLayer = document.getElementById('matchesLayer');
+      const trimBracket = document.getElementById('trimBracket');
+      const dragHintLabel = document.getElementById('dragHintLabel');
+      const addToExportBtn = document.getElementById('addToExportBtn');
+      const addToExportText = document.getElementById('addToExportText');
       const inHandle = document.getElementById('inHandle');
       const outHandle = document.getElementById('outHandle');
-      const playheadLine = document.getElementById('playheadLine');
-      const timelineLoupe = document.getElementById('timelineLoupe');
+      const trimRangePill = document.getElementById('trimRangePill');
+      const playheadNeedle = document.getElementById('playheadNeedle');
+      const timelineClockReadout = document.getElementById('timelineClockReadout');
+      const hoverLoupe = document.getElementById('hoverLoupe');
       const loupeImg = document.getElementById('loupeImg');
       const loupeTime = document.getElementById('loupeTime');
       const loupeSpeaker = document.getElementById('loupeSpeaker');
       const loupeCaption = document.getElementById('loupeCaption');
-      const storyboardThumbs = document.getElementById('storyboardThumbs');
-      const sbTimeSpan = document.getElementById('sbTimeSpan');
-      const sbSnippetText = document.getElementById('sbSnippetText');
-      const playPauseBtn = document.getElementById('playPauseBtn');
-      const playClipBtn = document.getElementById('playClipBtn');
-      const setInBtn = document.getElementById('setInBtn');
-      const setOutBtn = document.getElementById('setOutBtn');
-      const transportTimeReadout = document.getElementById('transportTimeReadout');
-      const clipRangeText = document.getElementById('clipRangeText');
-      const hudTimecode = document.getElementById('hudTimecode');
-      const hudCamText = document.getElementById('hudCamText');
-      const liveSpeakerLabel = document.getElementById('liveSpeakerLabel');
-      const liveCaptionText = document.getElementById('liveCaptionText');
-      const cropViewport = document.getElementById('cropViewport');
-      const cropOverlayBadge = document.getElementById('cropOverlayBadge');
-      const cropBurnedCaption = document.getElementById('cropBurnedCaption');
-      const exportSummaryLeft = document.getElementById('exportSummaryLeft');
-      const exportSummaryRight = document.getElementById('exportSummaryRight');
-      const downloadBtnText = document.getElementById('downloadBtnText');
-      const downloadClipBtn = document.getElementById('downloadClipBtn');
+
+      const vids = {
+        cam1: document.getElementById('vid_cam1'),
+        cam2: document.getElementById('vid_cam2'),
+        cam3: document.getElementById('vid_cam3'),
+        cam4: document.getElementById('vid_cam4')
+      };
+
+      // Hidden master audio/clock element when event uses separate master audio
+      const masterMedia = new Audio();
+      masterMedia.preload = 'auto';
+
+      function getPrimaryClockMedia() {
+        return ev.trueIsoSync ? vids.cam1 : masterMedia;
+      }
+
+      function getCurrentTime() {
+        const c = getPrimaryClockMedia();
+        return (c && c.readyState >= 1) ? (c.currentTime || 0) : desiredTime;
+      }
+
+      function isPaused() {
+        return getPrimaryClockMedia().paused;
+      }
 
       function fmtTime(sec) {
-        sec = Math.max(0, Math.min(DURATION, sec));
-        const m = Math.floor(sec / 60);
-        const s = Math.floor(sec % 60);
+        const clamped = Math.max(0, Math.min(ev.duration, sec || 0));
+        const m = Math.floor(clamped / 60);
+        const s = Math.floor(clamped % 60);
         return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
       }
 
-      function getThumbUrl(sec) {
-        const idx = Math.max(1, Math.min(60, Math.floor(sec / 10) + 1));
-        return '/media/thumbs/thumb_' + String(idx).padStart(2, '0') + '.jpg';
+      function getThumbForTime(sec) {
+        const ratio = Math.max(0, Math.min(0.999, (sec || 0) / ev.duration));
+        const idx = Math.max(1, Math.min(ev.thumbCount, Math.floor(ratio * ev.thumbCount) + 1));
+        return ev.thumbPath(idx);
       }
 
-      // Build Filmstrip & Ruler
-      function initTimelineVisuals() {
-        const filmstripRow = document.getElementById('filmstripRow');
+      // Sync all 4 camera video elements to master clock (genlock-style micro-rate lock during playback)
+      function syncCamerasToTime(targetSec, forceSeek) {
+        const clock = getPrimaryClockMedia();
+        if (forceSeek && clock.readyState >= 1 && Math.abs((clock.currentTime || 0) - targetSec) > 0.02) {
+          clock.currentTime = targetSec;
+        }
+        ev.cameras.forEach((cam) => {
+          const v = vids[cam.id];
+          if (!v || v.readyState < 1 || !v.duration) return;
+          if (ev.trueIsoSync) {
+            const clampedT = Math.min(v.duration - 0.05, Math.max(0, targetSec));
+            if (cam.id === 'cam1') {
+              if (forceSeek && Math.abs(v.currentTime - clampedT) > 0.02) {
+                v.currentTime = clampedT;
+              }
+              return;
+            }
+            const diff = v.currentTime - clampedT;
+            const absDiff = Math.abs(diff);
+            if (forceSeek || absDiff > 0.28) {
+              v.currentTime = clampedT;
+              if (v.playbackRate !== 1.0) v.playbackRate = 1.0;
+            } else if (!v.paused && absDiff > 0.035) {
+              v.playbackRate = diff > 0 ? 0.96 : 1.04;
+            } else if (v.playbackRate !== 1.0) {
+              v.playbackRate = 1.0;
+            }
+          } else {
+            const modT = targetSec % v.duration;
+            if (forceSeek || Math.abs(v.currentTime - modT) > 0.35) {
+              v.currentTime = modT;
+            }
+          }
+        });
+      }
+
+      let rafId = null;
+      function startSmoothTicker() {
+        if (rafId) cancelAnimationFrame(rafId);
+        function step() {
+          if (isPaused()) {
+            rafId = null;
+            return;
+          }
+          onClockTick();
+          rafId = requestAnimationFrame(step);
+        }
+        rafId = requestAnimationFrame(step);
+      }
+
+      function playAllSynced() {
+        const clock = getPrimaryClockMedia();
+        syncCamerasToTime(getCurrentTime(), true);
+        clock.play().catch(() => {});
+        ev.cameras.forEach((cam) => {
+          const v = vids[cam.id];
+          if (v && v !== clock) {
+            v.play().catch(() => {});
+          }
+        });
+        updateTransportButtons();
+        startSmoothTicker();
+      }
+
+      function pauseAllSynced() {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+        const clock = getPrimaryClockMedia();
+        clock.pause();
+        ev.cameras.forEach((cam) => {
+          const v = vids[cam.id];
+          if (v) {
+            v.pause();
+            if (v.playbackRate !== 1.0) v.playbackRate = 1.0;
+          }
+        });
+        updateTransportButtons();
+      }
+
+      function seekTo(sec) {
+        const clamped = Math.max(0, Math.min(ev.duration, sec));
+        desiredTime = clamped;
+        syncCamerasToTime(clamped, true);
+        updatePlayheadUI(clamped);
+      }
+
+      function updateTransportButtons() {
+        const playing = !isPaused();
+        if (playing && playbackMode === 'clip') {
+          playInOutIcon.textContent = '❚❚';
+          playInOutLabel.textContent = 'Pause In → Out';
+        } else {
+          playInOutIcon.textContent = '▶';
+          playInOutLabel.textContent = 'Play In → Out';
+        }
+        watchFullBtn.classList.toggle('active', playing && playbackMode === 'full');
+        document.getElementById('watchBtnLabel').textContent =
+          (playing && playbackMode === 'full') ? 'Pause Stream' : (ev.isLive ? 'Watch Live' : 'Full Stream');
+      }
+
+      // Populate Event Switcher
+      function renderEventSwitcher() {
+        eventSwitcher.innerHTML = Object.values(EVENTS).map(item =>
+          '<option value="' + item.id + '"' + (item.id === activeEventKey ? ' selected' : '') + '>' + item.title + '</option>'
+        ).join('');
+      }
+
+      // Load an Event into Stage, Transcript, Timeline, and Export Queue
+      async function loadEvent(eventKey) {
+        pauseAllSynced();
+        activeEventKey = eventKey;
+        ev = EVENTS[eventKey];
+        currentQuery = ev.defaultQuery;
+        clipIn = ev.defaultIn;
+        clipOut = ev.defaultOut;
+        desiredTime = clipIn;
+        selectedCam = ev.cameras[0].id;
+        exportCam = ev.cameras[0].id;
+        exportQueue = ev.starterExports.map(x => ({ ...x }));
+
+        document.getElementById('transcriptHeading').textContent = ev.transcriptTitle || 'Keynote Transcript';
+        document.getElementById('liveDot').classList.toggle('ended', !ev.isLive);
+        document.getElementById('watchBtnDot').classList.toggle('ended', !ev.isLive);
+        searchInput.value = currentQuery;
+
+        ev.cameras.forEach((cam, idx) => {
+          const v = vids[cam.id];
+          v.src = cam.src;
+          v.loop = !ev.trueIsoSync;
+          v.muted = !(ev.trueIsoSync && idx === 0);
+          v.onloadedmetadata = () => {
+            const target = isPaused() ? desiredTime : (getCurrentTime() || desiredTime);
+            if (ev.trueIsoSync) {
+              v.currentTime = Math.min(v.duration - 0.05, Math.max(0, target));
+            } else {
+              v.currentTime = target % v.duration;
+            }
+            if (idx === 0) updatePlayheadUI(target);
+          };
+          v.load();
+          const slot = multicamCanvas.querySelector('[data-cam="' + cam.id + '"] .q-lbl');
+          if (slot) slot.textContent = cam.code + ' · ' + cam.name;
+        });
+
+        if (!ev.trueIsoSync && ev.masterAudioSrc) {
+          masterMedia.src = ev.masterAudioSrc;
+          masterMedia.onloadedmetadata = () => {
+            if (masterMedia.currentTime < 0.5 && clipIn > 0) {
+              masterMedia.currentTime = clipIn;
+              syncCamerasToTime(clipIn, true);
+              updatePlayheadUI(clipIn);
+            }
+          };
+          masterMedia.load();
+        } else {
+          masterMedia.removeAttribute('src');
+        }
+
+        renderCameraMenus();
+        renderTimelineStatic();
+        selectCamera(selectedCam, false);
+
+        try {
+          const resp = await fetch(ev.transcriptUrl);
+          transcript = await resp.json();
+        } catch (err) {
+          transcript = [];
+        }
+
+        runSearch();
+        updateTrimUI();
+        renderExportQueue();
+        seekTo(clipIn);
+        updatePlayheadUI(clipIn);
+        scrollTranscriptToActive();
+        updateTransportButtons();
+      }
+
+      function scrollTranscriptToActive() {
+        requestAnimationFrame(() => {
+          const target = transcriptList.querySelector('.cue-card.in-clip-range') || transcriptList.querySelector('.cue-card.is-match');
+          if (target) {
+            transcriptList.scrollTop = Math.max(0, target.offsetTop - transcriptList.offsetTop - 52);
+          }
+        });
+      }
+
+      function renderTopicPills() {
+        topicPills.innerHTML = (ev.quickTopics || []).map(q =>
+          '<button type="button" class="topic-pill' + (q.toLowerCase() === currentQuery.toLowerCase() ? ' active' : '') + '" data-q="' + q.replace(/"/g, '&quot;') + '">' + q + '</button>'
+        ).join('');
+
+        topicPills.querySelectorAll('.topic-pill').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const q = btn.getAttribute('data-q');
+            searchInput.value = q;
+            runSearch();
+            if (matches.length > 0) {
+              const m = matches[0];
+              setClipRange(Math.max(0, m.start - 2), Math.min(ev.duration, m.end + 6), m.start);
+            }
+          });
+        });
+      }
+
+      function renderCameraMenus() {
+        camMenuOptions.innerHTML = ev.cameras.map((cam, idx) =>
+          '<button type="button" class="cam-option-btn' + (cam.id === selectedCam ? ' active' : '') + '" data-cam="' + cam.id + '">' +
+            '<div class="cam-opt-left">' +
+              '<span class="cam-opt-code">' + cam.code + '</span>' +
+              '<span class="cam-opt-label">' + cam.name + '</span>' +
+            '</div>' +
+            '<span class="cam-opt-key">' + (idx + 1) + '</span>' +
+          '</button>'
+        ).join('');
+
+        camMenuOptions.querySelectorAll('.cam-option-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            selectCamera(btn.getAttribute('data-cam'), true);
+            camSwitcherMenu.classList.remove('open');
+            camDropdownBtn.classList.remove('open');
+          });
+        });
+
+        exportCamSelect.innerHTML = ev.cameras.map(cam =>
+          '<option value="' + cam.id + '"' + (cam.id === exportCam ? ' selected' : '') + '>' + cam.code + '</option>'
+        ).concat(['<option value="all">ALL 4 CAMS</option>']).join('');
+      }
+
+      function selectCamera(camId, syncExportCam) {
+        selectedCam = camId;
+        const camObj = ev.cameras.find(c => c.id === camId) || ev.cameras[0];
+
+        camTriggerCode.textContent = camObj.code;
+        camTriggerName.textContent = camObj.name;
+
+        multicamCanvas.querySelectorAll('.cam-feed-slot').forEach(slot => {
+          slot.classList.toggle('active-cam', slot.getAttribute('data-cam') === camId);
+        });
+
+        camMenuOptions.querySelectorAll('.cam-option-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-cam') === camId);
+        });
+
+        syncCamerasToTime(getCurrentTime(), true);
+
+        if (syncExportCam) {
+          exportCam = camId;
+          exportCamSelect.value = camId;
+          updateCropPreviewSource();
+          updateDownloadButtonLabel();
+        } else {
+          updateCropPreviewSource();
+        }
+      }
+
+      function updateCropPreviewSource() {
+        const targetCam = exportCam === 'all' ? selectedCam : exportCam;
+        const camObj = ev.cameras.find(c => c.id === targetCam) || ev.cameras[0];
+        if (!cropPreviewVideo.src.endsWith(camObj.src)) {
+          cropPreviewVideo.src = camObj.src;
+          cropPreviewVideo.currentTime = ev.trueIsoSync ? clipIn : 0;
+          if (advancedDrawer.classList.contains('open')) {
+            cropPreviewVideo.play().catch(() => {});
+          }
+        }
+      }
+
+      function renderTimelineStatic() {
+        // Chapters
+        chaptersBar.innerHTML = ev.chapters.map(ch => {
+          const leftPct = (ch.start / ev.duration) * 100;
+          return '<div class="chapter-marker" style="left:' + leftPct + '%;">' +
+            '<span class="chapter-marker-label" data-start="' + ch.start + '" data-end="' + ch.end + '">' + ch.label + '</span>' +
+          '</div>';
+        }).join('');
+
+        chaptersBar.querySelectorAll('.chapter-marker-label').forEach(lbl => {
+          lbl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const s = parseFloat(lbl.getAttribute('data-start'));
+            const end = parseFloat(lbl.getAttribute('data-end'));
+            setClipRange(s, Math.min(ev.duration, Math.min(end, s + 20)), s, true);
+          });
+        });
+
+        // 24 Filmstrip cells
         let fsHtml = '';
-        for (let i = 1; i <= 20; i++) {
-          const thumbIdx = Math.min(60, i * 3 - 1);
-          fsHtml += '<img class="filmstrip-cell" src="/media/thumbs/thumb_' + String(thumbIdx).padStart(2, '0') + '.jpg" alt="" />';
+        const cells = 24;
+        for (let i = 0; i < cells; i++) {
+          const sec = ((i + 0.5) / cells) * ev.duration;
+          fsHtml += '<img class="filmstrip-thumb" src="' + getThumbForTime(sec) + '" alt="" />';
         }
-        filmstripRow.innerHTML = fsHtml;
-
-        const rulerRow = document.getElementById('rulerRow');
-        let rulerHtml = '';
-        for (let t = 0; t <= DURATION; t += 60) {
-          const pct = (t / DURATION) * 100;
-          rulerHtml += '<span class="ruler-tick" style="left:' + pct + '%;">' + fmtTime(t) + '</span>';
-        }
-        rulerRow.innerHTML = rulerHtml;
+        filmstripTrack.innerHTML = fsHtml;
       }
 
-      // Match evaluation (supports keyword + semantic tags)
+      function matchesTermWordAware(haystack, term) {
+        if (!term) return false;
+        const esc = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        if (term.length <= 3) {
+          return new RegExp('(?:^|[^a-z0-9])' + esc + '(?:$|[^a-z0-9])', 'i').test(haystack);
+        }
+        return haystack.includes(term);
+      }
+
       function isCueMatch(cue, q) {
         if (!q || !q.trim()) return false;
-        const cleanQ = q.trim().toLowerCase();
-        const textLower = cue.text.toLowerCase();
-        const speakerLower = cue.speaker.toLowerCase();
-        const tags = cue.tags || [];
-
-        if (textLower.includes(cleanQ) || speakerLower.includes(cleanQ)) return true;
-        if (tags.some(t => t.includes(cleanQ) || cleanQ.includes(t))) return true;
-
-        const terms = cleanQ.split(/\s+/).filter(Boolean);
-        if (terms.length > 1) {
-          return terms.every(term =>
-            textLower.includes(term) ||
-            speakerLower.includes(term) ||
-            tags.some(t => t.includes(term))
-          );
-        }
-        return false;
+        const clean = q.trim().toLowerCase();
+        const textL = (cue.text || '').toLowerCase();
+        const spkL = (cue.speaker || '').toLowerCase();
+        const tags = (cue.tags || []).map(t => t.toLowerCase());
+        if (matchesTermWordAware(textL, clean) || (clean.length > 3 && spkL.includes(clean))) return true;
+        if (tags.some(t => t === clean || (clean.length > 3 && t.includes(clean)))) return true;
+        const terms = clean.split(/\s+/).filter(Boolean);
+        return terms.length > 1 && terms.every(term =>
+          matchesTermWordAware(textL, term) || (term.length > 3 && spkL.includes(term)) || tags.some(t => t === term || (term.length > 3 && t.includes(term)))
+        );
       }
 
-      function highlightText(text, q) {
+      function highlightMatchesInText(text, q) {
         if (!q || !q.trim()) return text;
         const terms = q.trim().split(/\s+/).filter(t => t.length >= 2);
-        // Also highlight related video/model terms when searching "video generation"
-        if (q.toLowerCase().includes('video')) {
-          ['Veo', 'Lyria', 'Omni', 'video', 'videos', 'generative'].forEach(w => {
-            if (!terms.includes(w)) terms.push(w);
-          });
-        }
         if (!terms.length) return text;
-        const escaped = terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        const regex = new RegExp('(' + escaped.join('|') + ')', 'gi');
-        return text.replace(regex, '<mark>$1</mark>');
+        const patterns = terms.map(t => {
+          const esc = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          return t.length <= 3 ? ('\\b' + esc + '\\b') : esc;
+        });
+        const re = new RegExp('(' + patterns.join('|') + ')', 'gi');
+        return text.replace(re, '<mark>$1</mark>');
       }
 
       function runSearch() {
         currentQuery = searchInput.value;
         matches = transcript.filter(cue => isCueMatch(cue, currentQuery));
 
-        matchCountBadge.textContent = currentQuery.trim()
+        matchCountLabel.textContent = currentQuery.trim()
           ? matches.length + (matches.length === 1 ? ' match' : ' matches')
-          : transcript.length + ' segments';
+          : transcript.length + ' cues';
 
-        document.getElementById('timelineLegendMatch').textContent = currentQuery.trim()
-          ? 'Search Matches ("' + currentQuery.trim() + '" · ' + matches.length + ' hits)'
-          : 'All Keynote Segments';
-
-        renderTimelineHighlights();
-        renderTranscriptList();
+        renderTimelineMatches();
+        renderTranscriptCards();
       }
 
-      function renderTimelineHighlights() {
+      function renderTimelineMatches() {
         if (!currentQuery.trim()) {
-          highlightsLayer.innerHTML = '';
+          matchesLayer.innerHTML = '';
           return;
         }
-        let html = '';
-        matches.forEach(cue => {
-          const leftPct = (cue.start / DURATION) * 100;
-          const widthPct = Math.max(0.8, ((cue.end - cue.start) / DURATION) * 100);
-          html += '<div class="timeline-match-marker" ' +
-            'style="left:' + leftPct + '%; width:' + widthPct + '%;" ' +
+        matchesLayer.innerHTML = matches.map(cue => {
+          const leftPct = (cue.start / ev.duration) * 100;
+          const widthPct = Math.max(1.4, ((cue.end - cue.start) / ev.duration) * 100);
+          return '<div class="timeline-match-block" style="left:' + leftPct + '%; width:' + widthPct + '%;" ' +
             'data-start="' + cue.start + '" data-end="' + cue.end + '" ' +
-            'title="[' + cue.timecode + '] ' + cue.speaker + ': ' + cue.text.replace(/"/g, '&quot;') + '"></div>';
-        });
-        highlightsLayer.innerHTML = html;
+            'title="' + cue.timecode + ' · ' + cue.speaker + ': ' + cue.text.replace(/"/g, '&quot;') + '"></div>';
+        }).join('');
 
-        highlightsLayer.querySelectorAll('.timeline-match-marker').forEach(el => {
+        matchesLayer.querySelectorAll('.timeline-match-block').forEach(el => {
           el.addEventListener('click', (e) => {
             e.stopPropagation();
             const s = parseFloat(el.getAttribute('data-start'));
             const end = parseFloat(el.getAttribute('data-end'));
-            selectClipSegment(Math.max(0, s - 3), Math.min(DURATION, end + 6), s);
+            setClipRange(Math.max(0, s - 2), Math.min(ev.duration, end + 6), s, true);
           });
         });
       }
 
-      function renderTranscriptList() {
-        const filtered = transcript.filter(cue => {
-          if (currentSpeaker !== 'all' && cue.speaker !== currentSpeaker) return false;
-          if (onlyMatches && currentQuery.trim() && !isCueMatch(cue, currentQuery)) return false;
-          return true;
-        });
-
-        let html = '';
-        filtered.forEach(cue => {
+      function renderTranscriptCards() {
+        if (!transcript.length) {
+          transcriptList.innerHTML = '<div style="padding:18px; color:var(--ink-muted); font-size:12px;">Loading transcript...</div>';
+          return;
+        }
+        const curr = getCurrentTime();
+        transcriptList.innerHTML = transcript.map(cue => {
           const matched = isCueMatch(cue, currentQuery);
           const inRange = cue.end > clipIn && cue.start < clipOut;
-          const speakerClass = cue.speaker.includes('Sundar') ? 'sundar' : 'demis';
-          html += '<div class="cue-card ' + (matched ? 'is-match ' : '') + (inRange ? 'in-clip-range' : '') + '" data-id="' + cue.id + '" data-start="' + cue.start + '" data-end="' + cue.end + '">' +
-            '<div class="cue-meta">' +
-              '<div class="cue-time">' +
-                '<span>' + cue.timecode + '</span>' +
-                '<span class="cue-speaker ' + speakerClass + '">' + cue.speaker + '</span>' +
+          const playing = curr >= cue.start && curr < cue.end;
+          const headerLeft = showSpeakers ? (cue.timecode + '  ' + cue.speaker) : cue.timecode;
+          return '<div class="cue-card' +
+            (matched ? ' is-match' : '') +
+            (inRange ? ' in-clip-range' : '') +
+            (playing ? ' is-playing' : '') +
+            '" data-start="' + cue.start + '" data-end="' + cue.end + '" data-text="' + cue.text.replace(/"/g, '&quot;') + '">' +
+              '<div class="cue-header">' +
+                '<span>' + headerLeft + '</span>' +
+                '<button type="button" class="cue-quick-add" title="Add segment to Export Panel">+ Export</button>' +
               '</div>' +
-              '<button class="cue-clip-btn" data-start="' + cue.start + '" data-end="' + cue.end + '">✂️ Clip [I–O]</button>' +
-            '</div>' +
-            '<div class="cue-text">' + (matched ? highlightText(cue.text, currentQuery) : cue.text) + '</div>' +
-          '</div>';
-        });
-
-        transcriptList.innerHTML = html || '<div style="padding:20px; text-align:center; color:var(--text-muted);">No matching spoken phrases found.</div>';
+              '<div class="cue-body">' + (matched ? highlightMatchesInText(cue.text, currentQuery) : cue.text) + '</div>' +
+            '</div>';
+        }).join('');
 
         transcriptList.querySelectorAll('.cue-card').forEach(card => {
           card.addEventListener('click', (e) => {
             const s = parseFloat(card.getAttribute('data-start'));
             const end = parseFloat(card.getAttribute('data-end'));
-            if (e.target.classList.contains('cue-clip-btn')) {
-              selectClipSegment(Math.max(0, s - 2), Math.min(DURATION, end + 6), s);
+            const txt = card.getAttribute('data-text');
+            if (e.target.classList.contains('cue-quick-add')) {
+              e.stopPropagation();
+              const cIn = Math.max(0, s - 1.5);
+              const cOut = Math.min(ev.duration, end + 4.5);
+              setClipRange(cIn, cOut, s);
+              queueCurrentClip(txt);
+              setExportDrawer(true);
             } else {
-              mainVideo.currentTime = s;
-              updatePlayheadUI(s);
+              setClipRange(Math.max(0, s - 1.5), Math.min(ev.duration, end + 4.5), s);
             }
           });
         });
       }
 
-      function selectClipSegment(newIn, newOut, seekTo) {
-        clipIn = Math.max(0, Math.min(newIn, DURATION - 4));
-        clipOut = Math.max(clipIn + 4, Math.min(DURATION, newOut));
-        if (typeof seekTo === 'number') {
-          mainVideo.currentTime = seekTo;
-          updatePlayheadUI(seekTo);
+      function setClipRange(newIn, newOut, seekSec, scrollCard) {
+        const minSpan = Math.min(3, ev.duration * 0.05);
+        clipIn = Math.max(0, Math.min(newIn, ev.duration - minSpan));
+        clipOut = Math.max(clipIn + minSpan, Math.min(ev.duration, newOut));
+        updateTrimUI();
+        renderTranscriptCards();
+        if (typeof seekSec === 'number') {
+          seekTo(seekSec);
         }
-        updateSelectionUI();
-        renderTranscriptList();
-        const firstInClip = transcriptList.querySelector('.cue-card.in-clip-range') || transcriptList.querySelector('.cue-card.is-match');
-        if (firstInClip) {
-          transcriptList.scrollTop = Math.max(0, firstInClip.offsetTop - transcriptList.offsetTop - 40);
+        if (scrollCard) {
+          scrollTranscriptToActive();
         }
       }
 
-      function updateSelectionUI() {
-        const leftPct = (clipIn / DURATION) * 100;
-        const widthPct = ((clipOut - clipIn) / DURATION) * 100;
-        selectionBox.style.left = leftPct + '%';
-        selectionBox.style.width = widthPct + '%';
-
+      function updateTrimUI() {
+        const leftPct = (clipIn / ev.duration) * 100;
+        const widthPct = Math.max(1.8, ((clipOut - clipIn) / ev.duration) * 100);
+        trimBracket.style.left = leftPct + '%';
+        trimBracket.style.width = widthPct + '%';
         const dur = (clipOut - clipIn).toFixed(1);
-        const rangeStr = fmtTime(clipIn) + ' – ' + fmtTime(clipOut) + ' (' + dur + 's)';
-        selectionBadge.textContent = 'IN ' + fmtTime(clipIn) + ' → OUT ' + fmtTime(clipOut) + ' (' + dur + 's)';
-        clipRangeText.textContent = rangeStr;
-        sbTimeSpan.textContent = '[' + fmtTime(clipIn) + ' – ' + fmtTime(clipOut) + ']';
-
-        // Find transcript snippet inside clipIn..clipOut
-        const cuesInRange = transcript.filter(c => c.end > clipIn && c.start < clipOut);
-        if (cuesInRange.length > 0) {
-          const combined = cuesInRange.map(c => c.text).join(' ');
-          sbSnippetText.textContent = '"' + combined + '"';
-          cropBurnedCaption.textContent = cuesInRange[0].text;
-        }
-
-        // Render 6 keyframe thumbnails spanning clipIn..clipOut
-        let sbHtml = '';
-        const steps = 6;
-        for (let i = 0; i < steps; i++) {
-          const t = clipIn + ((clipOut - clipIn) * (i / Math.max(1, steps - 1)));
-          sbHtml += '<div class="sb-thumb-card" data-t="' + t + '" title="Jump to ' + fmtTime(t) + '">' +
-            '<img src="' + getThumbUrl(t) + '" alt="Frame at ' + fmtTime(t) + '" />' +
-            '<span class="sb-thumb-time">' + fmtTime(t) + '</span>' +
-          '</div>';
-        }
-        storyboardThumbs.innerHTML = sbHtml;
-        storyboardThumbs.querySelectorAll('.sb-thumb-card').forEach(el => {
-          el.addEventListener('click', () => {
-            const t = parseFloat(el.getAttribute('data-t'));
-            mainVideo.currentTime = t;
-            updatePlayheadUI(t);
-          });
-        });
-
-        updateExportSummary();
+        trimRangePill.textContent = 'IN ' + fmtTime(clipIn) + ' → OUT ' + fmtTime(clipOut) + ' (' + dur + 's)';
       }
 
-      function updateExportSummary() {
-        const dur = (clipOut - clipIn).toFixed(1);
-        const camShort = selectedCam.toUpperCase().replace('CAM', 'CAM ');
-        cropOverlayBadge.textContent = camShort + ' · ' + selectedArLabel;
-        exportSummaryLeft.textContent = camShort + ' · ' + selectedCamName;
-        exportSummaryRight.textContent = selectedArLabel + ' · ' + dur + 's · MP4';
-        downloadBtnText.textContent = 'Download Clip (' + camShort + ' · ' + selectedArLabel + ' .MP4)';
-        hudCamText.textContent = 'EXPORT ANGLE: ' + selectedCamCode;
+      function findCueAtTime(sec) {
+        return transcript.find(c => sec >= c.start && sec < c.end) ||
+               transcript.find(c => sec >= c.end && sec <= c.end + 1.0) || null;
       }
 
       function updatePlayheadUI(curr) {
-        const pct = (curr / DURATION) * 100;
-        playheadLine.style.left = pct + '%';
-        transportTimeReadout.textContent = fmtTime(curr) + ' / ' + fmtTime(DURATION);
-        hudTimecode.textContent = 'TC ' + fmtTime(curr);
+        const pct = Math.max(0, Math.min(100, (curr / ev.duration) * 100));
+        playheadNeedle.style.left = pct + '%';
+        stageTimecode.textContent = fmtTime(curr);
+        timelineClockReadout.textContent = fmtTime(curr) + ' / ' + fmtTime(ev.duration);
 
-        // Active cue
-        const activeCue = transcript.find(c => curr >= c.start && curr <= c.end + 1.5);
-        if (activeCue) {
-          liveSpeakerLabel.textContent = activeCue.speaker.toUpperCase() + ' · ' + activeCue.role.toUpperCase();
-          liveCaptionText.textContent = activeCue.text;
-          document.getElementById('hudChapter').textContent = activeCue.chapter;
-          if (document.getElementById('burnCaptionsCheck').checked) {
-            cropBurnedCaption.textContent = activeCue.text;
+        const activeCue = findCueAtTime(curr);
+        liveSubtitleText.textContent = activeCue ? activeCue.text : '';
+      }
+
+      // Export Queue Management
+      function queueCurrentClip(customText) {
+        const cuesInRange = transcript.filter(c => c.end > clipIn && c.start < clipOut);
+        const snippet = customText || (cuesInRange.length ? cuesInRange.map(c => c.text).join(' ') : (ev.title + ' (' + fmtTime(clipIn) + '–' + fmtTime(clipOut) + ')'));
+        exportQueue.unshift({
+          id: 'clip_' + Date.now(),
+          start: clipIn,
+          end: clipOut,
+          cam: selectedCam,
+          text: snippet,
+          selected: true
+        });
+        renderExportQueue();
+        addToExportBtn.classList.add('added', 'visible');
+        addToExportText.textContent = 'Added!';
+        setTimeout(() => {
+          addToExportBtn.classList.remove('added', 'visible');
+          addToExportText.textContent = 'Add to Export Panel';
+        }, 1300);
+      }
+
+      function renderExportQueue() {
+        exportCountBadge.textContent = String(exportQueue.length);
+        const allSelected = exportQueue.length > 0 && exportQueue.every(c => c.selected);
+        selectAllDot.classList.toggle('checked', allSelected);
+
+        if (!exportQueue.length) {
+          exportClipsGrid.innerHTML = '<div style="grid-column:1/-1; padding:24px 8px; text-align:center; color:var(--ink-muted); font-size:12px;">Trim a range on the timeline and click <b>+ Add to Export Panel</b>.</div>';
+          updateDownloadButtonLabel();
+          return;
+        }
+
+        exportClipsGrid.innerHTML = exportQueue.map(item => {
+          const camObj = ev.cameras.find(c => c.id === item.cam) || ev.cameras[0];
+          const midSec = (item.start + item.end) * 0.5;
+          return '<div class="export-clip-card' + (item.selected ? ' selected' : '') + '" data-id="' + item.id + '">' +
+            '<div class="export-card-thumb-wrap">' +
+              '<img src="' + getThumbForTime(midSec) + '" alt="" />' +
+              '<button type="button" class="export-card-select" data-action="toggle" aria-label="Select clip"></button>' +
+              '<button type="button" class="export-card-remove" data-action="remove" aria-label="Remove clip">✕</button>' +
+              '<span class="export-card-meta-pill">' + camObj.short + ' · ' + fmtTime(item.start) + '</span>' +
+            '</div>' +
+            '<div class="export-card-caption"><div class="export-card-caption-text">' + item.text + '</div></div>' +
+          '</div>';
+        }).join('');
+
+        exportClipsGrid.querySelectorAll('.export-clip-card').forEach(card => {
+          const id = card.getAttribute('data-id');
+          card.addEventListener('click', (e) => {
+            const action = e.target.getAttribute('data-action');
+            const item = exportQueue.find(x => x.id === id);
+            if (!item) return;
+            if (action === 'remove') {
+              e.stopPropagation();
+              exportQueue = exportQueue.filter(x => x.id !== id);
+              renderExportQueue();
+            } else if (action === 'toggle') {
+              e.stopPropagation();
+              item.selected = !item.selected;
+              renderExportQueue();
+            } else {
+              // Preview this clip on main stage
+              selectCamera(item.cam, false);
+              setClipRange(item.start, item.end, item.start, true);
+              playbackMode = 'clip';
+              playAllSynced();
+            }
+          });
+        });
+
+        updateDownloadButtonLabel();
+      }
+
+      function updateDownloadButtonLabel() {
+        const selectedItems = exportQueue.filter(c => c.selected);
+        const count = selectedItems.length || 1;
+        const camShort = exportCam === 'all'
+          ? '4 CAMS'
+          : (ev.cameras.find(c => c.id === exportCam) || ev.cameras[0]).short;
+        downloadClipsLabel.textContent =
+          'Download ' + count + (count === 1 ? ' Clip' : ' Clips') + ' (' + camShort + ' • ' + exportArLabel + ' .MP4)';
+      }
+
+      function setExportDrawer(open) {
+        exportOpen = open;
+        clipperTop.classList.toggle('export-open', open);
+        exportChevron.textContent = open ? '›' : '‹';
+      }
+
+      // Live Browser Exact-Range Canvas + MediaRecorder MP4 Capture (when toggled in Advanced)
+      async function recordExactClipBlob(clip, camObj, arKey, burnCaptions, onPct) {
+        const dimsMap = {
+          '16x9': { w: 1280, h: 720 },
+          '9x16': { w: 404, h: 720 },
+          '5x4':  { w: 900, h: 720 },
+          '1x1':  { w: 720, h: 720 }
+        };
+        const dims = dimsMap[arKey] || dimsMap['16x9'];
+        const canvas = document.createElement('canvas');
+        canvas.width = dims.w;
+        canvas.height = dims.h;
+        const ctx = canvas.getContext('2d');
+
+        const offVid = document.createElement('video');
+        offVid.src = camObj.src;
+        offVid.crossOrigin = 'anonymous';
+        offVid.playsInline = true;
+        offVid.preload = 'auto';
+
+        await new Promise((resolve, reject) => {
+          offVid.onloadedmetadata = resolve;
+          offVid.onerror = reject;
+        });
+
+        const dur = Math.max(1.5, Math.min(25, clip.end - clip.start));
+        const startT = ev.trueIsoSync ? Math.min(offVid.duration - 0.5, clip.start) : (clip.start % offVid.duration);
+        offVid.currentTime = startT;
+        await new Promise((resolve) => {
+          const done = () => { offVid.onseeked = null; resolve(); };
+          offVid.onseeked = done;
+          setTimeout(done, 400);
+        });
+
+        const stream = canvas.captureStream(30);
+        let audioCtx = null;
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const srcNode = audioCtx.createMediaElementSource(offVid);
+          const destNode = audioCtx.createMediaStreamDestination();
+          srcNode.connect(destNode);
+          destNode.stream.getAudioTracks().forEach(t => stream.addTrack(t));
+        } catch (e) {
+          offVid.muted = true;
+        }
+
+        const mime = MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2')
+          ? 'video/mp4;codecs=avc1,mp4a.40.2'
+          : (MediaRecorder.isTypeSupported('video/mp4') ? 'video/mp4' : 'video/webm');
+        const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 3200000 });
+        const chunks = [];
+        rec.ondataavailable = (evData) => { if (evData.data && evData.data.size) chunks.push(evData.data); };
+
+        let stopped = false;
+        function drawFrame() {
+          if (stopped) return;
+          const vw = offVid.videoWidth || 1280;
+          const vh = offVid.videoHeight || 720;
+          const scale = Math.max(dims.w / vw, dims.h / vh);
+          const sw = dims.w / scale;
+          const sh = dims.h / scale;
+          const sx = (vw - sw) * 0.5;
+          const sy = (vh - sh) * 0.5;
+          ctx.drawImage(offVid, sx, sy, sw, sh, 0, 0, dims.w, dims.h);
+
+          if (burnCaptions) {
+            const relSec = clip.start + Math.max(0, offVid.currentTime - startT);
+            const cue = findCueAtTime(relSec);
+            if (cue && cue.text) {
+              const fontSize = Math.max(15, Math.round(dims.w * 0.028));
+              ctx.font = '600 ' + fontSize + 'px sans-serif';
+              ctx.textAlign = 'center';
+              const maxW = dims.w * 0.86;
+              const words = cue.text.split(' ');
+              const lines = [];
+              let line = '';
+              words.forEach(w => {
+                const test = line ? (line + ' ' + w) : w;
+                if (ctx.measureText(test).width > maxW && line) {
+                  lines.push(line);
+                  line = w;
+                } else {
+                  line = test;
+                }
+              });
+              if (line) lines.push(line);
+              const baseY = dims.h - 32 - (lines.length - 1) * (fontSize + 6);
+              lines.forEach((ln, idx) => {
+                const y = baseY + idx * (fontSize + 6);
+                ctx.lineWidth = 4;
+                ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+                ctx.strokeText(ln, dims.w * 0.5, y);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(ln, dims.w * 0.5, y);
+              });
+            }
           }
+          const elapsed = Math.max(0, offVid.currentTime - startT);
+          if (onPct) onPct(Math.min(99, Math.round((elapsed / dur) * 100)));
+          requestAnimationFrame(drawFrame);
+        }
+
+        const blobPromise = new Promise(resolve => {
+          rec.onstop = () => resolve({ blob: new Blob(chunks, { type: mime }), ext: mime.includes('mp4') ? 'mp4' : 'webm' });
+        });
+
+        rec.start(200);
+        await offVid.play().catch(() => {});
+        drawFrame();
+
+        await new Promise(r => setTimeout(r, dur * 1000));
+        stopped = true;
+        offVid.pause();
+        if (rec.state !== 'inactive') rec.stop();
+        const res = await blobPromise;
+        if (audioCtx) audioCtx.close().catch(() => {});
+        return res;
+      }
+
+      // Real Client-Side Aspect-Cropped Video Export (uses pre-baked MP4s by default or live Canvas/MediaRecorder capture)
+      async function exportSelectedClips() {
+        const targets = exportQueue.filter(c => c.selected);
+        const list = targets.length ? targets : [{ start: clipIn, end: clipOut, cam: selectedCam, text: liveSubtitleText.textContent }];
+        const progressBox = document.getElementById('exportProgressBox');
+        const progressBar = document.getElementById('exportProgressBar');
+        const progressPct = document.getElementById('exportProgressPct');
+        const progressText = document.getElementById('exportProgressText');
+        const useLiveCapture = document.getElementById('liveTrimCheck') && document.getElementById('liveTrimCheck').checked;
+        const burnCaps = document.getElementById('burnCaptionsCheck') && document.getElementById('burnCaptionsCheck').checked;
+
+        downloadClipsBtn.disabled = true;
+        progressBox.classList.add('active');
+        progressBar.style.width = '10%';
+        progressPct.textContent = '10%';
+
+        const camsToExport = exportCam === 'all' ? ev.cameras.map(c => c.id) : [exportCam];
+        let step = 0;
+        const total = list.length * camsToExport.length;
+
+        for (const clip of list) {
+          for (const camId of camsToExport) {
+            step++;
+            const camObj = ev.cameras.find(c => c.id === camId) || ev.cameras[0];
+            const cleanTitle = ev.title.replace(/[^a-zA-Z0-9]+/g, '-');
+            const cleanCam = camObj.name.replace(/[^a-zA-Z0-9]+/g, '-');
+
+            if (useLiveCapture && window.MediaRecorder) {
+              progressText.textContent = 'Recording ' + camObj.short + ' (' + exportArLabel + ')...';
+              const recorded = await recordExactClipBlob(clip, camObj, exportAr, burnCaps, (subPct) => {
+                const overall = Math.round((((step - 1) + subPct / 100) / total) * 100);
+                progressBar.style.width = overall + '%';
+                progressPct.textContent = overall + '%';
+              });
+              const blobUrl = URL.createObjectURL(recorded.blob);
+              const fname = cleanTitle + '_' + camId.toUpperCase() + '-' + cleanCam + '_' + exportAr + '_' +
+                fmtTime(clip.start).replace(':', 'm') + 's-' + fmtTime(clip.end).replace(':', 'm') + 's.' + recorded.ext;
+              const a = document.createElement('a');
+              a.href = blobUrl;
+              a.download = fname;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              setTimeout(() => URL.revokeObjectURL(blobUrl), 8000);
+            } else {
+              const pct = Math.round((step / total) * 100);
+              progressText.textContent = 'Exporting ' + camObj.short + ' (' + exportArLabel + ')...';
+              progressBar.style.width = pct + '%';
+              progressPct.textContent = pct + '%';
+              await new Promise(r => setTimeout(r, 240));
+
+              const fileUrl = ev.exportUrl
+                ? ev.exportUrl(camId, exportAr)
+                : ('/media/exports/export_' + camId + '_' + exportAr + '.mp4');
+              const fname = cleanTitle + '_' + camId.toUpperCase() + '-' + cleanCam + '_' + exportAr + '_' +
+                fmtTime(clip.start).replace(':', 'm') + 's-' + fmtTime(clip.end).replace(':', 'm') + 's.mp4';
+
+              const a = document.createElement('a');
+              a.href = fileUrl;
+              a.download = fname;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+          }
+        }
+
+        progressBar.style.width = '100%';
+        progressPct.textContent = '100%';
+        progressText.textContent = 'Export complete!';
+        setTimeout(() => {
+          progressBox.classList.remove('active');
+          downloadClipsBtn.disabled = false;
+        }, 1200);
+      }
+
+      // ==================== INTERACTION LISTENERS ====================
+      toggleExportBtn.addEventListener('click', () => setExportDrawer(!exportOpen));
+      document.getElementById('mobileExportBackdrop').addEventListener('click', () => setExportDrawer(false));
+
+      addToExportBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        queueCurrentClip();
+        setExportDrawer(true);
+      });
+
+      selectAllBtn.addEventListener('click', () => {
+        const allSelected = exportQueue.length > 0 && exportQueue.every(c => c.selected);
+        exportQueue.forEach(c => { c.selected = !allSelected; });
+        renderExportQueue();
+      });
+
+      exportAspectSelect.addEventListener('change', () => {
+        const opt = exportAspectSelect.options[exportAspectSelect.selectedIndex];
+        exportAr = exportAspectSelect.value;
+        exportArLabel = opt.getAttribute('data-label');
+        cropFrameLive.style.aspectRatio = opt.getAttribute('data-css');
+        updateDownloadButtonLabel();
+      });
+
+      exportCamSelect.addEventListener('change', () => {
+        exportCam = exportCamSelect.value;
+        if (exportCam !== 'all') {
+          selectCamera(exportCam, false);
+        }
+        updateCropPreviewSource();
+        updateDownloadButtonLabel();
+      });
+
+      advancedToggleBtn.addEventListener('click', () => {
+        const open = advancedDrawer.classList.toggle('open');
+        if (open) {
+          updateCropPreviewSource();
+          cropPreviewVideo.play().catch(() => {});
+        } else {
+          cropPreviewVideo.pause();
+        }
+      });
+
+      document.getElementById('showSpeakersCheck').addEventListener('change', (e) => {
+        showSpeakers = e.target.checked;
+        renderTranscriptCards();
+      });
+
+      downloadClipsBtn.addEventListener('click', exportSelectedClips);
+
+      // Camera Switcher Popover
+      camDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = camSwitcherMenu.classList.toggle('open');
+        camDropdownBtn.classList.toggle('open', open);
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!camSwitcherMenu.contains(e.target) && e.target !== camDropdownBtn) {
+          camSwitcherMenu.classList.remove('open');
+          camDropdownBtn.classList.remove('open');
+        }
+      });
+
+      quadToggleMenuBtn.addEventListener('click', () => {
+        quadMode = !quadMode;
+        multicamCanvas.classList.toggle('quad-mode', quadMode);
+        quadToggleMenuBtn.classList.toggle('active', quadMode);
+        syncCamerasToTime(getCurrentTime(), true);
+        camSwitcherMenu.classList.remove('open');
+        camDropdownBtn.classList.remove('open');
+      });
+
+      multicamCanvas.querySelectorAll('.cam-feed-slot').forEach(slot => {
+        slot.addEventListener('click', () => {
+          const cid = slot.getAttribute('data-cam');
+          if (quadMode) {
+            selectCamera(cid, true);
+          } else {
+            if (isPaused()) playAllSynced();
+            else pauseAllSynced();
+          }
+        });
+      });
+
+      // Play In -> Out vs Watch Full Stream
+      playInOutBtn.addEventListener('click', () => {
+        if (!isPaused() && playbackMode === 'clip') {
+          pauseAllSynced();
+        } else {
+          playbackMode = 'clip';
+          const curr = getCurrentTime();
+          if (curr < clipIn || curr >= clipOut - 0.2) {
+            seekTo(clipIn);
+          }
+          playAllSynced();
+        }
+      });
+
+      watchFullBtn.addEventListener('click', () => {
+        if (!isPaused() && playbackMode === 'full') {
+          pauseAllSynced();
+        } else {
+          playbackMode = 'full';
+          playAllSynced();
+        }
+      });
+
+      eventSwitcher.addEventListener('change', () => {
+        loadEvent(eventSwitcher.value);
+      });
+
+      // Search Input
+      searchInput.addEventListener('input', runSearch);
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        runSearch();
+      });
+
+      // Master Clock Tick & Drift Correction Loop
+      function onClockTick() {
+        const curr = getCurrentTime();
+        if (!isPaused()) {
+          if (playbackMode === 'clip' && curr >= clipOut) {
+            seekTo(clipIn);
+            return;
+          }
+          syncCamerasToTime(curr, false);
+        }
+        updatePlayheadUI(curr);
+      }
+
+      masterMedia.addEventListener('timeupdate', onClockTick);
+      vids.cam1.addEventListener('timeupdate', () => {
+        if (ev.trueIsoSync) onClockTick();
+      });
+      masterMedia.addEventListener('play', updateTransportButtons);
+      masterMedia.addEventListener('pause', updateTransportButtons);
+      vids.cam1.addEventListener('play', updateTransportButtons);
+      vids.cam1.addEventListener('pause', updateTransportButtons);
+
+      // Timeline Scrubbing & Yellow [ IN / OUT ] Dragging
+      let dragMode = null;
+      let dragStartX = 0;
+      let dragStartIn = 0;
+      let dragStartOut = 0;
+
+      function dismissDragHint() {
+        if (!dragHintDismissed) {
+          dragHintDismissed = true;
+          if (dragHintLabel) dragHintLabel.classList.add('dismissed');
         }
       }
 
-      // Timeline Mouse Dragging (In Handle, Out Handle, Range Bar, or Scrub)
-      let dragMode = null;
-      let dragStartX = 0;
-      let dragInitialIn = 0;
-      let dragInitialOut = 0;
-
-      function getSecFromClientX(clientX) {
+      function secFromClientX(clientX) {
         const rect = timelineTrack.getBoundingClientRect();
         const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-        return ratio * DURATION;
+        return ratio * ev.duration;
       }
 
       inHandle.addEventListener('mousedown', (e) => {
         e.stopPropagation();
+        dismissDragHint();
         dragMode = 'in';
       });
 
       outHandle.addEventListener('mousedown', (e) => {
         e.stopPropagation();
+        dismissDragHint();
         dragMode = 'out';
       });
 
-      selectionBox.addEventListener('mousedown', (e) => {
-        if (e.target === inHandle || e.target === outHandle) return;
+      trimBracket.addEventListener('mousedown', (e) => {
+        if (e.target === inHandle || e.target === outHandle || addToExportBtn.contains(e.target)) return;
         e.stopPropagation();
+        dismissDragHint();
         dragMode = 'move';
         dragStartX = e.clientX;
-        dragInitialIn = clipIn;
-        dragInitialOut = clipOut;
+        dragStartIn = clipIn;
+        dragStartOut = clipOut;
       });
 
       timelineTrack.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('chapter-seg')) return;
-        const sec = getSecFromClientX(e.clientX);
-        mainVideo.currentTime = sec;
-        updatePlayheadUI(sec);
+        if (e.target.classList.contains('chapter-marker-label') || addToExportBtn.contains(e.target)) return;
         dragMode = 'scrub';
+        seekTo(secFromClientX(e.clientX));
       });
 
       window.addEventListener('mousemove', (e) => {
-        // Hover Loupe when inside timelineTrack
         const rect = timelineTrack.getBoundingClientRect();
-        const isInside = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top - 20 && e.clientY <= rect.bottom + 10;
+        const overTrack = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top - 10 && e.clientY <= rect.bottom + 10;
 
-        if (isInside || dragMode) {
-          const hoverSec = getSecFromClientX(e.clientX);
-          const clampedX = Math.max(98, Math.min(rect.width - 98, e.clientX - rect.left));
-          timelineLoupe.style.left = clampedX + 'px';
-          timelineLoupe.classList.add('visible');
-          loupeImg.src = getThumbUrl(hoverSec);
-          loupeTime.textContent = fmtTime(hoverSec);
-          const hCue = transcript.find(c => hoverSec >= c.start && hoverSec <= c.end + 2) || transcript.find(c => c.start >= hoverSec);
-          if (hCue) {
-            loupeSpeaker.textContent = hCue.speaker;
-            loupeCaption.textContent = hCue.text;
-          }
+        if (overTrack || dragMode) {
+          const hSec = secFromClientX(e.clientX);
+          const xPx = Math.max(96, Math.min(rect.width - 96, e.clientX - rect.left));
+          hoverLoupe.style.left = xPx + 'px';
+          hoverLoupe.classList.add('visible');
+          loupeImg.src = getThumbForTime(hSec);
+          loupeTime.textContent = fmtTime(hSec);
+          const cue = transcript.find(c => hSec >= c.start && hSec <= c.end + 1.5);
+          loupeSpeaker.textContent = cue ? cue.speaker : '';
+          loupeCaption.textContent = cue ? cue.text : '';
         } else {
-          timelineLoupe.classList.remove('visible');
+          hoverLoupe.classList.remove('visible');
         }
 
         if (!dragMode) return;
-        const sec = getSecFromClientX(e.clientX);
+        const sec = secFromClientX(e.clientX);
+        const minSpan = Math.min(3, ev.duration * 0.05);
 
         if (dragMode === 'in') {
-          clipIn = Math.max(0, Math.min(sec, clipOut - 3));
-          mainVideo.currentTime = clipIn;
-          updatePlayheadUI(clipIn);
-          updateSelectionUI();
+          clipIn = Math.max(0, Math.min(sec, clipOut - minSpan));
+          updateTrimUI();
+          seekTo(clipIn);
         } else if (dragMode === 'out') {
-          clipOut = Math.min(DURATION, Math.max(sec, clipIn + 3));
-          mainVideo.currentTime = clipOut;
-          updatePlayheadUI(clipOut);
-          updateSelectionUI();
+          clipOut = Math.min(ev.duration, Math.max(sec, clipIn + minSpan));
+          updateTrimUI();
+          seekTo(clipOut);
         } else if (dragMode === 'move') {
-          const deltaSec = ((e.clientX - dragStartX) / rect.width) * DURATION;
-          const span = dragInitialOut - dragInitialIn;
-          let nextIn = Math.max(0, Math.min(DURATION - span, dragInitialIn + deltaSec));
-          clipIn = nextIn;
-          clipOut = nextIn + span;
-          updateSelectionUI();
+          const delta = ((e.clientX - dragStartX) / rect.width) * ev.duration;
+          const span = dragStartOut - dragStartIn;
+          clipIn = Math.max(0, Math.min(ev.duration - span, dragStartIn + delta));
+          clipOut = clipIn + span;
+          updateTrimUI();
         } else if (dragMode === 'scrub') {
-          mainVideo.currentTime = sec;
-          updatePlayheadUI(sec);
+          seekTo(sec);
         }
       });
 
       window.addEventListener('mouseup', () => {
         if (dragMode) {
+          if (dragMode === 'in' || dragMode === 'out' || dragMode === 'move') {
+            addToExportBtn.classList.add('visible');
+          }
           dragMode = null;
-          timelineLoupe.classList.remove('visible');
-          renderTranscriptList();
+          renderTranscriptCards();
         }
       });
 
-      timelineTrack.addEventListener('mouseleave', () => {
-        if (!dragMode) timelineLoupe.classList.remove('visible');
-      });
-
-      // Chapters click
-      document.querySelectorAll('.chapter-seg').forEach(seg => {
-        seg.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const s = parseFloat(seg.getAttribute('data-start'));
-          const end = parseFloat(seg.getAttribute('data-end'));
-          selectClipSegment(s, Math.min(s + 24, end), s);
-        });
-      });
-
-      // Camera Angle Selection
-      function selectCameraAngle(camId) {
-        selectedCam = camId;
-        document.querySelectorAll('.cam-card').forEach(card => {
-          const isMatch = card.getAttribute('data-cam') === camId;
-          card.classList.toggle('active', isMatch);
-          if (isMatch) {
-            selectedCamName = card.getAttribute('data-name');
-            selectedCamCode = card.getAttribute('data-code');
-          }
-        });
-        document.querySelectorAll('.quad-cell').forEach(cell => {
-          cell.classList.toggle('selected', cell.getAttribute('data-cam') === camId);
-        });
-
-        const nextSrc = camVideoFiles[camId];
-        if (!exportPreviewVideo.src.endsWith(nextSrc)) {
-          exportPreviewVideo.src = nextSrc;
-          exportPreviewVideo.play().catch(() => {});
-        }
-
-        // If "Preview Selected Camera on Main Screen" is checked, swap main video source or sync
-        syncMainMonitorSource();
-        updateExportSummary();
-      }
-
-      function syncMainMonitorSource() {
-        const previewCamOnMain = document.getElementById('syncMainToCamCheck').checked;
-        if (previewCamOnMain) {
-          const target = camVideoFiles[selectedCam];
-          if (!mainVideo.src.endsWith(target)) {
-            mainVideo.src = target;
-            mainVideo.loop = true;
-            mainVideo.play().catch(() => {});
-          }
-        } else {
-          if (!mainVideo.src.endsWith('/media/keynote-main.mp4')) {
-            mainVideo.src = '/media/keynote-main.mp4';
-            mainVideo.loop = false;
-            mainVideo.currentTime = clipIn;
-          }
-        }
-      }
-
-      document.getElementById('syncMainToCamCheck').addEventListener('change', syncMainMonitorSource);
-
-      document.querySelectorAll('.cam-card').forEach(card => {
-        card.addEventListener('click', () => {
-          selectCameraAngle(card.getAttribute('data-cam'));
-        });
-      });
-
-      document.querySelectorAll('.quad-cell').forEach(cell => {
-        cell.addEventListener('click', () => {
-          selectCameraAngle(cell.getAttribute('data-cam'));
-        });
-      });
-
-      // Aspect Ratio Selection
-      document.querySelectorAll('.aspect-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelectorAll('.aspect-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedAr = btn.getAttribute('data-ar');
-          selectedArCss = btn.getAttribute('data-css');
-          selectedArLabel = btn.querySelector('.aspect-ratio-label').textContent;
-          document.getElementById('activeResolutionLabel').textContent = btn.getAttribute('data-res');
-          cropViewport.style.aspectRatio = selectedArCss;
-          updateExportSummary();
-        });
-      });
-
-      // Burn Captions toggle
-      document.getElementById('burnCaptionsCheck').addEventListener('change', (e) => {
-        cropBurnedCaption.style.display = e.target.checked ? 'block' : 'none';
-      });
-
-      // Search & Quick Chips
-      searchInput.addEventListener('input', () => {
-        document.querySelectorAll('.chip-btn').forEach(b => {
-          b.classList.toggle('active', b.getAttribute('data-query').toLowerCase() === searchInput.value.trim().toLowerCase());
-        });
-        runSearch();
-      });
-
-      clearSearchBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
-        runSearch();
-      });
-
-      quickChips.querySelectorAll('.chip-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const q = btn.getAttribute('data-query');
-          searchInput.value = q;
-          quickChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          runSearch();
-          if (matches.length > 0) {
-            const first = matches[0];
-            selectClipSegment(Math.max(0, first.start - 2), Math.min(DURATION, first.end + 8), first.start);
-          }
-        });
-      });
-
-      // Speaker filter & Matches-only toggle
-      document.querySelectorAll('.speaker-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-          document.querySelectorAll('.speaker-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          currentSpeaker = tab.getAttribute('data-speaker');
-          renderTranscriptList();
-        });
-      });
-
-      document.getElementById('onlyMatchesCheck').addEventListener('change', (e) => {
-        onlyMatches = e.target.checked;
-        renderTranscriptList();
-      });
-
-      // Prev / Next Match Navigation
-      let matchCursor = 0;
-      document.getElementById('nextMatchBtn').addEventListener('click', () => {
-        if (!matches.length) return;
-        matchCursor = (matchCursor + 1) % matches.length;
-        const m = matches[matchCursor];
-        selectClipSegment(Math.max(0, m.start - 2), Math.min(DURATION, m.end + 7), m.start);
-      });
-
-      document.getElementById('prevMatchBtn').addEventListener('click', () => {
-        if (!matches.length) return;
-        matchCursor = (matchCursor - 1 + matches.length) % matches.length;
-        const m = matches[matchCursor];
-        selectClipSegment(Math.max(0, m.start - 2), Math.min(DURATION, m.end + 7), m.start);
-      });
-
-      // Transport Controls
-      playPauseBtn.addEventListener('click', () => {
-        if (mainVideo.paused) {
-          mainVideo.play();
-        } else {
-          mainVideo.pause();
-        }
-      });
-
-      mainVideo.addEventListener('play', () => {
-        playPauseBtn.textContent = '⏸ Pause';
-      });
-
-      mainVideo.addEventListener('pause', () => {
-        playPauseBtn.textContent = '▶ Play';
-      });
-
-      mainVideo.addEventListener('timeupdate', () => {
-        if (document.getElementById('syncMainToCamCheck').checked) return;
-        const curr = mainVideo.currentTime;
-        if (loopInOut && !mainVideo.paused && curr >= clipOut) {
-          mainVideo.currentTime = clipIn;
-        }
-        updatePlayheadUI(curr);
-      });
-
-      playClipBtn.addEventListener('click', () => {
-        document.getElementById('syncMainToCamCheck').checked = false;
-        syncMainMonitorSource();
-        mainVideo.currentTime = clipIn;
-        mainVideo.play();
-      });
-
-      setInBtn.addEventListener('click', () => {
-        selectClipSegment(mainVideo.currentTime, Math.max(clipOut, mainVideo.currentTime + 8));
-      });
-
-      setOutBtn.addEventListener('click', () => {
-        selectClipSegment(Math.min(clipIn, mainVideo.currentTime - 8), mainVideo.currentTime);
-      });
-
-      // Multiview & Loop Toggles
-      const quadViewToggle = document.getElementById('quadViewToggle');
-      const quadGrid = document.getElementById('quadGrid');
-      quadViewToggle.addEventListener('click', () => {
-        const active = quadGrid.classList.toggle('active');
-        quadViewToggle.classList.toggle('active', active);
-        if (active) {
-          ['quadCam1', 'quadCam2', 'quadCam3', 'quadCam4'].forEach(id => {
-            document.getElementById(id).play().catch(() => {});
-          });
-        }
-      });
-
-      const loopClipToggle = document.getElementById('loopClipToggle');
-      loopClipToggle.addEventListener('click', () => {
-        loopInOut = !loopInOut;
-        loopClipToggle.classList.toggle('active', loopInOut);
-      });
-
-      // Download Clip (.MP4) — serves real pre-cropped MP4 file with dynamic creator filename
-      downloadClipBtn.addEventListener('click', () => {
-        const wrap = document.getElementById('exportProgressWrap');
-        const fill = document.getElementById('exportProgressFill');
-        const pctText = document.getElementById('exportPercentText');
-        const statusText = document.getElementById('exportStatusText');
-
-        wrap.classList.add('active');
-        fill.style.width = '0%';
-        let pct = 0;
-
-        const timer = setInterval(() => {
-          pct += 25;
-          if (pct <= 100) {
-            fill.style.width = pct + '%';
-            pctText.textContent = pct + '%';
-            if (pct === 50) statusText.textContent = 'Applying ' + selectedArLabel + ' aspect crop on ' + selectedCam.toUpperCase() + '...';
-            if (pct === 100) statusText.textContent = 'Download ready!';
-          } else {
-            clearInterval(timer);
-            const realFileUrl = '/media/exports/export_' + selectedCam + '_' + selectedAr + '.mp4';
-            const cleanCam = selectedCamName.replace(/[^a-zA-Z0-9]+/g, '-');
-            const inStr = fmtTime(clipIn).replace(':', 'm') + 's';
-            const outStr = fmtTime(clipOut).replace(':', 'm') + 's';
-            const downloadName = 'Google-IO26_' + selectedCam.toUpperCase() + '-' + cleanCam + '_' + selectedAr + '_' + inStr + '-' + outStr + '.mp4';
-
-            const a = document.createElement('a');
-            a.href = realFileUrl;
-            a.download = downloadName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            setTimeout(() => {
-              wrap.classList.remove('active');
-              statusText.textContent = 'Cutting ISO stream & reframing...';
-            }, 1800);
-          }
-        }, 180);
-      });
-
-      // Keyboard shortcuts
+      // Keyboard Shortcuts (Space, I, O, 1-4, M, E)
       window.addEventListener('keydown', (e) => {
         if (document.activeElement === searchInput) return;
         if (e.code === 'Space') {
           e.preventDefault();
-          playPauseBtn.click();
+          if (isPaused()) playAllSynced();
+          else pauseAllSynced();
         } else if (e.key === 'i' || e.key === 'I') {
-          setInBtn.click();
+          dismissDragHint();
+          setClipRange(getCurrentTime(), Math.max(clipOut, getCurrentTime() + 6));
         } else if (e.key === 'o' || e.key === 'O') {
-          setOutBtn.click();
+          dismissDragHint();
+          setClipRange(Math.min(clipIn, getCurrentTime() - 6), getCurrentTime());
         } else if (['1', '2', '3', '4'].includes(e.key)) {
-          selectCameraAngle('cam' + e.key);
+          const cam = ev.cameras[parseInt(e.key, 10) - 1];
+          if (cam) selectCamera(cam.id, true);
+        } else if (e.key === 'm' || e.key === 'M') {
+          quadToggleMenuBtn.click();
+        } else if (e.key === 'e' || e.key === 'E') {
+          setExportDrawer(!exportOpen);
         }
       });
 
-      // Load Transcript & Initialize
-      initTimelineVisuals();
-      fetch('/media/transcript.json')
-        .then(r => r.json())
-        .then(data => {
-          transcript = data;
-          runSearch();
-          selectClipSegment(96, 115, 102);
-        });
+      // Boot primary synchronized 4-camera live event immediately
+      renderEventSwitcher();
+      loadEvent(activeEventKey);
     })();
   </script>
 </body>

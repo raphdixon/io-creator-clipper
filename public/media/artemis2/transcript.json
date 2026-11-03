@@ -1,0 +1,509 @@
+[
+  {
+    "id": 1,
+    "start": 1.4,
+    "end": 3.45,
+    "timecode": "00:01",
+    "keynoteTimecode": "T-00:14",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Final Countdown & Engine Start",
+    "text": "And here we go.",
+    "tags": [
+      "countdown",
+      "opening",
+      "derrol nail"
+    ]
+  },
+  {
+    "id": 2,
+    "start": 3.45,
+    "end": 7.45,
+    "timecode": "00:03",
+    "keynoteTimecode": "T-00:12",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Final Countdown & Engine Start",
+    "text": "Ten, nine, eight, seven...",
+    "tags": [
+      "countdown",
+      "ten",
+      "derrol nail"
+    ]
+  },
+  {
+    "id": 3,
+    "start": 7.45,
+    "end": 10.49,
+    "timecode": "00:07",
+    "keynoteTimecode": "T-00:08",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Final Countdown & Engine Start",
+    "text": "RS-25 engines lit!",
+    "tags": [
+      "countdown",
+      "engines",
+      "rs-25",
+      "ignition"
+    ]
+  },
+  {
+    "id": 4,
+    "start": 10.49,
+    "end": 13.69,
+    "timecode": "00:10",
+    "keynoteTimecode": "T-00:05",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Final Countdown & Engine Start",
+    "text": "Four, three, two, one...",
+    "tags": [
+      "countdown",
+      "derrol nail"
+    ]
+  },
+  {
+    "id": 5,
+    "start": 13.69,
+    "end": 17.53,
+    "timecode": "00:13",
+    "keynoteTimecode": "T-00:02",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Booster Ignition & Liftoff",
+    "text": "Booster ignition and liftoff!",
+    "tags": [
+      "liftoff",
+      "ignition",
+      "boosters",
+      "crowd",
+      "highlight"
+    ]
+  },
+  {
+    "id": 6,
+    "start": 17.53,
+    "end": 20.87,
+    "timecode": "00:17",
+    "keynoteTimecode": "T+00:02",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Booster Ignition & Liftoff",
+    "text": "The crew of Artemis II, now bound for the Moon!",
+    "tags": [
+      "liftoff",
+      "artemis",
+      "moon",
+      "crew",
+      "crowd",
+      "highlight"
+    ]
+  },
+  {
+    "id": 7,
+    "start": 20.87,
+    "end": 24.57,
+    "timecode": "00:20",
+    "keynoteTimecode": "T+00:05",
+    "speaker": "Derrol Nail",
+    "role": "NASA Launch Commentator, Kennedy Space Center",
+    "chapter": "Booster Ignition & Liftoff",
+    "text": "Humanity's next great voyage begins.",
+    "tags": [
+      "liftoff",
+      "moon",
+      "voyage",
+      "highlight"
+    ]
+  },
+  {
+    "id": 8,
+    "start": 28.09,
+    "end": 30.81,
+    "timecode": "00:28",
+    "keynoteTimecode": "T+00:13",
+    "speaker": "Reid Wiseman",
+    "role": "Artemis II Commander, Orion 'Integrity'",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Good roll pitch.",
+    "tags": [
+      "roll pitch",
+      "reid wiseman",
+      "crew",
+      "orion",
+      "integrity"
+    ]
+  },
+  {
+    "id": 9,
+    "start": 30.81,
+    "end": 34.57,
+    "timecode": "00:30",
+    "keynoteTimecode": "T+00:15",
+    "speaker": "Launch Control",
+    "role": "Flight Dynamics & Houston CAPCOM",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Roger, roll pitch.",
+    "tags": [
+      "roll pitch",
+      "houston",
+      "launch control"
+    ]
+  },
+  {
+    "id": 10,
+    "start": 34.81,
+    "end": 42.37,
+    "timecode": "00:34",
+    "keynoteTimecode": "T+00:19",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Houston now controlling the flight of Integrity on the Artemis II mission around the Moon.",
+    "tags": [
+      "houston",
+      "integrity",
+      "moon",
+      "artemis",
+      "gary jordan"
+    ]
+  },
+  {
+    "id": 11,
+    "start": 42.73,
+    "end": 47.87,
+    "timecode": "00:42",
+    "keynoteTimecode": "T+00:27",
+    "speaker": "Launch Control",
+    "role": "Flight Dynamics & Houston CAPCOM",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Integrity, AMC high.",
+    "tags": [
+      "integrity",
+      "launch control",
+      "telemetry"
+    ]
+  },
+  {
+    "id": 12,
+    "start": 48.25,
+    "end": 54.25,
+    "timecode": "00:48",
+    "keynoteTimecode": "T+00:33",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "On time passing 30 seconds into the flight. Integrity passes the alternate vehicle target milestone.",
+    "tags": [
+      "30 seconds",
+      "integrity",
+      "milestone",
+      "gary jordan"
+    ]
+  },
+  {
+    "id": 13,
+    "start": 54.25,
+    "end": 57.53,
+    "timecode": "00:54",
+    "keynoteTimecode": "T+00:39",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Mission Control Houston seeing good performance on four main engines.",
+    "tags": [
+      "houston",
+      "engines",
+      "rs-25",
+      "performance"
+    ]
+  },
+  {
+    "id": 14,
+    "start": 57.53,
+    "end": 65.87,
+    "timecode": "00:57",
+    "keynoteTimecode": "T+00:42",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Roll Program & Houston Handover",
+    "text": "Space Launch System core stage and Integrity three miles in altitude, traveling more than 1,200 miles per hour.",
+    "tags": [
+      "sls",
+      "core stage",
+      "integrity",
+      "altitude",
+      "speed"
+    ]
+  },
+  {
+    "id": 15,
+    "start": 85.85,
+    "end": 92.49,
+    "timecode": "01:25",
+    "keynoteTimecode": "T+01:10",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Max-Q & Going Supersonic",
+    "text": "Mission elapsed time passing one minute, approaching Max-Q on Ponce de Leon.",
+    "tags": [
+      "max-q",
+      "one minute",
+      "ponce de leon",
+      "aerodynamic"
+    ]
+  },
+  {
+    "id": 16,
+    "start": 92.49,
+    "end": 96.01,
+    "timecode": "01:32",
+    "keynoteTimecode": "T+01:17",
+    "speaker": "Launch Control",
+    "role": "Flight Dynamics & Houston CAPCOM",
+    "chapter": "Max-Q & Going Supersonic",
+    "text": "Integrity, Houston, we have you loud and clear on Ponce de Leon.",
+    "tags": [
+      "houston",
+      "integrity",
+      "comms",
+      "ponce de leon"
+    ]
+  },
+  {
+    "id": 17,
+    "start": 96.01,
+    "end": 98.65,
+    "timecode": "01:36",
+    "keynoteTimecode": "T+01:21",
+    "speaker": "Reid Wiseman",
+    "role": "Artemis II Commander, Orion 'Integrity'",
+    "chapter": "Max-Q & Going Supersonic",
+    "text": "Have you the same!",
+    "tags": [
+      "reid wiseman",
+      "crew",
+      "comms",
+      "integrity"
+    ]
+  },
+  {
+    "id": 18,
+    "start": 98.65,
+    "end": 103.37,
+    "timecode": "01:38",
+    "keynoteTimecode": "T+01:23",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Max-Q & Going Supersonic",
+    "text": "Communication signal transfer confirmed as Integrity and its crew go supersonic!",
+    "tags": [
+      "supersonic",
+      "max-q",
+      "integrity",
+      "crew",
+      "highlight"
+    ]
+  },
+  {
+    "id": 19,
+    "start": 103.37,
+    "end": 112.87,
+    "timecode": "01:43",
+    "keynoteTimecode": "T+01:28",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Max-Q & Going Supersonic",
+    "text": "Approaching 90 seconds into the Artemis II mission \u2014 Integrity is 14 miles in altitude, 8 miles downrange, traveling more than 2,600 miles per hour.",
+    "tags": [
+      "supersonic",
+      "90 seconds",
+      "altitude",
+      "speed",
+      "artemis"
+    ]
+  },
+  {
+    "id": 20,
+    "start": 128.25,
+    "end": 134.49,
+    "timecode": "02:08",
+    "keynoteTimecode": "T+01:53",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Solid Rocket Booster Separation",
+    "text": "One minute 50 seconds of mission elapsed time. Standing by for main engine throttle down to 85 percent...",
+    "tags": [
+      "throttle",
+      "engines",
+      "booster separation"
+    ]
+  },
+  {
+    "id": 21,
+    "start": 134.49,
+    "end": 141.21,
+    "timecode": "02:14",
+    "keynoteTimecode": "T+01:59",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Solid Rocket Booster Separation",
+    "text": "...ahead of Solid Rocket Booster separation, expected at the 2-minute 9-second mark.",
+    "tags": [
+      "booster separation",
+      "boosters",
+      "srb"
+    ]
+  },
+  {
+    "id": 22,
+    "start": 141.21,
+    "end": 144.87,
+    "timecode": "02:21",
+    "keynoteTimecode": "T+02:06",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Solid Rocket Booster Separation",
+    "text": "We see throttle down.",
+    "tags": [
+      "throttle",
+      "engines"
+    ]
+  },
+  {
+    "id": 23,
+    "start": 148.49,
+    "end": 151.29,
+    "timecode": "02:28",
+    "keynoteTimecode": "T+02:13",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Solid Rocket Booster Separation",
+    "text": "Confirm separation!",
+    "tags": [
+      "booster separation",
+      "separation",
+      "boosters",
+      "crowd",
+      "highlight"
+    ]
+  },
+  {
+    "id": 24,
+    "start": 151.29,
+    "end": 155.17,
+    "timecode": "02:31",
+    "keynoteTimecode": "T+02:16",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Solid Rocket Booster Separation",
+    "text": "Main engines throttling up. Guidance converged.",
+    "tags": [
+      "engines",
+      "throttle",
+      "guidance",
+      "booster separation"
+    ]
+  },
+  {
+    "id": 25,
+    "start": 161.61,
+    "end": 168.41,
+    "timecode": "02:41",
+    "keynoteTimecode": "T+02:26",
+    "speaker": "Launch Control",
+    "role": "Flight Dynamics & Houston CAPCOM",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Integrity, Houston \u2014 guidance converged, performance nominal, upper stage RCS ready.",
+    "tags": [
+      "houston",
+      "integrity",
+      "guidance",
+      "nominal"
+    ]
+  },
+  {
+    "id": 26,
+    "start": 168.41,
+    "end": 171.87,
+    "timecode": "02:48",
+    "keynoteTimecode": "T+02:33",
+    "speaker": "Reid Wiseman",
+    "role": "Artemis II Commander, Orion 'Integrity'",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Copy all, Houston.",
+    "tags": [
+      "reid wiseman",
+      "crew",
+      "houston",
+      "integrity"
+    ]
+  },
+  {
+    "id": 27,
+    "start": 173.93,
+    "end": 177.69,
+    "timecode": "02:53",
+    "keynoteTimecode": "T+02:38",
+    "speaker": "Reid Wiseman",
+    "role": "Artemis II Commander, Orion 'Integrity'",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Integrity, SM priming complete.",
+    "tags": [
+      "reid wiseman",
+      "crew",
+      "service module",
+      "integrity"
+    ]
+  },
+  {
+    "id": 28,
+    "start": 177.69,
+    "end": 181.29,
+    "timecode": "02:57",
+    "keynoteTimecode": "T+02:42",
+    "speaker": "Launch Control",
+    "role": "Flight Dynamics & Houston CAPCOM",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Copy, SM priming complete.",
+    "tags": [
+      "houston",
+      "service module",
+      "launch control"
+    ]
+  },
+  {
+    "id": 29,
+    "start": 181.29,
+    "end": 184.73,
+    "timecode": "03:01",
+    "keynoteTimecode": "T+02:46",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Two minutes 45 seconds of mission elapsed time into the Artemis II mission.",
+    "tags": [
+      "ascent",
+      "artemis",
+      "gary jordan"
+    ]
+  },
+  {
+    "id": 30,
+    "start": 184.73,
+    "end": 191.87,
+    "timecode": "03:04",
+    "keynoteTimecode": "T+02:49",
+    "speaker": "Gary Jordan",
+    "role": "NASA Ascent Commentator, Mission Control Houston",
+    "chapter": "Upper Atmosphere Ascent",
+    "text": "Thrusters on Integrity and upper stage confirmed in a ready state ahead of service module fairing separation.",
+    "tags": [
+      "integrity",
+      "thrusters",
+      "upper stage",
+      "fairing"
+    ]
+  }
+]

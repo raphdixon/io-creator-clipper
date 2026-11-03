@@ -1,0 +1,35 @@
+{
+  "id": "artemis2",
+  "title": "NASA Artemis II Moon Launch",
+  "transcriptTitle": "Launch Transcript",
+  "isLive": true,
+  "duration": 192,
+  "trueIsoSync": true,
+  "defaultQuery": "Artemis",
+  "defaultIn": 11,
+  "defaultOut": 25,
+  "quickTopics": ["Artemis", "liftoff", "Integrity", "Houston", "supersonic", "separation"],
+  "transcriptUrl": "/media/artemis2/transcript.json",
+  "thumbCount": 60,
+  "thumbPrefix": "/media/artemis2/thumbs/thumb_",
+  "exportPrefix": "/media/artemis2/exports/export_",
+  "cameras": [
+    { "id": "cam1", "code": "CAMERA 1", "short": "CAM 1", "name": "Pad 39B Wide", "src": "/media/artemis2/cam3-wide.mp4" },
+    { "id": "cam2", "code": "CAMERA 2", "short": "CAM 2", "name": "Rocket Onboard", "src": "/media/artemis2/cam1-onboard.mp4" },
+    { "id": "cam3", "code": "CAMERA 3", "short": "CAM 3", "name": "8K Chase Plane", "src": "/media/artemis2/cam2-aerial.mp4" },
+    { "id": "cam4", "code": "CAMERA 4", "short": "CAM 4", "name": "VIP Crowd", "src": "/media/artemis2/cam4-crowd.mp4" }
+  ],
+  "chapters": [
+    { "start": 0, "end": 28, "label": "01 • Ignition & Liftoff" },
+    { "start": 28, "end": 85, "label": "02 • Roll Pitch & Houston" },
+    { "start": 85, "end": 128, "label": "03 • Max-Q & Supersonic" },
+    { "start": 128, "end": 161, "label": "04 • Booster Separation" },
+    { "start": 161, "end": 192, "label": "05 • Upper Stage Ascent" }
+  ],
+  "starterExports": [
+    { "id": "art_ex1", "start": 11, "end": 25, "cam": "cam1", "text": "Booster ignition and liftoff! The crew of Artemis II, now bound for the Moon!", "selected": true },
+    { "id": "art_ex2", "start": 13, "end": 25, "cam": "cam4", "text": "The crew of Artemis II, now bound for the Moon! Humanity's next great voyage begins.", "selected": true },
+    { "id": "art_ex3", "start": 28, "end": 42, "cam": "cam3", "text": "Good roll pitch. Houston now controlling the flight of Integrity on the Artemis II mission.", "selected": true },
+    { "id": "art_ex4", "start": 141, "end": 155, "cam": "cam2", "text": "Confirm separation! Main engines throttling up. Guidance converged.", "selected": true }
+  ]
+}

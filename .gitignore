@@ -1,3 +1,15 @@
 .wrangler/
 node_modules/
 .DS_Store
+# --- github-sync defaults ---
+.env
+.env.*
+!.env.example
+.dev.vars
+.firebase/
+__pycache__/
+.venv/
+venv/
+*.pem
+*.key
+service-account*.json
